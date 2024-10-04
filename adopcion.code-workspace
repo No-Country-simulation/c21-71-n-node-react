@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "name": "root",
+            "path": "."
+        },
+          {
+            "name": "next-app",
+            "path": "./apps/next-app"
+        },
+        {
+            "name": "server-app",
+            "path": "./apps/server-app"
+        }
+    ]
+}
