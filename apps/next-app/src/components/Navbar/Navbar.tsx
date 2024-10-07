@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import Image from "next/image";
 
 const pages = ['About', 'Contact', 'Services'];
 
@@ -49,7 +50,12 @@ export default function Navbar() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        <Image
+                            src="/logo.png"
+                            alt="logo"
+                            width={80}
+                            height={80}
+                        />
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -86,7 +92,6 @@ export default function Navbar() {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                     <Typography
                         variant="h5"
                         noWrap
@@ -103,7 +108,12 @@ export default function Navbar() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        <Image
+                            src="/logo.png"
+                            alt="logo"
+                            width={60}
+                            height={60}
+                        />
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "flex-end" }}>
                         {pages.map((page) => (
