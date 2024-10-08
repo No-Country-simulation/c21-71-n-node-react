@@ -142,7 +142,7 @@ const Galery: React.FC = () => {
                         <Card
                             sx={{
                                 backgroundColor: '#ECA26E',
-                                borderRadius: 10,
+                                borderRadius: 5,
                                 cursor: 'pointer', // Para indicar que es clickeable
                             }}
                             onClick={(e) => {
@@ -186,9 +186,9 @@ const Galery: React.FC = () => {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: 400,
+                        width: 500,
                         bgcolor: 'background.paper',
-                        borderRadius: 20,
+                        borderRadius: 10,
                         boxShadow: 24,
                         p: 4,
                     }}
