@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, CardMedia, Button, Modal, Box } from '@mui/material';
+import { Card, CardContent, Typography, CardMedia, Button, Modal, Box, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Grid from '@mui/material/Grid2';
+import { SelectChangeEvent } from '@mui/material';
 import Slider from 'react-slick';
 
 interface Pet {
@@ -9,6 +10,7 @@ interface Pet {
     age: string;
     description: string;
     images: string[];
+    type: string;
 }
 
 const pets: Pet[] = [
@@ -16,19 +18,43 @@ const pets: Pet[] = [
         name: 'Yummy',
         age: '2 años',
         description: 'Soy Yummy, muy simpático y dulce. Estoy vacunado y castrado.',
-        images: ['/Images/perro1.jfif', '/Images/perro2.jfif', '/Images/perro3.jfif']
+        images: ['/Images/perro1.jfif', '/Images/perro2.jfif', '/Images/perro3.jfif'],
+        type: 'dog'
     },
     {
         name: 'Mowgli',
         age: '4 años',
         description: 'Soy Mowgli, muy tranquilo. Estoy vacunado y castrado.',
-        images: ['/Images/perro2.jfif', '/Images/perro3.jfif', '/Images/perro1.jfif']
+        images: ['/Images/perro2.jfif', '/Images/perro3.jfif', '/Images/perro1.jfif'],
+        type: 'dog'
     },
     {
         name: 'Burako',
         age: '1 año y 6 meses',
         description: 'Soy Burako, un caballero elegante. Estoy vacunado y castrado.',
-        images: ['/Images/perro3.jfif', '/Images/perro2.jfif', '/Images/perro1.jfif']
+        images: ['/Images/perro3.jfif', '/Images/perro2.jfif', '/Images/perro1.jfif'],
+        type: 'dog'
+    },
+    {
+        name: 'Ummy',
+        age: '3 años',
+        description: 'Soy Yummy, muy simpático y dulce. Estoy vacunado y castrado.',
+        images: ['/Images/perro1.jfif', '/Images/perro2.jfif', '/Images/perro3.jfif'],
+        type: 'dog'
+    },
+    {
+        name: 'Li',
+        age: '4 años y 7 meses',
+        description: 'Soy Li, muy tranquilo. Estoy vacunado y castrado.',
+        images: ['/Images/perro2.jfif', '/Images/perro3.jfif', '/Images/perro1.jfif'],
+        type: 'other'
+    },
+    {
+        name: 'Kika',
+        age: '6 años y 6 meses',
+        description: 'Soy Kika, muy simpática. Estoy vacunada y castrada.',
+        images: ['/Images/perro3.jfif', '/Images/perro2.jfif', '/Images/perro1.jfif'],
+        type: 'cat'
     },
     // Se pueden agregar más mascotas aquí...
 ];
@@ -36,6 +62,7 @@ const pets: Pet[] = [
 const Galery: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
+    const [filter, setFilter] = useState<string>('all');
 
     const handleOpen = (pet: Pet) => {
         setSelectedPet(pet);
@@ -47,6 +74,10 @@ const Galery: React.FC = () => {
         setSelectedPet(null);
     };
 
+    const handleFilterChange = (event: SelectChangeEvent) => {
+        setFilter(event.target.value as string);
+    };
+
     // Configuración del slider
     const settings = {
         dots: true,
@@ -56,10 +87,57 @@ const Galery: React.FC = () => {
         slidesToScroll: 1,
     };
 
+    // Filtrar mascotas basado en el filtro seleccionado
+    const filteredPets = filter === 'all' ? pets : pets.filter((pet) => pet.type === filter);
+
     return (
         <>
+            {/* Filtro de tipo de mascota */}
+            <Box sx={{ marginBottom: 4, display: 'flex', justifyContent: 'center', padding: '5px', borderRadius: 8, boxShadow: '0px 0px 10px rgba(0,0,0,0.1)' }}>
+                <FormControl variant="outlined" fullWidth sx={{ minWidth: 220, borderRadius: 5, color: 'white' }}>
+                    <InputLabel id="filter-label" sx={{
+                        borderRadius: 5, borderColor: 'white', color: 'white', "&.Mui-focused": {
+                            color: 'white', // Color de la etiqueta cuando está enfocada
+                        }
+                    }}>Filtrar por Tipo</InputLabel>
+                    <Select
+                        labelId="filter-label"
+                        value={filter}
+                        onChange={handleFilterChange}
+                        label="Filtrar por Tipo"
+                        sx={{
+                            color: 'white', borderRadius: 5,
+                            "&.MuiOutlinedInput-root": {
+                                "& fieldset": {
+                                    borderColor: "white", // Borde inicial
+                                },
+                                "&:hover fieldset": {
+                                    borderColor: "white", // Borde cuando se hace hover
+                                },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: "white", // Borde cuando está enfocado
+                                },
+                            },
+                        }}
+                        MenuProps={{
+                            PaperProps: {
+                                sx: {
+                                    borderRadius: 5, // Bordes redondeados del menú de opciones
+                                },
+                            },
+                        }}
+                    >
+                        <MenuItem value="all" >Todos</MenuItem>
+                        <MenuItem value="dog" >Perros</MenuItem>
+                        <MenuItem value="cat">Gatos</MenuItem>
+                        <MenuItem value="other">Otros</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
+
+            {/* Galería de mascotas */}
             <Grid container spacing={2} sx={{ width: '85vw' }}>
-                {pets.map((pet, index) => (
+                {filteredPets.map((pet, index) => (
                     <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                         <Card
                             sx={{
