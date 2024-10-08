@@ -144,6 +144,12 @@ const Galery: React.FC = () => {
                                 backgroundColor: '#ECA26E',
                                 borderRadius: 5,
                                 cursor: 'pointer', // Para indicar que es clickeable
+                                transition: 'transform 0.3s, box-shadow 0.3s',
+                                "&:hover": {
+                                    transform: 'scale(1.05)',
+                                    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
+                                },
+                                
                             }}
                             onClick={(e) => {
                                 // Si no se hace clic en los puntos del slider, abrir el modal
@@ -152,7 +158,10 @@ const Galery: React.FC = () => {
                                 }
                             }}
                         >
-                            <div className="slider-container">
+                            <div 
+                            className="slider-container"
+                            {...(open ? { inert: true } : {})}
+                            >
                                 <Slider {...settings}>
                                     {pet.images.map((image, idx) => (
                                         <div key={idx}>

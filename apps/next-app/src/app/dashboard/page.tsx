@@ -6,7 +6,7 @@ import styles from "@/app/page.module.css";
 
 const Dashboard: React.FC = () => {
     return (
-        <div className={styles.main} style={{display:'flex', justifyContent:'center', alignItems: 'center', marginTop:'10vh'}}>
+        <div className={styles.main} style={{display:'flex', justifyContent:'center', alignItems: 'center', marginTop:'10vh', marginBottom:'10vh'}}>
             <h1>Mascotas Disponibles</h1>
             <Galery />
         </div>
