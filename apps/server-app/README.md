@@ -1,1 +1,1 @@
-1. Crear roles ``npm run roles ``
+1. Crea los roles en la base de datos ``npm run roles `` 
