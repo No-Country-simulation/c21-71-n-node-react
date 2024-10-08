@@ -1,12 +1,20 @@
-import express from 'express'
-
-const app = express()
-app.get('/saludo', (_req, res) => {
-  res.json({ mensaje: 'hola' })
-})
+import express,{Request,Response} from 'express';
+import  router  from './routes/user-route';
 
 
-app.listen(3001,()=>{
-    console.log('server corriendo');
-    
-})
+
+const app = express();
+
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use(router)
+// 404
+app.use((_req:Request, res:Response) => {
+  res.status(404).send('Página no encontrada');
+});
+app.listen(3001, () => {
+  console.log('http://localhost:3001');
+});
+
+
+
