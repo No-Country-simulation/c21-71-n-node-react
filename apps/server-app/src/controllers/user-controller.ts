@@ -42,8 +42,8 @@ export const userLogin = async (req: Request<TEmailPassword>, res: Response) => 
         res.status(201).json({ ok: true, token });
       }
       res.status(401).json({error:'invalid credentials'})
+   
   
-    
   }
 
   res.status(404).json({error:'usuario no encontrado'})

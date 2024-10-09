@@ -49,3 +49,9 @@ export interface UpdateInfoPet{
   imageUrl?
   }
 }
+
+// types Hector
+
+export interface petId {
+  id: number
+}
