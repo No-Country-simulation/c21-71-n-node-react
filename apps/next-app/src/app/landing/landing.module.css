@@ -4,9 +4,15 @@
 
 .sign_up,
 .log_in {
-    /* Using !important because of FOUC */
+  /* Using !important because of FOUC */
   font-weight: bolder !important;
   margin-top: 10px !important;
-  width: 90%;
+  width: 100%;
 }
 
+@media only screen and (min-width: 900px) {
+  .sign_up,
+  .log_in {
+    width: 90%;
+  }
+}
