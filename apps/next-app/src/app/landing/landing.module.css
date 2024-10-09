@@ -1,0 +1,12 @@
+.container h1 {
+  font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
+}
+
+.sign_up,
+.log_in {
+    /* Using !important because of FOUC */
+  font-weight: bolder !important;
+  margin-top: 10px !important;
+  width: 90%;
+}
+
