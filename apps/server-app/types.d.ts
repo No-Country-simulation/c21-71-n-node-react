@@ -37,7 +37,7 @@ export interface InfoPet{
   name:string
   description:string
   type:string
-  imageUrl
+  imageUrl:string
 }
 
 export interface UpdateInfoPet{
@@ -46,6 +46,6 @@ export interface UpdateInfoPet{
     name?:string
   description?:string
   type?:string
-  imageUrl?
+  imageUrl?:string
   }
 }
