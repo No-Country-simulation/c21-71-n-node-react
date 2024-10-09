@@ -25,8 +25,7 @@ export const createPet = async (req: Request, res: Response) => {
 
 export const findPetById = async (req: Request, res: Response) => {
     try {
-        const { id }: petId = req.body // el id se va a pasar por body o por params??
-        const FindPet = await findPetByIdService(id)
+        const FindPet = await findPetByIdService(Number(req.params['id']))
         res.status(200).json({ ok: true, FindPet })
     } catch (error) {
         res.status(401).json({ ok: false, error })

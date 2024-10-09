@@ -15,10 +15,10 @@ router.get('/me', verifyToken, async (_req: Request, res: Response) => {
 // Mascotas
 
 router.get('/pets', getPets)
-router.get('/detail', findPetById)
+router.get('/pet/:id', findPetById)
 router.post('/pet', createPet)
-router.put('/changeInfoPet', updatePet)
-router.delete('/deletePet', deletePet)
+router.put('/pet', updatePet)
+router.delete('/pet', deletePet)
 
 
 // Admin
