@@ -11,9 +11,9 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import { usePage } from "./page.hook";
-import Link from "next/link";
 import { RoleE } from "@/types/roles";
+import Link from "next/link";
+import { usePage } from "./page.hook";
 
 export default function AuthUserRegister() {
   const { formData, handleInputChange, handleSubmit } = usePage();
@@ -55,55 +55,27 @@ export default function AuthUserRegister() {
           </Select>
         </FormControl>
 
-        {formData.role === RoleE.ADOPTER ? (
-          <>
-            <TextField
-              fullWidth
-              label="Nombres"
-              name="name"
-              id="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              autoComplete="given-name"
-              sx={{ mb: 2 }}
-            />
+        <TextField
+          fullWidth
+          label="Nombres"
+          name="name"
+          id="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          autoComplete="given-name"
+          sx={{ mb: 2 }}
+        />
 
-            <TextField
-              fullWidth
-              label="Apellidos"
-              name="lastname"
-              id="lastname"
-              value={formData.lastname}
-              onChange={handleInputChange}
-              autoComplete="family-name"
-              sx={{ mb: 2 }}
-            />
-          </>
-        ) : formData.role === RoleE.SHELTER ? (
-          <>
-            <TextField
-              fullWidth
-              label="Nombre del Refugio"
-              name="shelterName"
-              id="shelterName"
-              value={formData.shelterName}
-              onChange={handleInputChange}
-              autoComplete="organization"
-              sx={{ mb: 2 }}
-            />
-
-            <TextField
-              fullWidth
-              label="Dirección"
-              name="address"
-              id="address"
-              value={formData.address}
-              onChange={handleInputChange}
-              autoComplete="address"
-              sx={{ mb: 2 }}
-            />
-          </>
-        ) : null}
+        <TextField
+          fullWidth
+          label="Apellidos"
+          name="lastname"
+          id="lastname"
+          value={formData.lastname}
+          onChange={handleInputChange}
+          autoComplete="family-name"
+          sx={{ mb: 2 }}
+        />
 
         <TextField
           fullWidth
