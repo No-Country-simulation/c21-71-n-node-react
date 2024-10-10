@@ -40,13 +40,18 @@ export const userLogin = async (req: Request<TEmailPassword>, res: Response) => 
         const token =  generateToken(user,'1h')
       
         res.status(201).json({ ok: true, token });
+      }else{
+        res.status(401).json({error:'invalid credentials'})  
       }
-      res.status(401).json({error:'invalid credentials'})
+
+      
   
     
+  }else{
+    res.status(404).json({error:'usuario no encontrado'})
   }
 
-  res.status(404).json({error:'usuario no encontrado'})
+  
   
 };
 
