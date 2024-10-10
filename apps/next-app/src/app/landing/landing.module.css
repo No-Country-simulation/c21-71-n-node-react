@@ -1,5 +1,6 @@
 .container h1 {
   font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
+  margin: 0 auto;
 }
 
 .sign_up,
@@ -8,6 +9,19 @@
   font-weight: bolder !important;
   margin-top: 10px !important;
   width: 100%;
+}
+
+.profile {
+  border-radius: 50%;
+}
+
+.info {
+  margin: 0 4rem;
+}
+
+.info h4 {
+  font-size: xx-large;
+  margin-bottom: 14px;
 }
 
 @media only screen and (min-width: 900px) {
