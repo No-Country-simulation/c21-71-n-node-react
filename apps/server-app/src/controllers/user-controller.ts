@@ -1,52 +1,45 @@
-
 import { Request, Response } from 'express';
-import bcryptjs from 'bcryptjs';
-import { INewUser, TEmailPassword } from '../../types';
-import { createUser, findUserByEmail } from '../services/user-sevice';
-import { generateToken } from '../services/jwt-service';
+import { deleteUserByIdService, findUserById, getAllUsersService, updateUserByIdService } from '../services/user-sevice';
+import { UpdateUser } from '@adopcion/types';
 
-const jwtSecret = process.env.JWT_SECRET;
-if (!jwtSecret) {
-  throw new Error('JWT_SECRET is not defined in environment variables');
+export const getAllUsers = async (_req: Request, res: Response) => {
+  try {
+    const users = await getAllUsersService();
+    res.status(200).json({ ok: true, users });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+export const getUserById= async (req: Request, res: Response)=>{
+    try{
+        const user=await findUserById(Number(req.params['id']))
+        res.status(200).json({ok:true,user})
+    }catch(error){
+        res.status(500).json({ error: 'Internal server error' });
+    }
 }
 
 
-
-export const userRegister = async (req: Request, res: Response) => {
-  const { email, firstname, lastname, phone, password, roleId }: INewUser =req.body;
-
-  const salt = await bcryptjs.genSalt(10);
-  const encryptedPassword = await bcryptjs.hash(password, salt);
-
-  const newUser = await createUser({email,firstname,lastname,phone,encryptedPassword,roleId})
-
-  const token = generateToken(newUser,'1h')
-
-  res.status(201).json({ ok: true, token });
-};
+export const updateUserById=async(req:Request,res:Response)=>{
+  try {
+    const {id,payload}:UpdateUser= req.body
+    const user=await updateUserByIdService({id,payload})
+    res.status(200).json({ok:true,user})
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 
 
-
-export const userLogin = async (req: Request<TEmailPassword>, res: Response) => {
-  const { email, password } = req.body;
-  
-
-  const user = await findUserByEmail(email)
-
-  if(user){
-    
-      const isMatchPassword= await bcryptjs.compare(password,user.password)
-      if(isMatchPassword){
-        const token =  generateToken(user,'1h')
-      
-        res.status(201).json({ ok: true, token });
-      }
-      res.status(401).json({error:'invalid credentials'})
-  
+export const deleteUserById=async(req:Request,res:Response)=>{
+  try {
+    const user=await deleteUserByIdService(Number(req.params['id']))
+    res.status(200).json({ok:true,user_deleted:user})
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
     
   }
-
-  res.status(404).json({error:'usuario no encontrado'})
-  
-};
-
+}
