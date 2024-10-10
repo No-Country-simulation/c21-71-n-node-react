@@ -79,6 +79,14 @@ export default function AuthUserRegister() {
         onChange={handleInputChange}
       />
 
+      <CustomTextField
+        label="Repite tu contraseña"
+        type="password"
+        name="passwordRepeat"
+        value={formData.passwordRepeat}
+        onChange={handleInputChange}
+      />
+
       <CustomSubmitButton onClick={handleSubmit} text="Registrar" />
 
       <CustomCallAction
