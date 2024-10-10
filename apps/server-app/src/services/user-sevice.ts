@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // Create
 
 
-export const serviceGetAllUsers=async()=>{
+export const getAllUsersService=async()=>{
   return await prisma.user.findMany()
 }
 
@@ -43,7 +43,7 @@ export const findUserById = async (id: number) => {
 
 // Update user
 
-export const updateUserById = async ({ id, payload: { email, firstname, lastname, phone, password, roleId } }: UpdateUser) => {
+export const updateUserByIdService = async ({ id, payload: { email, firstname, lastname, phone, password, roleId } }: UpdateUser) => {
   return prisma.user.update({
     where: {
       id,
@@ -61,7 +61,7 @@ export const updateUserById = async ({ id, payload: { email, firstname, lastname
 
 // Delete user
 
-export const deleteUserById = async (id: number) => {
+export const deleteUserByIdService = async (id: number) => {
   return prisma.user.delete({
     where: {
       id,

@@ -43,3 +43,33 @@ export const verifyRoleAdmin = async(req: CustomRequest, res: Response, next: Ne
   
   
 };
+
+
+
+
+export const verifyRoleAdoptante = async(req: CustomRequest, res: Response, next: NextFunction) => {
+  const role=req.roleId
+  
+    if(role===1 || role ===2){
+      next()
+      
+    }else{
+      res.status(403).json({ error: 'Unauthorized' });  
+    }
+    
+
+  
+  
+};
+
+export const verifyRoleRefugio = async(req: CustomRequest, res: Response, next: NextFunction) => {
+  const role=req.roleId
+  
+    if(role===1|| role==3){
+      next()
+      
+    }else{
+      res.status(403).json({ error: 'Unauthorized' });  
+    }
+  
+};

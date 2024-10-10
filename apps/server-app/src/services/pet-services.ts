@@ -11,6 +11,7 @@ export const getAllPetService =async()=>{
 }
 
 
+
 export const createPetService=async({name,description,type,imageUrl}:InfoPet)=>{
     return await prisma.pet.create({
         data:{
@@ -22,6 +23,7 @@ export const createPetService=async({name,description,type,imageUrl}:InfoPet)=>{
         }
     })
 }
+
 
 
 export const findPetByIdService=async(id:number)=>{
@@ -45,6 +47,7 @@ export const updatePetService=async({id,infoPet:{name,description,type,imageUrl}
         }
     })
 }
+
 
 
 export const deletePetService=async(id:number)=>{

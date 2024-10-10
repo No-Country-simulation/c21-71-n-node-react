@@ -1,0 +1,4 @@
+{
+    "name": "@adopcion/types",
+    "main": "./src/index.ts"
+}

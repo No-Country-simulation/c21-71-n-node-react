@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createPetService, deletePetService, findPetByIdService, getAllPetService, updatePetService } from "../services/pet-services";
-import { InfoPet, petId, UpdateInfoPet } from "../../types";
+import { InfoPet, UpdateInfoPet } from "../../types";
 
 export const getPets = async (_req: Request, res: Response) => {
     try {
@@ -44,7 +44,7 @@ export const updatePet = async (req: Request, res: Response) => {
 
 export const deletePet = async (req: Request, res: Response) => {
     try {
-        const { id }: petId = req.body
+        const id =Number( req.params['id'])
         const dropPet = await deletePetService(id)
         res.status(200).json({ ok: true, message: "la Mascota ha sido borrada", dropPet })
     } catch (error) {
