@@ -54,7 +54,7 @@ export function usePage() {
     if (!["ADOPTER", "SHELTER"].includes(formData.role))
       return alert("El rol no es válido");
 
-    const role = formData.role === RoleE.ADOPTER ? 1 : 2;
+    const role = formData.role === RoleE.ADOPTER ? 2 : 3;
 
     axios
       .post(`${backendURL}/register`, {
@@ -63,7 +63,7 @@ export function usePage() {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        role,
+        roleId: role,
       })
       .then(function (response) {
         const { token } = response.data;
