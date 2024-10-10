@@ -65,7 +65,7 @@ export const verifyRoleAdoptante = async(req: CustomRequest, res: Response, next
 export const verifyRoleRefugio = async(req: CustomRequest, res: Response, next: NextFunction) => {
   const role=req.roleId
   
-    if(role===1|| role==3){
+    if(role===1|| role===3){
       next()
       
     }else{
