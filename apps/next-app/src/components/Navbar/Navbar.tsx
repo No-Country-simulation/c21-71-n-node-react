@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Image from "next/image";
 import Link from "next/link";
+import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
 
 const pages = ['About', 'Contact', 'Services'];
 
@@ -144,6 +145,7 @@ export default function Navbar() {
                                 </MenuItem>
                             ))}
                         </Menu>
+                        <ThemeSwitcher />
                     </Box>
                 </Toolbar>
             </Container>
