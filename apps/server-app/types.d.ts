@@ -7,7 +7,7 @@ const newUserSchema=z.object({
   lastname:z.string().min(4,'El apellido es obligatorio '),
   phone:z.string().min(8,'El número de teléfono debe tener al menos 8 caracteres'),
   password:z.string().min(8,'La contraseña debe tener al menos 8 caracteres'),
-  roleId:z.enum([2,3],'El valor debe ser 2 0 3')
+  roleId:z.union([z.literal(2),z.literal(3)],'El valor debe ser 2 0 3')
 })
 
 

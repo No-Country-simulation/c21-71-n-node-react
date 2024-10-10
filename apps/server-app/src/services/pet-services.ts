@@ -6,12 +6,12 @@ const prisma= new PrismaClient()
 
 
 
-export const getAllPets=async()=>{
+export const getAllPetsService=async()=>{
     return await prisma.user.findMany()
 }
 
 
-export const createPet=async({name,description,type,imageUrl}:InfoPet)=>{
+export const createPetService=async({name,description,type,imageUrl}:InfoPet)=>{
     return await prisma.pet.create({
         data:{
             name,
@@ -24,7 +24,7 @@ export const createPet=async({name,description,type,imageUrl}:InfoPet)=>{
 }
 
 
-export const findPetById=async(id:number)=>{
+export const findPetByIdService=async(id:number)=>{
     return await prisma.pet.findUnique({
         where:{
             id
@@ -32,7 +32,7 @@ export const findPetById=async(id:number)=>{
     })
 }
 
-export const updatePet=async({id,infoPet:{name,description,type,imageUrl}}:UpdateInfoPet)=>{
+export const updatePetService=async({id,infoPet:{name,description,type,imageUrl}}:UpdateInfoPet)=>{
     return await prisma.pet.update({
         where:{
             id
@@ -48,7 +48,7 @@ export const updatePet=async({id,infoPet:{name,description,type,imageUrl}}:Updat
 }
 
 
-export const deletePet=async(id:number)=>{
+export const deletePetService=async(id:number)=>{
     return await prisma.pet.delete({
         where:{
             id
