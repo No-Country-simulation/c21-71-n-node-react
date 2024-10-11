@@ -2,18 +2,19 @@
 import Grid from '@mui/material/Grid2';
 import Image from 'next/image';
 import styles from "./landing.module.css";
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 export default function Landing() {
     return (
 
         <div className={styles.container}>
-            <Grid container spacing={2} className={styles.grid} sx={{ height: "100vh" }}>
+            <Grid container spacing={2} sx={{ height: "100vh" }}>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <h1>
-                    Rescata, Adopta, Encuentra un Hogar
+                        Rescata, Adopta, Encuentra un Hogar
                     </h1>
-                    <button className={styles.sign_up} >Sign Up</button>
-                    <button className={styles.log_in} >Log In</button>
+                    <button className={styles.sign_up} >Registrarse</button>
+                    <button className={styles.log_in} >Inicia Sesión</button>
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Image
@@ -26,7 +27,7 @@ export default function Landing() {
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={2} size={{ xs: 12 }} className={styles.container}>
+            <Grid container spacing={2} size={{ xs: 12 }} sx={{ height: "100vh", alignContent: "end"}}>
                 <h1>Nuestro refugio</h1>
                 <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center" }}>
                     <Image
@@ -52,6 +53,43 @@ export default function Landing() {
                     <div className={styles.info} >
                         <h4>Encuentrale un hogar a tu peludo</h4>
                         <span>Registra a tu mascota en nuestra plataforma y encuentra la familia perfecta para él/ella. ¡Ayudanos a darles un segundo chance!</span>
+                    </div>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2} size={{ xs: 12 }} sx={{ alignContent: "end", marginTop: "40px" }}>
+                <h1>Nuestra misión</h1>
+                <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center" }} className={styles.us}>
+                    <Image
+                        src="/images/overlay_dog3.png"
+                        alt="no background dog"
+                        width={520}
+                        height={420}
+                    />
+                    <div className={styles.info} >
+                        <h2>Cuidar a nuestros peluditos hasta encontrarles un hogar</h2>
+                        <span>Recibimos todo tipo de mascotas y nos encargamos de cuidarlos hasta encontrarle el hogar ideal para ellos.</span>
+                        <div className={styles.column}>
+                            <ul>
+                                <li>
+                                    <CheckBoxIcon sx={{ color: "#1EBAB3" }} />
+                                    Atención médica
+                                </li>
+                                <li>
+                                    <CheckBoxIcon sx={{ color: "#1EBAB3" }} />
+                                    Profesional Capacitado
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <CheckBoxIcon sx={{ color: "#1EBAB3" }} />
+                                    Comida saludable
+                                </li>
+                                <li>
+                                    <CheckBoxIcon sx={{ color: "#1EBAB3" }} />
+                                    Los mejores veterinarios
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </Grid>
             </Grid>
