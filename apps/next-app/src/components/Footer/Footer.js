@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <Box className={styles.footer}>
       <span className={styles.content}>
-        PRIVACY POLICY
+        POLÍTICA DE PRIVACIDAD
       </span>
     </Box>
   );

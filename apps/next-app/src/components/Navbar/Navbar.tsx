@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
 
-const pages = ['About', 'Contact', 'Services'];
+const pages = ['Nosotros', 'Contacto', 'Servicios'];
 
 export default function Navbar() {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
