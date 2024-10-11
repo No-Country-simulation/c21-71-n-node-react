@@ -24,6 +24,11 @@
   color: var(--foreground);
 }
 
+.info_bubbles {
+  display: flex;
+  align-items: center;
+}
+
 .profile {
   border-radius: 50%;
 }
@@ -32,9 +37,14 @@
   margin: 0 4rem;
 }
 
-.info h4, .info h2 {
+.info h4,
+.info h2 {
   font-size: xx-large;
   margin-bottom: 14px;
+}
+
+.info span {
+  font-size: larger;
 }
 
 .column {
@@ -60,5 +70,16 @@
   .sign_up,
   .log_in {
     width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .container img {
+    width: -webkit-fill-available;
+    height: auto;
+  }
+
+  .info_bubbles {
+    flex-direction: column;
   }
 }

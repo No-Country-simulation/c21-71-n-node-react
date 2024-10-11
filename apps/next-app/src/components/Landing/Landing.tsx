@@ -8,7 +8,7 @@ export default function Landing() {
     return (
 
         <div className={styles.container}>
-            <Grid container spacing={2} sx={{ height: "100vh" }}>
+            <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <h1>
                         Rescata, Adopta, Encuentra un Hogar
@@ -27,9 +27,9 @@ export default function Landing() {
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={2} size={{ xs: 12 }} sx={{ height: "100vh", alignContent: "end"}}>
+            <Grid container spacing={2} size={{ xs: 12 }} sx={{ alignContent: "end", marginTop: "80px" }}>
                 <h1>Nuestro refugio</h1>
-                <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center" }}>
+                <Grid size={{ xs: 12 }} className={styles.info_bubbles}>
                     <Image
                         src="/images/cute-cat.jpg"
                         alt="cute cat"
@@ -42,7 +42,7 @@ export default function Landing() {
                         <span>Aquí encontrarás las mejores mascotas del área, desde perros y gatos hasta otros animales que buscan un hogar lleno de amor y cuidado.</span>
                     </div>
                 </Grid>
-                <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center", flexDirection: "row-reverse" }}>
+                <Grid size={{ xs: 12 }} className={styles.info_bubbles} sx={{ flexDirection: "row-reverse" }}>
                     <Image
                         src="/images/cute-dog.jpg"
                         alt="cute dog"
@@ -56,9 +56,9 @@ export default function Landing() {
                     </div>
                 </Grid>
             </Grid>
-            <Grid container spacing={2} size={{ xs: 12 }} sx={{ alignContent: "end", marginTop: "40px" }}>
+            <Grid container spacing={2} size={{ xs: 12 }} sx={{ alignContent: "end", marginTop: "80px" }}>
                 <h1>Nuestra misión</h1>
-                <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center" }} className={styles.us}>
+                <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center", flexDirection: { xs: "column", md: "row" } }} className={styles.us}>
                     <Image
                         src="/images/overlay_dog3.png"
                         alt="no background dog"
