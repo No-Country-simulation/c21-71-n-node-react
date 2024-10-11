@@ -10,7 +10,7 @@ import {
 import { usePage } from "./page.hook";
 
 export default function AuthUserRegister() {
-  const { formData, handleInputChange, handleSubmit } = usePage();
+  const { formData, handleInputChange, handleSubmit, requestState } = usePage();
 
   return (
     <CustomForm title="Inicio de sesión">
@@ -31,7 +31,11 @@ export default function AuthUserRegister() {
         onChange={handleInputChange}
       />
 
-      <CustomSubmitButton onClick={handleSubmit} text="Iniciar Sesión" />
+      <CustomSubmitButton
+        onClick={handleSubmit}
+        text="Iniciar Sesión"
+        state={requestState}
+      />
 
       <CustomCallAction
         question="¿No tienes una cuenta?"

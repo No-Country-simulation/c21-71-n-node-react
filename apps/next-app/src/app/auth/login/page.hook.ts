@@ -1,18 +1,29 @@
+"use client";
+
+import axios from "axios";
 import { backendURL } from "@/config";
 import { SelectChangeEvent } from "@mui/material";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { CustomSubmitButtonStateT } from "@/components/Form/Form";
 
 type FormData = {
   email: string;
   password: string;
 };
 
+const initialFormState = {
+  email: "",
+  password: "",
+};
+
 export function usePage() {
-  const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
-  });
+  const router = useRouter();
+
+  const [formData, setFormData] = useState<FormData>(initialFormState);
+
+  const [requestState, setRequestState] =
+    useState<CustomSubmitButtonStateT>("initial");
 
   function handleInputChange(
     e: SelectChangeEvent<string> | React.ChangeEvent<HTMLInputElement>
@@ -27,6 +38,8 @@ export function usePage() {
     if (!Boolean(formData.email && formData.password))
       return alert("Datos incompletos");
 
+    setRequestState("loading");
+
     axios
       .post(`${backendURL}/login`, {
         email: formData.email,
@@ -35,9 +48,13 @@ export function usePage() {
       .then(function (response) {
         const { token } = response.data;
         localStorage.setItem("pr-ado--token", token);
+        setRequestState("success");
+        setFormData(initialFormState);
+        alert("Inicio de sesión exitoso");
+        router.push("/dashboard");
       })
       .catch(function (error) {
-        if (error.response) return alert("Credenciales invalidas");
+        if (error.response) return alert("Datos invalidos!");
 
         alert("Opps! Ocurrio un error.");
       });
@@ -47,5 +64,6 @@ export function usePage() {
     formData,
     handleInputChange,
     handleSubmit,
+    requestState,
   };
 }
