@@ -30,6 +30,7 @@ export const userRegister = async (req: Request, res: Response) => {
 export const userLogin = async (req: Request<TEmailPassword>, res: Response) => {
   const { email, password } = req.body;
   
+  
 
   const user = await findUserByEmail(email)
 

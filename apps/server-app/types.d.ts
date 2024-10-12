@@ -1,4 +1,3 @@
-import { Request } from 'express';
 import {z} from 'zod'
 
 const newUserSchema=z.object({
@@ -23,18 +22,36 @@ const newUserSchema=z.object({
 export type INewUser=z.infer<typeof newUserSchema>
 
 
-export type TEmailPassword = Pick<INewUser, 'email' | 'password'>;
+export const emailPasswordSchema=newUserSchema.pick({
+  email:true,
+  password:true
+})
 
-export interface ICreateUser extends Omit<INewUser, 'password'> {
+// export type TEmailPassword = Pick<INewUser, 'email' | 'password'>;
+export type TEmailPassword=z.infer<typeof emailPasswordSchema>
+
+
+
+
+/* export interface ICreateUser extends Omit<INewUser, 'password'> {
   encryptedPassword: string;
-}
+} */
 
-interface CustomRequest extends Request {
+export const createUserSchema=newUserSchema.omit({password:true}).extend({
+  encryptedPassword:z.string().min(8,'La contraseña debe tener al menos 8 caracteres'),
+})
+
+export type ICreateUser =z.infer<typeof createUserSchema>
+
+
+
+
+export type  CustomRequest ={
   email?: string;
   roleId?: number;
-}
+} 
 
-export interface UpdateUser {
+/* export interface UpdateUser {
   id: number;
   payload: {
     email?: string;
@@ -44,17 +61,40 @@ export interface UpdateUser {
     password?: string;
     roleId?: number;
   };
-}
+} */
+export const updateUserSchema=z.object({
+  id:z.number(),
+  payload:z.object({
+    email:z.string().optional(),
+    firstname:z.string().optional(),
+    lastname:z.string().optional(),
+    phone:z.string().optional(),
+    password:z.string().optional(),
+    roleId:z.number().optional(),
+  })
+})
+
+export type UpdateUser=z.infer<typeof updateUserSchema>
 
 
-export interface InfoPet{
+/* export interface InfoPet{
   name:string
   description:string
   type:string
   imageUrl:string
 }
+ */
+export const infoPetSchema=z.object({
+  name:z.string(),
+  description:z.string(),
+  type:z.string(),
+  imageUrl:z.string(),
 
-export interface UpdateInfoPet{
+})
+
+export type InfoPet=z.infer<typeof infoPetSchema>
+
+/*  export interface UpdateInfoPet{
   id:number
   infoPet:{
     name?:string
@@ -62,4 +102,19 @@ export interface UpdateInfoPet{
   type?:string
   imageUrl?:string
   }
-}
+} 
+ */
+
+
+export const updatePetSchema=z.object({
+  id:z.number(),
+  infoPet:z.object({
+    name:z.string().optional(),
+  description:z.string().optional(),
+  type:z.string().optional(),
+  imageUrl:z.string().optional(),
+  })
+})
+
+
+export type UpdateInfoPet=z.infer<typeof updatePetSchema>
