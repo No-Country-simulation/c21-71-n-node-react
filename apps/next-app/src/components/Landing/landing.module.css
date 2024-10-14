@@ -11,12 +11,13 @@
   width: 100%;
   padding: 10px;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .sign_up {
   background: var(--foreground);
+  border: 1px solid var(--background);
   color: var(--background);
-  border: none;
 }
 
 .log_in {
@@ -73,7 +74,28 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (min-width: 1536px) {
+  .sign_up,
+  .log_in {
+    padding: 30px;
+    font-size: 1rem;
+  }
+
+  .info h4,
+  .info h2 {
+    font-size: 4rem;
+  }
+
+  .info span {
+    font-size: 2rem;
+  }
+
+  .column li {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
   .container img {
     width: -webkit-fill-available;
     height: auto;
