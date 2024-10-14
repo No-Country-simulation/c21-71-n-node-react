@@ -1,7 +1,7 @@
 
 import { Request, Response } from 'express';
 import bcryptjs from 'bcryptjs';
-import { INewUser, TEmailPassword } from '../../types';
+import { INewUser, newUserSchema, TEmailPassword } from '../../types';
 import { createUser, findUserByEmail } from '../services/user-sevice';
 import { generateToken } from '../services/jwt-service';
 
@@ -13,7 +13,13 @@ if (!jwtSecret) {
 
 
 export const userRegister = async (req: Request, res: Response) => {
-  const { email, firstname, lastname, phone, password, roleId }: INewUser =req.body;
+  const user: INewUser =req.body;
+  const userValidate=newUserSchema.safeParse(user)
+
+  if(userValidate.success===true){
+    const {email,firstname,lastname,phone,password,roleId}=userValidate.data
+  
+
 
   const salt = await bcryptjs.genSalt(10);
   const encryptedPassword = await bcryptjs.hash(password, salt);
@@ -23,12 +29,17 @@ export const userRegister = async (req: Request, res: Response) => {
   const token = generateToken(newUser,'1h')
 
   res.status(201).json({ ok: true, token });
+  }else{
+    const dataError=userValidate.error.issues[0]
+    res.status(400).json({msg:dataError.code,field:dataError.path,description:dataError.message})
+  }
 };
 
 
 
 export const userLogin = async (req: Request<TEmailPassword>, res: Response) => {
   const { email, password } = req.body;
+  
   
 
   const user = await findUserByEmail(email)

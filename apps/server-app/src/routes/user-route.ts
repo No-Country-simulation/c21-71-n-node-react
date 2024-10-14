@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { userRegister, userLogin } from '../controllers/auth-controller';
 import { verifyRoleAdmin, verifyToken } from '../middlewares/verify-token-berer';
-import { getAllUsers, getUserById, updateUserById } from '../controllers/user-controller';
+import { deleteUserById, getAllUsers, getUserById, updateUserById } from '../controllers/user-controller';
 
 const router = Router();
 
@@ -20,5 +20,5 @@ router.get('/me', verifyToken, async (_req: Request, res: Response) => {
 router.get('/users', verifyToken, verifyRoleAdmin,getAllUsers );
 router.get('/user/:id',verifyToken, verifyRoleAdmin,getUserById)
 router.put('/user/:id',verifyToken,verifyRoleAdmin,updateUserById)
-router.delete('/user/:id',verifyToken,verifyRoleAdmin,)
+router.delete('/user/:id',verifyToken,verifyRoleAdmin,deleteUserById)
 export default router;
