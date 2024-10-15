@@ -24,9 +24,12 @@ interface CustomTextFieldProps {
   };
 }
 
+export type CustomSubmitButtonStateT = "initial" | "loading" | "success";
+
 interface CustomSubmitButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   text: string;
+  state: CustomSubmitButtonStateT;
 }
 
 interface CustomCallActionProps {
@@ -82,8 +85,9 @@ export function CustomSubmitButton(props: CustomSubmitButtonProps) {
       color="primary"
       onClick={props.onClick}
       sx={{ mt: 2 }}
+      disabled={props.state === "loading"}
     >
-      {props.text}
+      {props.state === "loading" ? "Cargando..." : props.text}
     </Button>
   );
 }

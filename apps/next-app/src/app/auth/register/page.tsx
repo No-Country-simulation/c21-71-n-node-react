@@ -12,7 +12,7 @@ import {
 import { usePage } from "./page.hook";
 
 export default function AuthUserRegister() {
-  const { formData, handleInputChange, handleSubmit } = usePage();
+  const { formData, handleInputChange, handleSubmit, requestState } = usePage();
 
   return (
     <CustomForm title="Registro de Usuario">
@@ -79,7 +79,19 @@ export default function AuthUserRegister() {
         onChange={handleInputChange}
       />
 
-      <CustomSubmitButton onClick={handleSubmit} text="Registrar" />
+      <CustomTextField
+        label="Repite tu contraseña"
+        type="password"
+        name="passwordRepeat"
+        value={formData.passwordRepeat}
+        onChange={handleInputChange}
+      />
+
+      <CustomSubmitButton
+        onClick={handleSubmit}
+        text="Registrar"
+        state={requestState}
+      />
 
       <CustomCallAction
         question="¿Ya tienes una cuenta?"
