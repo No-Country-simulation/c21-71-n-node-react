@@ -231,12 +231,24 @@ const Galery: React.FC = () => {
                                     variant="contained"
                                     color="primary"
                                     sx={{
-                                        mt: 2,
+                                        m: 2,
                                         backgroundColor: "#1eb7b2",
                                         "&:hover": { backgroundColor: "#189e9b" },
                                     }}
                                 >
                                     Cerrar
+                                </Button>
+                                <Button
+                                    onClick={handleClose}
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{
+                                        m: 2,
+                                        backgroundColor: "#e47116",
+                                        "&:hover": { backgroundColor: "#c4530a"},
+                                    }}
+                                >
+                                    Adoptar!
                                 </Button>
                             </Box>
                         </Box>
