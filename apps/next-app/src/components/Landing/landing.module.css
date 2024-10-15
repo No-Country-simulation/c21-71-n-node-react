@@ -1,0 +1,107 @@
+.container h1 {
+  font-size: clamp(3.4375rem, 3.25rem + 0.75vw, 4rem);
+  margin: 0 auto;
+}
+
+.sign_up,
+.log_in {
+  /* Using !important because of FOUC */
+  font-weight: bolder !important;
+  margin-top: 10px !important;
+  width: 100%;
+  padding: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.sign_up {
+  background: var(--foreground);
+  border: 1px solid var(--background);
+  color: var(--background);
+}
+
+.log_in {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.info_bubbles {
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  border-radius: 50%;
+}
+
+.info {
+  margin: 0 4rem;
+}
+
+.info h4,
+.info h2 {
+  font-size: xx-large;
+  margin-bottom: 14px;
+}
+
+.info span {
+  font-size: larger;
+}
+
+.column {
+  display: flex;
+  flex-basis: 50%;
+  padding: 20px 0;
+}
+
+.column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.column li {
+  padding-right: 10px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+@media only screen and (min-width: 900px) {
+  .sign_up,
+  .log_in {
+    width: 90%;
+  }
+}
+
+@media (min-width: 1536px) {
+  .sign_up,
+  .log_in {
+    padding: 30px;
+    font-size: 1rem;
+  }
+
+  .info h4,
+  .info h2 {
+    font-size: 4rem;
+  }
+
+  .info span {
+    font-size: 2rem;
+  }
+
+  .column li {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .container img {
+    width: -webkit-fill-available;
+    height: auto;
+  }
+
+  .info_bubbles {
+    flex-direction: column;
+  }
+}
