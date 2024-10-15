@@ -11,8 +11,10 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Image from "next/image";
+import Link from "next/link";
+import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
 
-const pages = ['About', 'Contact', 'Services'];
+const pages = ['Nosotros', 'Contacto', 'Servicios'];
 
 export default function Navbar() {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -35,10 +37,6 @@ export default function Navbar() {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -49,14 +47,15 @@ export default function Navbar() {
                             textDecoration: 'none',
                         }}
                     >
-                        <Image
-                            src="/logo.png"
-                            alt="logo"
-                            width={80}
-                            height={80}
-                        />
+                        <Link href="/" title={"Home Page"}>
+                            <Image
+                                src="/logo.png"
+                                alt="logo"
+                                width={80}
+                                height={80}
+                            />
+                        </Link>
                     </Typography>
-
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -92,10 +91,6 @@ export default function Navbar() {
                         </Menu>
                     </Box>
                     <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
@@ -107,12 +102,14 @@ export default function Navbar() {
                             textDecoration: 'none',
                         }}
                     >
-                        <Image
-                            src="/logo.png"
-                            alt="logo"
-                            width={60}
-                            height={60}
-                        />
+                        <Link href="/" title={"Home Page"}>
+                            <Image
+                                src="/logo.png"
+                                alt="logo"
+                                width={60}
+                                height={60}
+                            />
+                        </Link>
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "flex-end" }}>
                         {pages.map((page) => (
@@ -148,6 +145,7 @@ export default function Navbar() {
                                 </MenuItem>
                             ))}
                         </Menu>
+                        <ThemeSwitcher />
                     </Box>
                 </Toolbar>
             </Container>
