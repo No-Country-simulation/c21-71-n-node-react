@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { CustomRequest } from '../../types';
+import { MyRequest } from '../../types-back';
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -10,14 +10,17 @@ if (jwtSecret) {
   throw new Error('JWT_SECRET is not defined in environment variables');
 }
 
-export const verifyToken = async (req: CustomRequest, res: Response, next: NextFunction) => {
+
+
+
+export const verifyToken = async (req: MyRequest, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
 
   if (token) {
     try {
       const { email, roleId } = jwt.verify(token, jwtSecret) as JwtPayload;
-      req.email = email;
+      req.email  = email ;
       req.roleId = roleId;
       console.log(email, roleId);
       next();
@@ -29,47 +32,44 @@ export const verifyToken = async (req: CustomRequest, res: Response, next: NextF
   }
 };
 
-export const verifyRoleAdmin = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  const role = req.roleId
-
-  if (role === 1) {
-    next()
-
-  } else {
-    res.status(403).json({ error: 'Unauthorized' });
-  }
-
-
-
-
+export const verifyRoleAdmin = async(req: MyRequest, res: Response, next: NextFunction) => {
+  const role=req.roleId
+  
+    if(role===1){
+      next()
+      
+    }else{
+      res.status(403).json({ error: 'Unauthorized' });  
+    }
+  
 };
 
 
 
 
-export const verifyRoleAdoptante = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  const role = req.roleId
-
-  if (role === 1 || role === 2) {
-    next()
-
-  } else {
-    res.status(403).json({ error: 'Unauthorized' });
-  }
-
+export const verifyRoleAdoptante = async(req: MyRequest, res: Response, next: NextFunction) => {
+  const role=req.roleId
+  
+    if(role===1 || role ===2){
+      next()
+      
+    }else{
+      res.status(403).json({ error: 'Unauthorized' });  
+    }
+    
 
 
 
 };
 
-export const verifyRoleRefugio = async (req: CustomRequest, res: Response, next: NextFunction) => {
-  const role = req.roleId
-
-  if (role === 1 || role == 3) {
-    next()
-
-  } else {
-    res.status(403).json({ error: 'Unauthorized' });
-  }
-
+export const verifyRoleRefugio = async(req: MyRequest, res: Response, next: NextFunction) => {
+  const role=req.roleId
+  
+    if(role===1|| role===3){
+      next()
+      
+    }else{
+      res.status(403).json({ error: 'Unauthorized' });  
+    }
+  
 };
