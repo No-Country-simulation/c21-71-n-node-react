@@ -89,6 +89,15 @@ a.secondary {
   min-width: 180px;
 }
 
+.galery {
+  display: 'flex';
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 5vh;
+}
+
 .footer {
   grid-row-start: 3;
   display: flex;
