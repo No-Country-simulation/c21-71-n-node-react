@@ -6,18 +6,28 @@ import styles from "@/app/page.module.css";
 import Hero from '@/components/Hero/Hero';
 
 const Dashboard: React.FC = () => {
-    
     const galleryRef = useRef<HTMLDivElement | null>(null);
-    
+
     const scrollToGallery = () => {
-            if (galleryRef.current) {
-                galleryRef.current.scrollIntoView({ behavior: 'smooth' });
-            }
-        };
+        if (galleryRef.current) {
+            galleryRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
-        <div className={styles.main} style={{display:'flex', justifyContent:'center', alignItems: 'center', marginTop:'10vh', marginBottom:'10vh'}}>
+        <div className={styles.main} style={{ width: '100%', marginBottom: '10vh' }}>
             <Hero scrollToGallery={scrollToGallery} />
-            <div ref={galleryRef}>
+            <div
+                ref={galleryRef}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    marginTop: '5vh',
+                }}
+            >
                 <Galery />
             </div>
         </div>
