@@ -93,7 +93,8 @@ const Galery: React.FC = () => {
     return (
         <>
             {/* Filtro de tipo de mascota */}
-            <Box sx={{ marginBottom: 4, display: 'flex', justifyContent: 'center', padding: '5px', borderRadius: 8, boxShadow: '0px 0px 10px rgba(0,0,0,0.1)' }}>
+            <Box sx={{ marginBottom: 10, display: 'flex', justifyContent: 'center', alignItems:'center', padding: '2vh', borderRadius: 8, 
+                boxShadow: '0px 0px 10px rgba(0,0,0,0.1)', maxWidth:'40vw', margin: '0 auto', }}>
                 <FormControl variant="outlined" fullWidth sx={{ minWidth: 220, borderRadius: 5, color: 'white' }}>
                     <InputLabel id="filter-label" sx={{
                         borderRadius: 5, borderColor: 'white', color: 'white', "&.Mui-focused": {
@@ -138,7 +139,7 @@ const Galery: React.FC = () => {
             {/* Galería de mascotas */}
             <Grid container spacing={2} sx={{ width: '85vw' }}>
                 {filteredPets.map((pet, index) => (
-                    <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                         <Card
                             sx={{
                                 backgroundColor: '#ECA26E',
