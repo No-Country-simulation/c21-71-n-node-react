@@ -25,8 +25,8 @@ export const createPet = async (req: Request, res: Response) => {
 
 export const findPetById = async (req: Request, res: Response) => {
     try {
-        const FindPet = await findPetByIdService(Number(req.params['id']))
-        res.status(200).json({ ok: true, FindPet })
+        const findPet = await findPetByIdService(Number(req.params['id']))
+        res.status(200).json({ ok: true, findPet })
     } catch (error) {
         res.status(401).json({ ok: false, error })
     }
@@ -44,7 +44,7 @@ export const updatePet = async (req: Request, res: Response) => {
 
 export const deletePet = async (req: Request, res: Response) => {
     try {
-        const id =Number( req.params['id'])
+        const id = Number(req.params['id'])
         const dropPet = await deletePetService(id)
         res.status(200).json({ ok: true, message: "la Mascota ha sido borrada", dropPet })
     } catch (error) {
