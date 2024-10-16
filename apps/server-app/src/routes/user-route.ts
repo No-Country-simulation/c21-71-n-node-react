@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { userRegister, userLogin } from '../controllers/auth-controller';
+import { register, login } from '../controllers/auth-controller';
 import { verifyRoleAdmin, verifyToken, verifyRoleRefugio } from '../middlewares/verify-token-berer';
 import { getAllUsers, getUserById, updateUserById, deleteUserById } from '../controllers/user-controller';
 import { createPet, deletePet, findPetById, getPets, updatePet } from '../controllers/pet-controller';
@@ -7,8 +7,8 @@ import { createPet, deletePet, findPetById, getPets, updatePet } from '../contro
 
 const router = Router();
 
-router.post('/register', userRegister);
-router.post('/login', userLogin);
+router.post('/register', register);
+router.post('/login', login);
 router.get('/me', verifyToken, async (_req: Request, res: Response) => {
   res.json({ mensaje: 'Hola mundo' });
 });

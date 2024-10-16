@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,9 +8,10 @@ datasource db {
 }
 
 model Role {
-    id   Int    @id @default(autoincrement())
-    role String
-    User User[]
+    id      Int       @id @default(autoincrement())
+    role    String
+    User    User[]
+    Shelter Shelter[]
 }
 
 model User {
@@ -21,7 +22,18 @@ model User {
     phone     String
     password  String
     role      Role   @relation(fields: [roleId], references: [id])
-    roleId    Int
+    roleId    Int    @default(2)
+}
+
+model Shelter {
+    id           Int    @id @default(autoincrement())
+    shelter_name String
+    email        String @unique
+    phone        String
+    password     String
+    role         Role   @relation(fields: [roleId], references: [id])
+    roleId       Int    @default(3)
+    Pet          Pet[]
 }
 
 model Pet {
@@ -30,4 +42,6 @@ model Pet {
     description String
     type        String
     imageUrl    String
+    shelter     Shelter @relation(fields: [shelterId], references: [id])
+    shelterId   Int
 }
