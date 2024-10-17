@@ -10,6 +10,7 @@ type FormData = {
   role: RoleT;
   name: string;
   lastname: string;
+  sheltername: string;
   email: string;
   phone: string;
   password: string;
@@ -20,6 +21,7 @@ const initialFormState = {
   role: RoleE.ADOPTER,
   name: "",
   lastname: "",
+  sheltername: "",
   email: "",
   phone: "",
   password: "",
@@ -65,16 +67,15 @@ export function usePage() {
 
     setRequestState("loading");
 
-    const role = formData.role === RoleE.ADOPTER ? 2 : 3;
-
     axios
       .post(`${backendURL}/register`, {
         firstname: formData.name,
         lastname: formData.lastname,
+        sheltername: formData.sheltername,
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        roleId: role,
+        roleId: formData.role.toLowerCase(),
       })
       .then(function (response) {
         const { token } = response.data;

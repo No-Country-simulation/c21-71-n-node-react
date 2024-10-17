@@ -35,23 +35,37 @@ export default function AuthUserRegister() {
         </Select>
       </FormControl>
 
-      <CustomTextField
-        label="Nombres"
-        name="name"
-        type="text"
-        autoComplete="given-name"
-        value={formData.name}
-        onChange={handleInputChange}
-      />
+      {formData.role === "ADOPTER" ? (
+        <>
+          <CustomTextField
+            label="Nombres"
+            name="name"
+            type="text"
+            autoComplete="given-name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
 
-      <CustomTextField
-        label="Apellidos"
-        name="lastname"
-        type="text"
-        autoComplete="family-name"
-        value={formData.lastname}
-        onChange={handleInputChange}
-      />
+          <CustomTextField
+            label="Apellidos"
+            name="lastname"
+            type="text"
+            autoComplete="family-name"
+            value={formData.lastname}
+            onChange={handleInputChange}
+          />
+        </>
+      ) : (
+        <>
+          <CustomTextField
+            label="Nombre del refugio"
+            name="sheltername"
+            type="text"
+            value={formData.sheltername}
+            onChange={handleInputChange}
+          />
+        </>
+      )}
 
       <CustomTextField
         label="Email"
