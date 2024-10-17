@@ -1,9 +1,9 @@
-"use client";
 import React, { useState } from 'react';
-import { Card, CardContent, Typography, CardMedia, Button, Modal, Box, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Card, CardContent, Typography, CardMedia, Button, Modal, Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { SelectChangeEvent } from '@mui/material';
 import Slider from 'react-slick';
+import {jwtDecode} from 'jwt-decode';
+import { useRouter } from "next/navigation";
 
 interface Pet {
     name: string;
@@ -11,6 +11,13 @@ interface Pet {
     description: string;
     images: string[];
     type: string;
+}
+
+interface DecodedToken{
+    roleId:string,
+    exp: number,
+    iat: number,
+    email: string,
 }
 
 const pets: Pet[] = [
@@ -56,13 +63,14 @@ const pets: Pet[] = [
         images: ['/Images/perro3.jfif', '/Images/perro2.jfif', '/Images/perro1.jfif'],
         type: 'cat'
     },
-    // Se pueden agregar más mascotas aquí...
 ];
 
 const Galery: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
     const [filter, setFilter] = useState<string>('all');
+
+    const router = useRouter();
 
     const handleOpen = (pet: Pet) => {
         setSelectedPet(pet);
@@ -78,7 +86,6 @@ const Galery: React.FC = () => {
         setFilter(event.target.value as string);
     };
 
-    // Configuración del slider
     const settings = {
         dots: true,
         infinite: true,
@@ -87,20 +94,50 @@ const Galery: React.FC = () => {
         slidesToScroll: 1,
     };
 
-    // Filtrar mascotas basado en el filtro seleccionado
     const filteredPets = filter === 'all' ? pets : pets.filter((pet) => pet.type === filter);
+
+    // Nueva función para verificar el token
+    const isTokenValid = () => {
+        const token = localStorage.getItem('pr-ado--token');
+        if (!token) {
+            return false; // No hay token
+        }
+
+        try {
+            const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
+            const currentTime = Math.floor(Date.now() / 1000); // Tiempo actual en segundos
+
+            if (decoded.exp < currentTime) {
+                return false; // El token ha expirado
+            }
+
+            return true; // El token es válido
+        } catch (e: unknown) {
+            console.error(e)
+            return false; // Error al decodificar el token
+        }
+    };
+
+    // Función para manejar la adopción
+    const handleAdopt = () => {
+        if (isTokenValid()) {
+            // El token es válido, proceder con la adopción
+            alert("¡Gracias por adoptar!");
+            // Aquí podrías agregar la lógica para la adopción, como hacer una petición al backend
+        } else {
+            // El token no es válido, redirigir al usuario a iniciar sesión
+            alert("Por favor, inicia sesión para adoptar.");
+            router.push("/auth/login")
+            // window.location.href = '/login';
+        }
+    };
 
     return (
         <>
             {/* Filtro de tipo de mascota */}
-            <Box sx={{ marginBottom: 10, display: 'flex', justifyContent: 'center', alignItems:'center', padding: '2vh', borderRadius: 8, 
-                boxShadow: '0px 0px 10px rgba(0,0,0,0.1)', maxWidth:'40vw', margin: '0 auto', }}>
+            <Box sx={{ marginBottom: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2vh', borderRadius: 8, boxShadow: '0px 0px 10px rgba(0,0,0,0.1)', maxWidth: '40vw', margin: '0 auto', }}>
                 <FormControl variant="outlined" fullWidth sx={{ minWidth: 220, borderRadius: 5, color: 'white' }}>
-                    <InputLabel id="filter-label" sx={{
-                        borderRadius: 5, borderColor: 'white', color: 'white', "&.Mui-focused": {
-                            color: 'white', // Color de la etiqueta cuando está enfocada
-                        }
-                    }}>Filtrar por Tipo</InputLabel>
+                    <InputLabel id="filter-label" sx={{ borderRadius: 5, borderColor: 'white', color: 'white', "&.Mui-focused": { color: 'white' } }}>Filtrar por Tipo</InputLabel>
                     <Select
                         labelId="filter-label"
                         value={filter}
@@ -109,24 +146,12 @@ const Galery: React.FC = () => {
                         sx={{
                             color: 'white', borderRadius: 5,
                             "&.MuiOutlinedInput-root": {
-                                "& fieldset": {
-                                    borderColor: "white", // Borde inicial
-                                },
-                                "&:hover fieldset": {
-                                    borderColor: "white", // Borde cuando se hace hover
-                                },
-                                "&.Mui-focused fieldset": {
-                                    borderColor: "white", // Borde cuando está enfocado
-                                },
+                                "& fieldset": { borderColor: "white" },
+                                "&:hover fieldset": { borderColor: "white" },
+                                "&.Mui-focused fieldset": { borderColor: "white" },
                             },
                         }}
-                        MenuProps={{
-                            PaperProps: {
-                                sx: {
-                                    borderRadius: 5, // Bordes redondeados del menú de opciones
-                                },
-                            },
-                        }}
+                        MenuProps={{ PaperProps: { sx: { borderRadius: 5 } } }}
                     >
                         <MenuItem value="all" >Todos</MenuItem>
                         <MenuItem value="dog" >Perros</MenuItem>
@@ -144,44 +169,28 @@ const Galery: React.FC = () => {
                             sx={{
                                 backgroundColor: '#ECA26E',
                                 borderRadius: 5,
-                                cursor: 'pointer', // Para indicar que es clickeable
+                                cursor: 'pointer',
                                 transition: 'transform 0.3s, box-shadow 0.3s',
-                                "&:hover": {
-                                    transform: 'scale(1.05)',
-                                    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
-                                },
-                                
+                                "&:hover": { transform: 'scale(1.05)', boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)' },
                             }}
                             onClick={(e) => {
-                                // Si no se hace clic en los puntos del slider, abrir el modal
                                 if (!(e.target as HTMLElement).closest('.slick-dots')) {
                                     handleOpen(pet);
                                 }
                             }}
                         >
-                            <div 
-                            className="slider-container"
-                            {...(open ? { inert: true } : {})}
-                            >
+                            <div className="slider-container" {...(open ? { inert: true } : {})}>
                                 <Slider {...settings}>
                                     {pet.images.map((image, idx) => (
                                         <div key={idx}>
-                                            <CardMedia
-                                                component="img"
-                                                height="200"
-                                                image={image}
-                                                alt={`${pet.name} - ${idx + 1}`}
-                                                onClick={() => handleOpen(pet)} // Abre el modal al hacer clic en la imagen
-                                            />
+                                            <CardMedia component="img" height="200" image={image} alt={`${pet.name} - ${idx + 1}`} onClick={() => handleOpen(pet)} />
                                         </div>
                                     ))}
                                 </Slider>
                             </div>
                             <CardContent>
                                 <Typography variant="h5">{pet.name}</Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {pet.age}
-                                </Typography>
+                                <Typography variant="body2" color="text.secondary">{pet.age}</Typography>
                             </CardContent>
                         </Card>
                     </Grid>
@@ -208,45 +217,27 @@ const Galery: React.FC = () => {
                             <Slider {...settings}>
                                 {selectedPet.images.map((image, idx) => (
                                     <div key={idx}>
-                                        <CardMedia
-                                            component="img"
-                                            height="200"
-                                            image={image}
-                                            alt={`${selectedPet.name} - ${idx + 1}`}
-                                            sx={{ borderRadius: 10 }}
-                                        />
+                                        <CardMedia component="img" height="200" image={image} alt={`${selectedPet.name} - ${idx + 1}`} sx={{ borderRadius: 10 }} />
                                     </div>
                                 ))}
                             </Slider>
                             <Typography variant="h4" sx={{ color: '#194143' }}>{selectedPet.name}</Typography>
-                            <Typography variant="h6" sx={{ color: '#194143' }} mt={2}>
-                                {selectedPet.age}
-                            </Typography>
-                            <Typography variant="body1" mt={2} sx={{ color: '#194143' }}>
-                                {selectedPet.description}
-                            </Typography>
+                            <Typography variant="h6" sx={{ color: '#194143' }} mt={2}>{selectedPet.age}</Typography>
+                            <Typography variant="body1" mt={2} sx={{ color: '#194143' }}>{selectedPet.description}</Typography>
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Button
                                     onClick={handleClose}
                                     variant="contained"
                                     color="primary"
-                                    sx={{
-                                        m: 2,
-                                        backgroundColor: "#1eb7b2",
-                                        "&:hover": { backgroundColor: "#189e9b" },
-                                    }}
+                                    sx={{ m: 2, backgroundColor: "#1eb7b2", "&:hover": { backgroundColor: "#189e9b" } }}
                                 >
                                     Cerrar
                                 </Button>
                                 <Button
-                                    onClick={handleClose}
+                                    onClick={handleAdopt} // Llama a la función de adopción
                                     variant="contained"
                                     color="primary"
-                                    sx={{
-                                        m: 2,
-                                        backgroundColor: "#e47116",
-                                        "&:hover": { backgroundColor: "#c4530a"},
-                                    }}
+                                    sx={{ m: 2, backgroundColor: "#e47116", "&:hover": { backgroundColor: "#c4530a" } }}
                                 >
                                     Adoptar!
                                 </Button>
