@@ -75,7 +75,7 @@ export function usePage() {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        roleId: formData.role.toLowerCase(),
+        type: formData.role.toLowerCase(),
       })
       .then(function (response) {
         const { token } = response.data;
