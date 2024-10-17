@@ -8,7 +8,7 @@ export function NotAuthenticated() {
   return (
     <Container maxWidth="sm" sx={{ textAlign: "center", mt: 8 }}>
       <Typography variant="h4" gutterBottom>
-        Not Authenticated
+        No autenticado
       </Typography>
       <Box mt={4}>
         <DataDog fill={theme === "dark" ? "#ffffff" : "#000000"} />
