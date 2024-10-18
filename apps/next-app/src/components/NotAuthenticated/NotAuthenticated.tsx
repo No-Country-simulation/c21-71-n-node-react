@@ -2,7 +2,7 @@ import { Container, Typography, Box } from "@mui/material";
 import DataDog from "@/components/Icons/datadog";
 import { useTheme } from "next-themes";
 
-export function NotAuthenticated() {
+export default function NotAuthenticated() {
   const { theme } = useTheme();
 
   return (

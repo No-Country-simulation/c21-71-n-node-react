@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import "../styles/loader.css";
+import "./loader.css";
 
-export default function Loading() {
+export default function Loader() {
   return (
     <Box
       display="flex"
