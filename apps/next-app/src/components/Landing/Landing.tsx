@@ -18,7 +18,7 @@ export default function Landing() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Image
-                        src="/images/dog.jpg"
+                        src="/dog.jpg"
                         alt="landing dog"
                         width={0}
                         height={300}
@@ -31,7 +31,7 @@ export default function Landing() {
                 <h1>Nuestro refugio</h1>
                 <Grid size={{ xs: 12 }} className={styles.info_bubbles}>
                     <Image
-                        src="/images/cute-cat.jpg"
+                        src="/cute-cat.jpg"
                         alt="cute cat"
                         width={380}
                         height={320}
@@ -44,7 +44,7 @@ export default function Landing() {
                 </Grid>
                 <Grid size={{ xs: 12 }} className={styles.info_bubbles} sx={{ flexDirection: "row-reverse" }}>
                     <Image
-                        src="/images/cute-dog.jpg"
+                        src="/cute-dog.jpg"
                         alt="cute dog"
                         width={380}
                         height={320}
@@ -60,7 +60,7 @@ export default function Landing() {
                 <h1>Nuestra misión</h1>
                 <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center", flexDirection: { xs: "column", md: "row" } }} className={styles.us}>
                     <Image
-                        src="/images/overlay_dog3.png"
+                        src="/overlay_dog3.png"
                         alt="no background dog"
                         width={520}
                         height={420}
