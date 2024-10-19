@@ -77,24 +77,31 @@ export function usePage() {
 
     setRequestState("loading");
 
-    axios
-      .post(`${backendURL}/register`, {
-        firstname: formData.name,
-        lastname: formData.lastname,
-        sheltername: formData.sheltername,
+    const data = {
+      type: formData.role.toLowerCase(),
+      [formData.role.toLowerCase() === "adopter" ? "adopter" : "shelter"]: {
+        ...(formData.role === "ADOPTER"
+          ? {
+              firstname: formData.name,
+              lastname: formData.lastname,
+            }
+          : {
+              sheltername: formData.sheltername,
+            }),
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        roleId: formData.role.toLowerCase(),
-      })
-      .then(function (response) {
-        const { token } = response.data;
-        localStorage.setItem("pr-ado--token", token);
-        setRequestState("success");
-        setFormData(initialFormState);
-        alert("Registro de usuario exitoso");
-        router.push("/auth/login");
-      });
+      },
+    };
+
+    axios.post(`${backendURL}/register`, data).then(function (response) {
+      const { token } = response.data;
+      localStorage.setItem("pr-ado--token", token);
+      setRequestState("success");
+      setFormData(initialFormState);
+      alert("Registro de usuario exitoso");
+      router.push("/auth/login");
+    });
   };
 
   return {
