@@ -58,8 +58,8 @@ export const verifyRoleAdoptante = async(req: MyRequest, res: Response, next: Ne
     }
     
 
-  
-  
+
+
 };
 
 export const verifyRoleRefugio = async(req: MyRequest, res: Response, next: NextFunction) => {

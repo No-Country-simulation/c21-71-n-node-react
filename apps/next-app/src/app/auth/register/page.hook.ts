@@ -46,18 +46,28 @@ export function usePage() {
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (
-      !Boolean(
-        formData.role &&
-          formData.name &&
-          formData.lastname &&
-          formData.email &&
-          formData.phone &&
-          formData.password &&
-          formData.passwordRepeat
-      )
-    )
-      return alert("Datos incompletos");
+    if (formData.role === RoleE.ADOPTER) {
+      if (
+        !formData.name ||
+        !formData.lastname ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.password ||
+        !formData.passwordRepeat
+      ) {
+        return alert("Datos incompletos para el rol de adoptante.");
+      }
+    } else if (formData.role === RoleE.SHELTER) {
+      if (
+        !formData.sheltername ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.password ||
+        !formData.passwordRepeat
+      ) {
+        return alert("Datos incompletos para el rol de refugio.");
+      }
+    }
 
     if (formData.password !== formData.passwordRepeat)
       return alert("Las contraseñas no coinciden");

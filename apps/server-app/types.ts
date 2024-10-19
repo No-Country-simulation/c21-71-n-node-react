@@ -10,6 +10,16 @@ export const newUserSchema=z.object({
 })
 
 
+export const newShelterSchema = z.object({
+  shelter_name:z.string().min(5,{message: 'El Nombre debe tener al menos 5 caracteres'}),
+  email:z.string().email({message:"debe ser un email valido"}),
+  phone:z.string().min(8,),
+  password:z.string().min(8,),
+})
+
+export type NewShelter = z.infer<typeof newShelterSchema>
+
+
 /* export interface INewUser {
   email: string;
   firstname: string;
