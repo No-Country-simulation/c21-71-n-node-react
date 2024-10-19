@@ -12,8 +12,11 @@ if (!jwtSecret) {
 
 
 
-export const userRegister = async (req: Request, res: Response) => {
-  const user: INewUser =req.body;
+export const register = async (req: Request, res: Response) => {
+  const {type}:{type:string} =req.body;
+
+  if(type==='adopter'){
+      const user:INewUser=req.body
   const userValidate=newUserSchema.safeParse(user)
 
   if(userValidate.success===true){
@@ -32,12 +35,18 @@ export const userRegister = async (req: Request, res: Response) => {
   }else{
     const dataError=userValidate.error.issues[0]
     res.status(400).json({msg:dataError.code,field:dataError.path,description:dataError.message})
+  }    
+  }else if(type==='shelter'){
+    res.json({type})
+    
   }
+
+
 };
 
 
 
-export const userLogin = async (req: Request<TEmailPassword>, res: Response) => {
+export const login = async (req: Request<TEmailPassword>, res: Response) => {
   const { email, password } = req.body;
   
   
