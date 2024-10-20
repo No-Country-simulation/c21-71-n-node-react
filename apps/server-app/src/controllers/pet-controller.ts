@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { createPetService, deletePetService, findPetByIdService, getAllPetService, updatePetService } from "../services/pet-services";
 import { InfoPet, UpdateInfoPet } from "../../types";
+import { MyRequest } from "../../types-back";
+import { findShelterByEmail } from "../services/shelter-service";
 
 export const getPets = async (_req: Request, res: Response) => {
     try {
@@ -13,13 +15,22 @@ export const getPets = async (_req: Request, res: Response) => {
     }
 }
 
-export const createPet = async (req: Request, res: Response) => {
+export const createPet = async (req: MyRequest, res: Response) => {
     try {
-        const { name, description, type, imageUrl }: InfoPet = req.body
-        const newPet = await createPetService({ name, description, type, imageUrl })
-        res.status(201).json({ ok: true, newPet })
+        const email=req.email
+        if(email){
+            const shelter=await findShelterByEmail(email)
+            if(shelter){
+                const { name, description, type, imageUrl }: InfoPet = req.body
+        
+                const newPet = await createPetService({ name, description, type, imageUrl,shelterId:shelter.id })
+                res.status(201).json({ ok: true, newPet })
+            }
+       
+        }
+        
     } catch (error) {
-        res.status(403).json({ ok: false, error })
+        res.status(403).json({ ok: false, error ,msg:"esta fallando algo"})
     }
 }
 
