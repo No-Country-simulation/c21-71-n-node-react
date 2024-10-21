@@ -19,7 +19,7 @@ export const createPetService=async({name,description,type,imageUrl,shelterId}:{
             name,
             description,
             type,
-            imageUrl:JSON.stringify(imageUrl),
+            imageUrl,
             shelterId
 
         }
@@ -37,7 +37,6 @@ export const findPetByIdService=async(id:number)=>{
 }
 
 export const updatePetService=async({id,infoPet:{name,description,type,imageUrl}}:UpdateInfoPet)=>{
-    let images=JSON.stringify(imageUrl)
     return await prisma.pet.update({
         where:{
             id
@@ -46,7 +45,7 @@ export const updatePetService=async({id,infoPet:{name,description,type,imageUrl}
             name,
             description,
             type,
-            imageUrl:images
+            imageUrl
         }
     })
 }

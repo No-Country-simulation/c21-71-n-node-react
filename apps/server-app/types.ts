@@ -56,10 +56,10 @@ export type ICreateUser =z.infer<typeof createUserSchema>
 
 
 
-export type  CustomRequest ={
+/* export type  CustomRequest ={
   email?: string;
   roleId?: number;
-} 
+}  */
 
 /* export interface UpdateUser {
   id: number;
@@ -122,7 +122,7 @@ export const updatePetSchema=z.object({
     name:z.string().optional(),
   description:z.string().optional(),
   type:z.string().optional(),
-  imageUrl:z.string().optional(),
+  imageUrl:z.string().array().optional(),
   })
 })
 

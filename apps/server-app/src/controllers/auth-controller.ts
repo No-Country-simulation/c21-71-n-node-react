@@ -4,7 +4,7 @@ import bcryptjs from 'bcryptjs';
 import { INewUser, NewShelter, newShelterSchema, newUserSchema, TEmailPassword } from '../../types';
 import { createUser, findUserByEmail } from '../services/user-sevice';
 import { generateToken } from '../services/jwt-service';
-import { createShelterService, findShelterByEmail } from '../services/shelter-service';
+import { createShelterService, findShelterByEmailService } from '../services/shelter-service';
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
@@ -49,7 +49,7 @@ export const register = async (req: Request, res: Response) => {
       const {shelter}:{shelter:NewShelter}=req.body
 
 
-      const findShelter=await findShelterByEmail(shelter.email)
+      const findShelter=await findShelterByEmailService(shelter.email)
       if(findShelter){
         res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
       }else{
@@ -103,7 +103,7 @@ export const login = async (req: Request<TEmailPassword>, res: Response) => {
   
     
   }else{
-    const shelter = await findShelterByEmail(email)
+    const shelter = await findShelterByEmailService(email)
 
   if(shelter){
     
