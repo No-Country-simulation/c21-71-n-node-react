@@ -46,18 +46,28 @@ export function usePage() {
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (
-      !Boolean(
-        formData.role &&
-          formData.name &&
-          formData.lastname &&
-          formData.email &&
-          formData.phone &&
-          formData.password &&
-          formData.passwordRepeat
-      )
-    )
-      return alert("Datos incompletos");
+    if (formData.role === RoleE.ADOPTER) {
+      if (
+        !formData.name ||
+        !formData.lastname ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.password ||
+        !formData.passwordRepeat
+      ) {
+        return alert("Datos incompletos para el rol de adoptante.");
+      }
+    } else if (formData.role === RoleE.SHELTER) {
+      if (
+        !formData.sheltername ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.password ||
+        !formData.passwordRepeat
+      ) {
+        return alert("Datos incompletos para el rol de refugio.");
+      }
+    }
 
     if (formData.password !== formData.passwordRepeat)
       return alert("Las contraseñas no coinciden");
@@ -67,24 +77,31 @@ export function usePage() {
 
     setRequestState("loading");
 
-    axios
-      .post(`${backendURL}/register`, {
-        firstname: formData.name,
-        lastname: formData.lastname,
-        sheltername: formData.sheltername,
+    const data = {
+      type: formData.role.toLowerCase(),
+      [formData.role.toLowerCase() === "adopter" ? "adopter" : "shelter"]: {
+        ...(formData.role === "ADOPTER"
+          ? {
+              firstname: formData.name,
+              lastname: formData.lastname,
+            }
+          : {
+              sheltername: formData.sheltername,
+            }),
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        roleId: formData.role.toLowerCase(),
-      })
-      .then(function (response) {
-        const { token } = response.data;
-        localStorage.setItem("pr-ado--token", token);
-        setRequestState("success");
-        setFormData(initialFormState);
-        alert("Registro de usuario exitoso");
-        router.push("/auth/login");
-      });
+      },
+    };
+
+    axios.post(`${backendURL}/register`, data).then(function (response) {
+      const { token } = response.data;
+      localStorage.setItem("pr-ado--token", token);
+      setRequestState("success");
+      setFormData(initialFormState);
+      alert("Registro de usuario exitoso");
+      router.push("/auth/login");
+    });
   };
 
   return {

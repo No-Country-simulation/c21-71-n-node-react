@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { InfoPet, UpdateInfoPet } from '../../types';
+import {  UpdateInfoPet } from '../../types';
 
 
 const prisma= new PrismaClient()
@@ -12,13 +12,15 @@ export const getAllPetService =async()=>{
 
 
 
-export const createPetService=async({name,description,type,imageUrl}:InfoPet)=>{
+export const createPetService=async({name,description,type,imageUrl,shelterId}:{name:string,description:string,type:string,imageUrl:string[],shelterId:number})=>{
+    
     return await prisma.pet.create({
         data:{
             name,
             description,
             type,
-            imageUrl
+            imageUrl,
+            shelterId
 
         }
     })

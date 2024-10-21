@@ -25,42 +25,42 @@ const pets: Pet[] = [
         name: 'Yummy',
         age: '2 años',
         description: 'Soy Yummy, muy simpático y dulce. Estoy vacunado y castrado.',
-        images: ['/Images/perro1.jfif', '/Images/perro2.jfif', '/Images/perro3.jfif'],
+        images: ['/perro1.jfif', '/perro2.jfif', '/perro3.jfif'],
         type: 'dog'
     },
     {
         name: 'Mowgli',
         age: '4 años',
         description: 'Soy Mowgli, muy tranquilo. Estoy vacunado y castrado.',
-        images: ['/Images/perro2.jfif', '/Images/perro3.jfif', '/Images/perro1.jfif'],
+        images: ['/perro2.jfif', '/perro3.jfif', '/perro1.jfif'],
         type: 'dog'
     },
     {
         name: 'Burako',
         age: '1 año y 6 meses',
         description: 'Soy Burako, un caballero elegante. Estoy vacunado y castrado.',
-        images: ['/Images/perro3.jfif', '/Images/perro2.jfif', '/Images/perro1.jfif'],
+        images: ['/perro3.jfif', '/perro2.jfif', '/perro1.jfif'],
         type: 'dog'
     },
     {
         name: 'Ummy',
         age: '3 años',
         description: 'Soy Yummy, muy simpático y dulce. Estoy vacunado y castrado.',
-        images: ['/Images/perro1.jfif', '/Images/perro2.jfif', '/Images/perro3.jfif'],
+        images: ['/perro1.jfif', '/perro2.jfif', '/perro3.jfif'],
         type: 'dog'
     },
     {
         name: 'Li',
         age: '4 años y 7 meses',
         description: 'Soy Li, muy tranquilo. Estoy vacunado y castrado.',
-        images: ['/Images/perro2.jfif', '/Images/perro3.jfif', '/Images/perro1.jfif'],
+        images: ['/perro2.jfif', '/perro3.jfif', '/perro1.jfif'],
         type: 'other'
     },
     {
         name: 'Kika',
         age: '6 años y 6 meses',
         description: 'Soy Kika, muy simpática. Estoy vacunada y castrada.',
-        images: ['/Images/perro3.jfif', '/Images/perro2.jfif', '/Images/perro1.jfif'],
+        images: ['/perro3.jfif', '/perro2.jfif', '/perro1.jfif'],
         type: 'cat'
     },
 ];

@@ -3,22 +3,28 @@ import Grid from '@mui/material/Grid2';
 import Image from 'next/image';
 import styles from "./landing.module.css";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import Link from 'next/link';
+import { Box } from '@mui/material';
 
 export default function Landing() {
     return (
 
         <div className={styles.container}>
             <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 6 }}>
-                    <h1>
-                        Rescata, Adopta, Encuentra un Hogar
-                    </h1>
-                    <button className={styles.sign_up} >Registrarse</button>
-                    <button className={styles.log_in} >Inicia Sesión</button>
+                <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'block', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <h1>Rescata, Adopta, Encuentra un Hogar</h1>
+                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Link href="/auth/register" className={`${styles.button} ${styles.sign_up}`}>
+                            Registrarse
+                        </Link>
+                        <Link href="/auth/login" className={`${styles.button} ${styles.log_in}`}>
+                            Inicia Sesión
+                        </Link>
+                    </Box>
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Image
-                        src="/images/dog.jpg"
+                        src="/dog.jpg"
                         alt="landing dog"
                         width={0}
                         height={300}
@@ -31,7 +37,7 @@ export default function Landing() {
                 <h1>Nuestro refugio</h1>
                 <Grid size={{ xs: 12 }} className={styles.info_bubbles}>
                     <Image
-                        src="/images/cute-cat.jpg"
+                        src="/cute-cat.jpg"
                         alt="cute cat"
                         width={380}
                         height={320}
@@ -44,7 +50,7 @@ export default function Landing() {
                 </Grid>
                 <Grid size={{ xs: 12 }} className={styles.info_bubbles} sx={{ flexDirection: "row-reverse" }}>
                     <Image
-                        src="/images/cute-dog.jpg"
+                        src="/cute-dog.jpg"
                         alt="cute dog"
                         width={380}
                         height={320}
@@ -60,7 +66,7 @@ export default function Landing() {
                 <h1>Nuestra misión</h1>
                 <Grid size={{ xs: 12 }} sx={{ display: "flex", alignItems: "center", flexDirection: { xs: "column", md: "row" } }} className={styles.us}>
                     <Image
-                        src="/images/overlay_dog3.png"
+                        src="/overlay_dog3.png"
                         alt="no background dog"
                         width={520}
                         height={420}

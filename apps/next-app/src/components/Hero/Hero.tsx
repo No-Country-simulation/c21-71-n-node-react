@@ -16,7 +16,7 @@ interface HeroProps {
           <a className={styles.heroButton} role="button" onClick={() => scrollToGallery()}>Descubre Más</a>
         </div>
         <div className={styles.imageContainer}>
-          <Image src="/images/dog.jpg" alt="perro y gato" width={500} height={400} className={styles.heroImage} />
+          <Image src="/dog.jpg" alt="perro y gato" width={500} height={400} className={styles.heroImage} />
         </div>
       </div>
     </div>
