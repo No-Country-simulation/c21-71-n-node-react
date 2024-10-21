@@ -1,47 +1,47 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Role {
-    id      Int       @id @default(autoincrement())
-    role    String
-    User    User[]
-    Shelter Shelter[]
+  id      Int       @id @default(autoincrement())
+  role    String
+  User    User[]
+  Shelter Shelter[]
 }
 
 model User {
-    id        Int    @id @default(autoincrement())
-    email     String @unique
-    firstname String
-    lastname  String
-    phone     String
-    password  String
-    role      Role   @relation(fields: [roleId], references: [id])
-    roleId    Int    @default(value:2)
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  firstname String
+  lastname  String
+  phone     String
+  password  String
+  role      Role   @relation(fields: [roleId], references: [id])
+  roleId    Int    @default(value: 2)
 }
 
 model Shelter {
-    id           Int    @id @default(autoincrement())
-    shelter_name String
-    email        String @unique
-    phone        String
-    password     String
-    role         Role   @relation(fields: [roleId], references: [id])
-    roleId       Int    @default(value:3)
-    Pet          Pet[]
+  id           Int    @id @default(autoincrement())
+  shelter_name String
+  email        String @unique
+  phone        String
+  password     String
+  role         Role   @relation(fields: [roleId], references: [id])
+  roleId       Int    @default(value: 3)
+  Pet          Pet[]
 }
 
 model Pet {
-    id          Int     @id @default(autoincrement())
-    name        String?
-    description String
-    type        String
-    imageUrl       String
-    shelter     Shelter @relation(fields: [shelterId], references: [id])
-    shelterId   Int
+  id          Int     @id @default(autoincrement())
+  name        String?
+  description String
+  type        String
+  imageUrl    Json
+  shelter     Shelter @relation(fields: [shelterId], references: [id])
+  shelterId   Int
 }
