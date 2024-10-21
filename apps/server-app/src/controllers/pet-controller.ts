@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { createPetService, deletePetService, findPetByIdService, getAllPetService, updatePetService } from "../services/pet-services";
 import { InfoPet, UpdateInfoPet } from "../../types";
 import { MyRequest } from "../../types-back";
-import { findShelterByEmail } from "../services/shelter-service";
+import { findShelterByEmailService } from "../services/shelter-service";
 
 export const getPets = async (_req: Request, res: Response) => {
     try {
@@ -19,7 +19,7 @@ export const createPet = async (req: MyRequest, res: Response) => {
     try {
         const email=req.email
         if(email){
-            const shelter=await findShelterByEmail(email)
+            const shelter=await findShelterByEmailService(email)
             if(shelter){
                 const { name, description, type, imageUrl }: InfoPet = req.body
         
