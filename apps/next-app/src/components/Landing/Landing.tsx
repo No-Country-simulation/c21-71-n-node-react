@@ -3,18 +3,24 @@ import Grid from '@mui/material/Grid2';
 import Image from 'next/image';
 import styles from "./landing.module.css";
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import Link from 'next/link';
+import { Box } from '@mui/material';
 
 export default function Landing() {
     return (
 
         <div className={styles.container}>
             <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 6 }}>
-                    <h1>
-                        Rescata, Adopta, Encuentra un Hogar
-                    </h1>
-                    <button className={styles.sign_up} >Registrarse</button>
-                    <button className={styles.log_in} >Inicia Sesión</button>
+                <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'block', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <h1>Rescata, Adopta, Encuentra un Hogar</h1>
+                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Link href="/auth/register" className={`${styles.button} ${styles.sign_up}`}>
+                            Registrarse
+                        </Link>
+                        <Link href="/auth/login" className={`${styles.button} ${styles.log_in}`}>
+                            Inicia Sesión
+                        </Link>
+                    </Box>
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                     <Image
