@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { NewShelter } from "../../types";
+import { NewShelter, UpdateShelter } from "../../types";
 
 const prisma=new PrismaClient()
 
@@ -34,7 +34,7 @@ export const findShelterByEmailService=async(email:string)=>{
 
 
 export const findShelterByIdService=async(id:number)=>{
-    return await prisma.shelter.findUnique({
+    return  prisma.shelter.findUnique({
         where:{
             id
         }
@@ -42,10 +42,17 @@ export const findShelterByIdService=async(id:number)=>{
 }
 
 //Update 
-export const updateShelterByIdService=async()=>{
-    // Todo Crear los tipos y el esquema para validar que vengan los datos
+export const updateShelterByIdService=async({id,payload:{shelter_name,email,phone,password}}:UpdateShelter)=>{
+    return await prisma.shelter.update({
+        where:{id},
+        data:{
+            shelter_name,
+            email,
+            phone,
+            password
+        }
+    })
 }
-
 
 // Delete 
 export const deleteShelterByIdService=async (id:number)=>{
