@@ -6,7 +6,7 @@ export const newUserSchema=z.object({
   lastname:z.string().min(4,),
   phone:z.string().min(8,),
   password:z.string().min(8,),
-  roleId:z.number().min(2,{message:'el rolId solo puede ser un 2 o un 3'}).max(3,{message:'el rolId solo puede ser un 2 o un 3'})
+  
 })
 
 
@@ -98,7 +98,7 @@ export const infoPetSchema=z.object({
   name:z.string(),
   description:z.string(),
   type:z.string(),
-  imageUrl:z.string(),
+  imageUrl:z.string().array(),
 
 })
 

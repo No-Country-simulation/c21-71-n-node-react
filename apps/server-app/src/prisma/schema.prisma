@@ -22,7 +22,7 @@ model User {
     phone     String
     password  String
     role      Role   @relation(fields: [roleId], references: [id])
-    roleId    Int    @default(2)
+    roleId    Int    @default(value:2)
 }
 
 model Shelter {
@@ -32,7 +32,7 @@ model Shelter {
     phone        String
     password     String
     role         Role   @relation(fields: [roleId], references: [id])
-    roleId       Int    @default(3)
+    roleId       Int    @default(value:3)
     Pet          Pet[]
 }
 
@@ -41,7 +41,7 @@ model Pet {
     name        String?
     description String
     type        String
-    imageUrl    String
+    imageUrl       String
     shelter     Shelter @relation(fields: [shelterId], references: [id])
     shelterId   Int
 }
