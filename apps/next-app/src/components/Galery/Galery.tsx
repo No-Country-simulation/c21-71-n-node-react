@@ -4,6 +4,7 @@ import { Card, CardContent, Typography, CardMedia, Button, Modal, Box, Select, M
 import Grid from '@mui/material/Grid2';
 import { SelectChangeEvent } from '@mui/material';
 import Slider from 'react-slick';
+import { useTheme } from 'next-themes';
 
 interface Pet {
     name: string;
@@ -63,6 +64,10 @@ const Galery: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
     const [filter, setFilter] = useState<string>('all');
+    const { theme } = useTheme();
+    const isDarkMode = theme === 'dark';
+
+
 
     const handleOpen = (pet: Pet) => {
         setSelectedPet(pet);
@@ -85,6 +90,7 @@ const Galery: React.FC = () => {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        adaptiveHeight: true,
     };
 
     // Filtrar mascotas basado en el filtro seleccionado
@@ -93,30 +99,50 @@ const Galery: React.FC = () => {
     return (
         <>
             {/* Filtro de tipo de mascota */}
-            <Box sx={{ marginBottom: 10, display: 'flex', justifyContent: 'center', alignItems:'center', padding: '2vh', borderRadius: 8, 
-                boxShadow: '0px 0px 10px rgba(0,0,0,0.1)', maxWidth:'40vw', margin: '0 auto', }}>
-                <FormControl variant="outlined" fullWidth sx={{ minWidth: 220, borderRadius: 5, color: 'white' }}>
-                    <InputLabel id="filter-label" sx={{
-                        borderRadius: 5, borderColor: 'white', color: 'white', "&.Mui-focused": {
-                            color: 'white', // Color de la etiqueta cuando está enfocada
-                        }
-                    }}>Filtrar por Tipo</InputLabel>
+            <Box sx={{
+                marginBottom: 3,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '2vh',
+                borderRadius: 5,
+                maxWidth: '40vw',
+                backgroundColor: isDarkMode ? '#121212' : '#fff', // Cambia el color del fondo según el modo
+            }}>
+                <FormControl
+                    variant="outlined"
+                    fullWidth
+                    sx={{
+                        minWidth: 220,
+                        borderRadius: 5,
+                    }}
+                >
+                    <InputLabel
+                        id="filter-label"
+                        sx={{
+                            borderRadius: 5,
+                            color: isDarkMode ? 'white' : 'black', // Cambia el color del texto
+                            "&.Mui-focused": {
+                                color: isDarkMode ? 'white' : 'black', // Cambia el color cuando está enfocado
+                            }
+                        }}>Filtrar por Tipo</InputLabel>
                     <Select
                         labelId="filter-label"
                         value={filter}
                         onChange={handleFilterChange}
                         label="Filtrar por Tipo"
                         sx={{
-                            color: 'white', borderRadius: 5,
+                            color: isDarkMode ? 'white' : 'black',
+                            borderRadius: 5,
                             "&.MuiOutlinedInput-root": {
                                 "& fieldset": {
-                                    borderColor: "white", // Borde inicial
+                                    borderColor: isDarkMode ? 'white' : 'black', // Cambia el borde
                                 },
                                 "&:hover fieldset": {
-                                    borderColor: "white", // Borde cuando se hace hover
+                                    borderColor: isDarkMode ? 'white' : 'black', // Cambia el borde en hover
                                 },
                                 "&.Mui-focused fieldset": {
-                                    borderColor: "white", // Borde cuando está enfocado
+                                    borderColor: isDarkMode ? 'white' : 'black', // Cambia el borde cuando está enfocado
                                 },
                             },
                         }}
@@ -124,6 +150,8 @@ const Galery: React.FC = () => {
                             PaperProps: {
                                 sx: {
                                     borderRadius: 5, // Bordes redondeados del menú de opciones
+                                    backgroundColor: isDarkMode ? '#333' : '#fff', // Cambia el fondo del menú dinámico
+                                    color: isDarkMode ? 'white' : 'black', // Cambia el color del texto del menú
                                 },
                             },
                         }}
@@ -150,7 +178,7 @@ const Galery: React.FC = () => {
                                     transform: 'scale(1.05)',
                                     boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
                                 },
-                                
+
                             }}
                             onClick={(e) => {
                                 // Si no se hace clic en los puntos del slider, abrir el modal
@@ -159,9 +187,9 @@ const Galery: React.FC = () => {
                                 }
                             }}
                         >
-                            <div 
-                            className="slider-container"
-                            {...(open ? { inert: true } : {})}
+                            <div
+                                className="slider-container"
+                                {...(open ? { inert: true } : {})}
                             >
                                 <Slider {...settings}>
                                     {pet.images.map((image, idx) => (
@@ -196,7 +224,8 @@ const Galery: React.FC = () => {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: 500,
+                        width: '45vw',
+                        height: 'auto',
                         bgcolor: 'background.paper',
                         borderRadius: 10,
                         boxShadow: 24,
@@ -210,10 +239,16 @@ const Galery: React.FC = () => {
                                     <div key={idx}>
                                         <CardMedia
                                             component="img"
-                                            height="200"
                                             image={image}
                                             alt={`${selectedPet.name} - ${idx + 1}`}
-                                            sx={{ borderRadius: 10 }}
+                                            sx={{
+                                                borderRadius: 5,
+                                                width: '100%', // Asegura que la imagen tome todo el ancho del contenedor del carrusel
+                                                height: 'auto', // Mantiene la proporción correcta de la imagen
+                                                maxHeight: { xs: '50vh', md: 300 }, // Limitar la altura según la pantalla
+                                                objectFit: 'cover', // Hace que la imagen se ajuste al contenedor sin deformarse
+                                                margin: '0 auto', // Centra la imagen
+                                            }}
                                         />
                                     </div>
                                 ))}
