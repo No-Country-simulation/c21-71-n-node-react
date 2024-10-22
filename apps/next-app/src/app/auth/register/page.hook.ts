@@ -43,9 +43,7 @@ export function usePage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     if (formData.role === RoleE.ADOPTER) {
       if (
         !formData.name ||
@@ -94,14 +92,21 @@ export function usePage() {
       },
     };
 
-    axios.post(`${backendURL}/register`, data).then(function (response) {
-      const { token } = response.data;
-      localStorage.setItem("pr-ado--token", token);
-      setRequestState("success");
-      setFormData(initialFormState);
-      alert("Registro de usuario exitoso");
-      router.push("/auth/login");
-    });
+    axios
+      .post(`${backendURL}/register`, data)
+      .then(function (response) {
+        const { token } = response.data;
+        localStorage.setItem("pr-ado--token", token);
+        setRequestState("success");
+        setFormData(initialFormState);
+        alert("Registro de usuario exitoso");
+        router.push("/auth/login");
+      })
+      .catch(function (error) {
+        if (error.response) return alert("Datos invalidos!");
+
+        alert("Opps! Ocurrio un error.");
+      });
   };
 
   return {
