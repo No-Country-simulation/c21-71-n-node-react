@@ -130,6 +130,7 @@ export default function Navbar() {
                                 key={page.name}
                                 onClick={()=>handleCloseNavMenu(page.path)}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
+                                role='link'
                             >
                                 {page.name}
                             </Button>
