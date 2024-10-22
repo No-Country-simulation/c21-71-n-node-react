@@ -242,7 +242,7 @@ const Galery: React.FC = () => {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: '45vw',
+                        width: {xs:'80vw', md:'45vw'},
                         height: 'auto',
                         bgcolor: 'background.paper',
                         borderRadius: 10,
