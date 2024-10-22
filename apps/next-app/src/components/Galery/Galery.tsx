@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, CardMedia, Button, Modal, Box, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { SelectChangeEvent } from '@mui/material';
 import Slider from 'react-slick';
 import { useTheme } from 'next-themes';
+import Loader from '../Loader/Loader';
 
 interface Pet {
     name: string;
@@ -64,8 +65,20 @@ const Galery: React.FC = () => {
     const [open, setOpen] = useState(false);
     const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
     const [filter, setFilter] = useState<string>('all');
-    const { theme } = useTheme();
-    const isDarkMode = theme === 'dark';
+    const { resolvedTheme } = useTheme();
+
+    const [isMounted, setIsMounted] = useState(false); // Nueva variable de estado
+
+    // Efecto para saber cuando el componente está completamente montado
+    useEffect(() => {
+        setIsMounted(true); // Marcamos como montado una vez que el efecto se ejecuta
+    }, []);
+
+    if (!isMounted) {
+        // Mostrar loader hasta que el componente esté completamente montado
+        return <Loader />;
+    }
+    const isDarkMode = resolvedTheme === 'dark';
 
 
 
@@ -95,6 +108,11 @@ const Galery: React.FC = () => {
 
     // Filtrar mascotas basado en el filtro seleccionado
     const filteredPets = filter === 'all' ? pets : pets.filter((pet) => pet.type === filter);
+
+    if (!resolvedTheme) {
+        // Renderiza un componente vacío o un "loading" hasta que el tema se resuelva
+        return <Loader />;
+    }
 
     return (
         <>
