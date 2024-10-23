@@ -2,7 +2,7 @@ POST  http://localhost:3001/login
 Content-Type: application/json
 
 {
-  "email":"matias@matias.com",
+  "email":"admin@admin.com",
   "password":"mat123"
 }
 
@@ -10,3 +10,8 @@ Content-Type: application/json
 ###
 GET http://localhost:3001/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdGlhc0BtYXRpYXMuY29tIiwicm9sZUlkIjoyLCJpYXQiOjE3Mjg4Mzk3NDMsImV4cCI6MTcyODg0MzM0M30.o21lefk5j9tO2MNKJpWZF3QlU-ueq6tYXVclaBjA1Vw
+
+###
+
+GET http://localhost:3001/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzI5Njk3OTczLCJleHAiOjE3Mjk3MDE1NzN9.itYM7U6oHToLFdmgfFO63rF9oZXYuZLRTAWUvGZS8-w
