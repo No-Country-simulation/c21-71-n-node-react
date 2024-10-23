@@ -11,6 +11,8 @@ JWT_SECRET="mi_clave_secreta"
 
 Si se modifica el esquema de Prisma  deberea correr el comando `prisma migrate dev` 
 
+correr "npm run roles"  para crear los roles en la DB
+
 
 Correr el servidor de desarrollo `npm run dev`
 
