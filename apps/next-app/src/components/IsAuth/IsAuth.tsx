@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./page.module.css";
 import axios from "axios";
 import { useEffect, useState, ComponentType } from "react";
 import { backendURL } from "@/config";
@@ -13,6 +14,7 @@ export default function IsAuth(WrappedComponent: ComponentType): ComponentType {
     );
 
     useEffect(() => {
+      document.getElementsByTagName("body")[0].classList.add(styles.page);
       const token = localStorage.getItem("pr-ado--token");
 
       if (!token) {
@@ -26,6 +28,10 @@ export default function IsAuth(WrappedComponent: ComponentType): ComponentType {
         })
         .then(() => setIsAuthenticated(true))
         .catch(() => setIsAuthenticated(false));
+
+      return () => {
+        document.getElementsByTagName("body")[0].classList.remove(styles.page);
+      };
     }, []);
 
     if (isAuthenticated === null) return <Loader />;

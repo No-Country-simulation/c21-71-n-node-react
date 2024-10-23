@@ -7,7 +7,7 @@ export default function Loader() {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh"
+      sx={{ minHeight: "calc(100vh - 67px - 61px)" }}
     >
       <div className="loader"></div>
     </Box>
