@@ -46,7 +46,7 @@ export default function Navbar() {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: "#1EBAB3", width: "100vw" }} >
+        <AppBar position="static" sx={{ backgroundColor: "#178685", width: "100vw" }} >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
