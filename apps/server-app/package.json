@@ -10,6 +10,7 @@
     "build": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "roles": "ts-node-dev src/utils/create-roles.ts",
+    "start": "node ./dist/src/index.js",
     "test": "ts-node-dev src/services/test-service.ts"
   },
   "dependencies": {

@@ -42,6 +42,6 @@ model Pet {
   description String
   type        String
   imageUrl    Json
-  shelter     Shelter @relation(fields: [shelterId], references: [id])
+  shelter     Shelter @relation(fields: [shelterId], references: [id],onDelete: Cascade)
   shelterId   Int
 }
