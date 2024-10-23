@@ -6,6 +6,7 @@ import { RoleT } from "@/types/roles";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import ShelterPage from "./shelter";
 
 function DashboardPage() {
   const router = useRouter();
@@ -28,7 +29,7 @@ function DashboardPage() {
 
   if (role === null) return <Loader />;
   if (role === "ADMIN") return <div>ADMIN</div>;
-  if (role === "SHELTER") return <div>SHELTER</div>;
+  if (role === "SHELTER") return <ShelterPage />;
   return <div>ADOPTER</div>;
 }
 
