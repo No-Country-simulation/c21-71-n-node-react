@@ -94,7 +94,7 @@ export const login = async (req: Request<TEmailPassword>, res: Response) => {
     
       const isMatchPassword= await bcryptjs.compare(password,user.password)
       if(isMatchPassword){
-        const token =  generateToken(user,'1h')
+        const token =  generateToken(user,'3d')
       
         res.status(201).json({ ok: true, token });
       }else{
