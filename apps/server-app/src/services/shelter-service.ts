@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NewShelter, UpdateShelter } from "../../types";
+import { passwordEncryptor } from "./password-encryptor";
 
 const prisma=new PrismaClient()
 
@@ -43,16 +44,33 @@ export const findShelterByIdService=async(id:number)=>{
 
 //Update 
 export const updateShelterByIdService=async({id,payload:{shelter_name,email,phone,password}}:UpdateShelter)=>{
+    
+    let encryptedPassword=password? await passwordEncryptor(password): undefined
     return await prisma.shelter.update({
         where:{id},
         data:{
             shelter_name,
             email,
             phone,
-            password
+            password:encryptedPassword
         }
     })
 }
+
+export const updateShelterByEmailService=async({userEmail,payload:{shelter_name,email,phone,password}}:{userEmail:string,payload:{shelter_name?:string,email?:string,phone?:string,password?:string}})=>{
+    
+    let encryptedPassword=password? await passwordEncryptor(password): undefined
+    return await prisma.shelter.update({
+        where:{email:userEmail},
+        data:{
+            shelter_name,
+            email,
+            phone,
+            password:encryptedPassword
+        }
+    })
+}
+
 
 // Delete 
 export const deleteShelterByIdService=async (id:number)=>{

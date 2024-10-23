@@ -5,6 +5,7 @@ import { INewUser, NewShelter, newShelterSchema, newUserSchema, TEmailPassword }
 import { createUser, findUserByEmail } from '../services/user-sevice';
 import { generateToken } from '../services/jwt-service';
 import { createShelterService, findShelterByEmailService } from '../services/shelter-service';
+import { passwordEncryptor } from '../services/password-encryptor';
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
@@ -29,8 +30,8 @@ export const register = async (req: Request, res: Response) => {
   
 
 
-  const salt = await bcryptjs.genSalt(10);
-  const encryptedPassword = await bcryptjs.hash(password, salt);
+  
+  const encryptedPassword = await passwordEncryptor(password);
 
   const newUser = await createUser({email,firstname,lastname,phone,encryptedPassword,})
 
@@ -60,8 +61,7 @@ export const register = async (req: Request, res: Response) => {
   
 
 
-  const salt = await bcryptjs.genSalt(10);
-  const encryptedPassword = await bcryptjs.hash(password, salt);
+  const encryptedPassword = await passwordEncryptor(password);
 
   const newShelter = await createShelterService({email,shelter_name,phone,password:encryptedPassword})
 
