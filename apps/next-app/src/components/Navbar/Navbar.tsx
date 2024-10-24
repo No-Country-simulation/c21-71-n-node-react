@@ -18,7 +18,7 @@ import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
 const pages = [
     { name: 'Mascotas', path: '/adoption' },
     { name: 'Contacto', path: '/contacto' },
-    { name: 'Nosotros', path: '/nosotros' }
+    { name: 'Nosotros', path: '/aboutus' }
 ];
 
 export default function Navbar() {
@@ -46,7 +46,7 @@ export default function Navbar() {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: "#178685", width: "100vw" }} >
+        <AppBar position="static" sx={{ backgroundColor: "#135b5e", width: "100vw" }} >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
