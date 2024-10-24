@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { register, login } from '../controllers/auth-controller';
 import { verifyRoleAdmin, verifyToken, verifyRoleRefugio, verifyRoleAdoptante } from '../middlewares/verify-token-berer';
 import { getAllUsers, getUserById, deleteUserById, updateUser } from '../controllers/user-controller';
-import { createPet, deletePet, findPetById, getPets, updatePet } from '../controllers/pet-controller';
+import { createPet, deletePet, findPetById, getPets, getPetsByShelter, updatePet } from '../controllers/pet-controller';
 import { deleteShelter, getAllShelters, getShelter, updateShelter } from '../controllers/shelter-controller';
 
 
@@ -34,6 +34,7 @@ router.delete('/pet/:id', verifyToken, verifyRoleRefugio, deletePet)
 // Shelters 
 
 router.get('/shelters',verifyToken,verifyRoleAdmin,getAllShelters)
+router.get('/pets-by-shelter',verifyToken,verifyRoleRefugio,getPetsByShelter)
 router.get('/shelter/:id',verifyToken,verifyRoleRefugio,getShelter)
 router.put('/shelter',verifyToken,verifyRoleRefugio,updateShelter)
 router.delete('/shelter/:id',verifyToken,verifyRoleRefugio,deleteShelter)
