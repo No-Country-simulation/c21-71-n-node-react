@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "createadmin": "ts-node-dev src/utils/create-user-admin.ts",
     "dev": "ts-node-dev src/index.ts",
     "migrate": "npx prisma migrate dev",
     "roles": "ts-node-dev src/utils/create-roles.ts",
