@@ -59,7 +59,7 @@ export type TEmailPassword=z.infer<typeof emailPasswordSchema>
 } */
 
 export const createUserSchema=newUserSchema.omit({password:true}).extend({
-  encryptedPassword:z.string().min(8,'La contraseña debe tener al menos 8 caracteres'),
+  password:z.string().min(8,'La contraseña debe tener al menos 8 caracteres'),
 })
 
 export type ICreateUser =z.infer<typeof createUserSchema>
