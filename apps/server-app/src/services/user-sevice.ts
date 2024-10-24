@@ -10,14 +10,14 @@ export const getAllUsersService=async()=>{
   return await prisma.user.findMany()
 }
 
-export const createUser = async ({ email, firstname, lastname, phone, encryptedPassword }: ICreateUser) => {
+export const createUser = async ({ email, firstname, lastname, phone, password }: ICreateUser) => {
   return await prisma.user.create({
     data: {
       email,
       firstname,
       lastname,
       phone,
-      password: encryptedPassword,
+      password,
       
     },
   });

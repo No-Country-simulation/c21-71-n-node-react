@@ -13,64 +13,76 @@ if (!jwtSecret) {
 export const register = async (req: Request, res: Response) => {
   const { type }: { type: string } = req.body;
 
-  if (type === 'adopter') {
-    const { user }: { user: INewUser } = req.body;
-    const findUser = await findUserByEmail(user.email);
-    const findEmailInShelterModal =await findShelterByEmailService(user.email)
-    if(findUser || findEmailInShelterModal) {
-      res.status(400).json({ ok: false, error: 'el usuario ya existe en la base de datos' });
-    } else {
-      const userValidate = newUserSchema.safeParse(user);
+  if(type==='adopter'){
+       
+    const {user: user}:{user:INewUser}=req.body
 
-      if (userValidate.success === true) {
-        const { email, firstname, lastname, phone, password } = userValidate.data;
+    const userValidate=newUserSchema.safeParse(user)
 
-        const salt = await bcryptjs.genSalt(10);
-        const encryptedPassword = await bcryptjs.hash(password, salt);
+  if(userValidate.success===true){
+  
+    const findShelter=await findShelterByEmailService(user.email)
+    const findUser = await findUserByEmail(user.email)
 
-        const newUser = await createUser({ email, firstname, lastname, phone, encryptedPassword });
+  if(findShelter || findUser){
+    res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
+  
+  }else{
+    const {email,firstname,lastname,phone,password}=userValidate.data
 
-        const token = generateToken(newUser, '1h');
+    let encryptedPassword=await passwordEncryptor(password)
+    const newShelter = await createUser({email,firstname,lastname,phone,password: encryptedPassword})
 
-  res.status(201).json({ ok: true, token });
+    const token = generateToken(newShelter,'3d')
+
+    res.status(201).json({ ok: true, token });
+  }
+
+
+  
+}else{
+  const dataError=userValidate.error.issues[0]
+  res.status(400).json({msg:dataError.code,field:dataError.path,description:dataError.message})
+}       
+  }else if(type==='shelter'){
+       
+      const {user: user}:{user:NewShelter}=req.body
+
+   const userValidate=newShelterSchema.safeParse(user)
+
+  if(userValidate.success===true){
+    
+    const findShelter=await findShelterByEmailService(user.email)
+    const findUser = await findUserByEmail(user.email)
+
+    if(findShelter || findUser){
+      res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
+    
+    }else{
+      const {email,shelter_name,phone,password}=userValidate.data
+
+      const encryptedPassword = await passwordEncryptor(password);
+
+      const newShelter = await createShelterService({email,shelter_name,phone,password:encryptedPassword})
+
+      const token = generateToken(newShelter,'3d')
+
+      res.status(201).json({ ok: true, token });
+    }
+
+
+    
   }else{
     const dataError=userValidate.error.issues[0]
     res.status(400).json({msg:dataError.code,field:dataError.path,description:dataError.message})
   }       
-      }
-    
-  }else if(type==='shelter'){
-       
-
-      const {user: user}:{user:NewShelter}=req.body
-
-
-      const findShelter=await findShelterByEmailService(user.email)
-      const findUser = await findUserByEmail(user.email)
-      if(findShelter || findUser){
-        res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
-      }else{
-   const userValidate=newShelterSchema.safeParse(user)
-
-  if(userValidate.success===true){
-    const {email,shelter_name,phone,password}=userValidate.data
-  
-
-
-  const encryptedPassword = await passwordEncryptor(password);
-
-        const newShelter = await createShelterService({ email, shelter_name, phone, password: encryptedPassword });
-
-  const token = generateToken(newShelter,'3d')
-
-        res.status(201).json({ ok: true, token });
-      } else {
-        const dataError = userValidate.error.issues[0];
-        res.status(400).json({ msg: dataError.code, field: dataError.path, description: dataError.message });
-      }
     }
+    
   }
-};
+
+
+;
+
 
 export const login = async (req: Request<TEmailPassword>, res: Response) => {
   const { email, password } = req.body;
