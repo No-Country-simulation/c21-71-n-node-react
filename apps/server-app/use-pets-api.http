@@ -6,10 +6,10 @@ GET http://localhost:3001/pet/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
 
 
-### Crea una mastcota -- token solo con role de shelter o admin -- como valida el req.email? se queda pegado haciendo la validacion de la variable
+### Crea una mastcota -- token solo con role de shelter o admin
 POST http://localhost:3001/pet
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0cmluZ0BzdHJpbmcuY29tIiwicm9sZUlkIjozLCJpYXQiOjE3Mjk3Mzc1NTIsImV4cCI6MTcyOTk5Njc1Mn0.b7mwpBPX1vgjMOXqUg-n-JA1kxfEZraT6vPPwzNvMGE
 
 {
     "name": "Don vinagre", 
@@ -25,7 +25,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY
 ### Edita una mascota --  token solo con role de shelter o admin
 PUT http://localhost:3001/pet
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjRAaGVjdG9yLmNvbSIsInJvbGVJZCI6MywiaWF0IjoxNzI5NzM1NzI3LCJleHAiOjE3Mjk5OTQ5Mjd9._MVGyq_yd57o9aPBACFm5vfc9QUiv2cav0IX0vnKeWI
 
 {
     "id": 1,
@@ -42,4 +42,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY
 
 ### Elimina una Mascota --  token solo con role de shelter o admin
 DELETE http://localhost:3001/pet/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjRAaGVjdG9yLmNvbSIsInJvbGVJZCI6MywiaWF0IjoxNzI5NzM1NzI3LCJleHAiOjE3Mjk5OTQ5Mjd9._MVGyq_yd57o9aPBACFm5vfc9QUiv2cav0IX0vnKeWI

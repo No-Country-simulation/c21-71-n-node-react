@@ -21,7 +21,7 @@ Content-Type: application/json
  "user":{
    "firstname":"hector2",
    "lastname":"hector2",
-   "email":"hector4@hector.com",
+   "email":"hector5@hector.com",
    "phone":"123123123",
    "password":"123123123"
   }
@@ -32,8 +32,8 @@ POST  http://localhost:3001/login
 Content-Type: application/json
 
 {
-  "email":"admin@admin.com",
-  "password":"mat123"
+  "email":"hector4@hector.com",
+  "password":"123123123"
 }
 
 

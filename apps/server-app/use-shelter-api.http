@@ -7,7 +7,7 @@ GET http://localhost:3001/shelter/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
 
 
-### Edita un Shelter específico -- Hay que arreglar que se encripte la ueva contraseña, ya que luego cuando se intenta hacer login, responde credencial invalida
+### Edita un Shelter específico -- SI ES TOKEN DE ADMIN
 PUT http://localhost:3001/shelter
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
@@ -15,14 +15,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3Rvc
 {
     "id": 1,
     "payload": {
-        "shelter_name": "string",
+        "shelter_name": "stringFFF",
         "email": "string@string.com",
         "phone": "string",
-        "password": "123123123" // por ahora si se cambia la contraseña, luego no puede iniciar sesion
+        "password": "111111111"
     }
 }
 
 ### elimina un shelter segun el id
 
-DELETE http://localhost:3001/shelter/2
+DELETE http://localhost:3001/shelter/4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k

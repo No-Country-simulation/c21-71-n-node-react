@@ -1,0 +1,28 @@
+// admin
+
+POST  http://localhost:3001/login
+Content-Type: application/json
+
+{
+  "email":"hector3@hector.com",
+  "password":"123123123"
+}
+
+### shelter
+POST  http://localhost:3001/login
+Content-Type: application/json
+
+{
+  "email":"string@string.com",
+  "password":"111111111"
+}
+
+### user
+
+POST  http://localhost:3001/login
+Content-Type: application/json
+
+{
+  "email":"hector5@hector.com",
+  "password":"123123123"
+}
