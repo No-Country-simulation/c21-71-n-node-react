@@ -5,24 +5,13 @@ import RegisterPet from "@/components/ShelterDashboard/RegisterPet";
 import axios from "axios";
 import { backendURL } from "@/config";
 import { useRouter } from "next/navigation";
-
-export interface PetI {
-  id: number;
-  name: string;
-  description: string;
-  type: string;
-  imageUrl: string[];
-  shelterId: number;
-}
-
-export interface PetsResponseI {
-  ok: boolean;
-  pets: PetI[];
-}
+import { InfoPet } from "@adopcion/types";
+import Galery from "@/components/Galery/Galery";
 
 export default function ShelterPage() {
   const [registerPetOpen, setRegisterPetOpen] = useState(false);
-  const [pets, setPets] = useState<PetI[] | null>(null);
+  const [pets, setPets] = useState<InfoPet[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -33,13 +22,18 @@ export default function ShelterPage() {
       return;
     }
 
-    axios
-      .get(`${backendURL}/pets-by-shelter`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setPets((response.data as PetsResponseI).pets);
-      });
+    (async () => {
+      try {
+        const response = await axios.get(`${backendURL}/pets-by-shelter`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setPets(response.data.pets as InfoPet[]);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching pets data:", error);
+        setLoading(false);
+      }
+    })();
   }, [router]);
 
   return (
@@ -72,14 +66,11 @@ export default function ShelterPage() {
         justifyContent="space-evenly"
         alignItems="center"
         width="100%"
+        flexDirection="column"
         gap={10}
+        marginBottom={4}
       >
-        {pets?.map((pet) => (
-          <div key={pet.id}>
-            {pet.id}
-            {pet.name}
-          </div>
-        ))}
+        <Galery loading={loading} pets={pets} />
       </Box>
     </Container>
   );

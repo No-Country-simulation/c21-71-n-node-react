@@ -4,8 +4,10 @@ import React, { useRef } from 'react';
 import Galery from '@/components/Galery/Galery'; // Ajusta la ruta según dónde esté tu componente
 import styles from "@/app/page.module.css";
 import Hero from '@/components/Hero/Hero';
+import { usePage } from './page.hooks';
 
 const Dashboard: React.FC = () => {
+    const { loading, pets } = usePage()
     const galleryRef = useRef<HTMLDivElement | null>(null);
 
     const scrollToGallery = () => {
@@ -28,7 +30,7 @@ const Dashboard: React.FC = () => {
                     marginTop: '5vh',
                 }}
             >
-                <Galery />
+                <Galery loading={loading} pets={pets} />
             </div>
         </div>
     );
