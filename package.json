@@ -11,6 +11,8 @@
     "./packages/*"
   ],
   "scripts": {
+    "build:server-app": "npm run build --prefix apps/server-app",
+    "start:server-app": "npm run start --prefix apps/server-app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
