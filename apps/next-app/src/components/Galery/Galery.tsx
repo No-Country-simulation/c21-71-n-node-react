@@ -17,7 +17,7 @@ import Grid from "@mui/material/Grid2";
 import Slider from "react-slick";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-import {Pets} from '@adopcion/types'
+import { InfoPet } from '@adopcion/types'
 import axios from "axios";
 
 interface DecodedToken {
@@ -26,34 +26,36 @@ interface DecodedToken {
   iat: number;
   email: string;
 }
+
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-
-
-
-
-
 
 const Galery: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<string>("all");
-  const [selectedPet, setSelectedPet] = useState<Pets | null>(null);
-  const [pets, setPets] = useState<Pets | null>(null);
+  const [selectedPet, setSelectedPet] = useState<InfoPet | null>(null);
+  const [pets, setPets] = useState<InfoPet[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
 
   const fetchData = async () => {
-    const response = await fetch(`${backendUrl}/api/data`);
-    const pets: Pets[] = await response.json()
-    setPets(pets)
-    console.log(pets);
+    try {
+      const response = await axios.get(`${backendUrl}/pets`);
+      const pets: InfoPet[] = response.data.petsList;
+      setPets(pets);
+      setLoading(false);
+      console.log(pets);
+    } catch (error) {
+      console.error("Error fetching pets data:", error);
+      setLoading(false);
+    }
   };
-  
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  const handleOpen = (pet: Pets) => {
+  const handleOpen = (pet: InfoPet) => {
     setSelectedPet(pet);
     setOpen(true);
   };
@@ -75,48 +77,47 @@ const Galery: React.FC = () => {
     slidesToScroll: 1,
   };
 
-  const filteredPets =
-    filter === "all" ? pets : pets.filter((pet:Pets) => pet.type === filter);
+  // Filtrado ajustado a la nueva estructura de los datos
+  const filteredPets = filter === "all" 
+    ? pets 
+    : pets.filter((pet: InfoPet) => pet.type === filter);
 
-  // Nueva función para verificar el token
   const isTokenValid = () => {
     const token = localStorage.getItem("pr-ado--token");
     if (!token) {
-      return false; // No hay token
+      return false;
     }
 
     try {
       const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
-      const currentTime = Math.floor(Date.now() / 1000); // Tiempo actual en segundos
-
-      if (decoded.exp < currentTime) {
-        return false; // El token ha expirado
-      }
-
-      return true; // El token es válido
-    } catch (e: unknown) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      return decoded.exp > currentTime;
+    } catch (e) {
       console.error(e);
-      return false; // Error al decodificar el token
+      return false;
     }
   };
 
-  // Función para manejar la adopción
   const handleAdopt = () => {
     if (isTokenValid()) {
-      // El token es válido, proceder con la adopción
       alert("¡Gracias por adoptar!");
-      // Aquí podrías agregar la lógica para la adopción, como hacer una petición al backend
     } else {
-      // El token no es válido, redirigir al usuario a iniciar sesión
       alert("Por favor, inicia sesión para adoptar.");
       router.push("/auth/login");
-      // window.location.href = '/login';
     }
   };
+
+  // Si estamos cargando, mostrar mensaje de carga
+  if (loading) {
+    return (
+      <Typography variant="h6" sx={{ textAlign: 'center', mt: 5 }}>
+        Cargando mascotas...
+      </Typography>
+    );
+  }
 
   return (
     <>
-      {/* Filtro de tipo de mascota */}
       <Box
         sx={{
           marginBottom: 10,
@@ -170,9 +171,9 @@ const Galery: React.FC = () => {
         </FormControl>
       </Box>
 
-      {/* Galería de mascotas */}
       <Grid container spacing={2} sx={{ width: "85vw" }}>
         {filteredPets.map((pet, index) => (
+          console.log(pet), // Aquí estamos usando correctamente pet.imageUrl, pet.name, etc.
           <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
             <Card
               sx={{
@@ -191,28 +192,31 @@ const Galery: React.FC = () => {
                 }
               }}
             >
-              <div
-                className="slider-container"
-                {...(open ? { inert: true } : {})}
-              >
+              <div className="slider-container">
                 <Slider {...settings}>
-                  {pet.images.map((image, idx) => (
-                    <div key={idx}>
-                      <CardMedia
-                        component="img"
-                        height="200"
-                        image={image}
-                        alt={`${pet.name} - ${idx + 1}`}
-                        onClick={() => handleOpen(pet)}
-                      />
-                    </div>
-                  ))}
+                  {pet.imageUrl && pet.imageUrl.length > 0 ? (
+                    pet.imageUrl.map((image, idx) => (
+                      <div key={idx}>
+                        <CardMedia
+                          component="img"
+                          height="200"
+                          image={image}
+                          alt={`${pet.name || "Mascota"} - ${idx + 1}`}
+                          onClick={() => handleOpen(pet)}
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <Typography variant="body2">No hay imágenes disponibles</Typography>
+                  )}
                 </Slider>
               </div>
               <CardContent>
-                <Typography variant="h5">{pet.name}</Typography>
+                <Typography variant="h5">
+                  {pet.name || "Nombre no disponible"}
+                </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {pet.age}
+                  {pet.age || "Edad no disponible"}
                 </Typography>
               </CardContent>
             </Card>
@@ -220,7 +224,6 @@ const Galery: React.FC = () => {
         ))}
       </Grid>
 
-      {/* Modal con más información */}
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
@@ -238,30 +241,30 @@ const Galery: React.FC = () => {
           {selectedPet && (
             <Box sx={{ alignContent: "center" }}>
               <Slider {...settings}>
-                {selectedPet.images.map((image, idx) => (
+                {selectedPet.imageUrl?.map((image, idx) => (
                   <div key={idx}>
                     <CardMedia
                       component="img"
                       height="200"
                       image={image}
-                      alt={`${selectedPet.name} - ${idx + 1}`}
+                      alt={`${selectedPet.name || "Mascota"} - ${idx + 1}`}
                       sx={{ borderRadius: 10 }}
                     />
                   </div>
                 ))}
               </Slider>
               <Typography variant="h4" sx={{ color: "#194143" }}>
-                {selectedPet.name}
+                {selectedPet.name || "Nombre no disponible"}
               </Typography>
               <Typography variant="h6" sx={{ color: "#194143" }} mt={2}>
-                {selectedPet.age}
+                {selectedPet.age || "Edad no disponible"}
               </Typography>
               <Typography variant="body1" mt={2} sx={{ color: "#194143" }}>
-                {selectedPet.description}
+                {selectedPet.description || "Descripción no disponible"}
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Button
-                  onClick={handleAdopt} // Llama a la función de adopción
+                  onClick={handleAdopt}
                   variant="contained"
                   color="primary"
                   sx={{
