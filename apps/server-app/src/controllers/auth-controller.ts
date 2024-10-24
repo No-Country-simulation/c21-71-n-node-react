@@ -44,15 +44,15 @@ export const register = async (req: Request, res: Response) => {
   }else if(type==='shelter'){
        
 
-      const {shelter}:{shelter:NewShelter}=req.body
+      const {user: user}:{user:NewShelter}=req.body
 
 
-      const findShelter=await findShelterByEmailService(shelter.email)// verificar que no exite el email registrado en tabla user y en tabla shelter
-      const findEmailInUserModal = await findUserByEmail(shelter.email)
-      if(findShelter || findEmailInUserModal){
+      const findShelter=await findShelterByEmailService(user.email)
+      const findUser = await findUserByEmail(user.email)
+      if(findShelter || findUser){
         res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
       }else{
-   const userValidate=newShelterSchema.safeParse(shelter)
+   const userValidate=newShelterSchema.safeParse(user)
 
   if(userValidate.success===true){
     const {email,shelter_name,phone,password}=userValidate.data
