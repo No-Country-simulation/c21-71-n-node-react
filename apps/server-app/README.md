@@ -18,3 +18,8 @@ Correr el servidor de desarrollo `npm run dev`
 
 Construccion del proyecto `npm run build` creara la carpeta `dist` con el proyecto compilado 
 
+## Deployment  commands
+
+npm run build
+npm run start
+
