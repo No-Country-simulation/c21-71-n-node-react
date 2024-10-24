@@ -22,8 +22,23 @@ export const register = async (req: Request, res: Response) => {
     } else {
       const userValidate = newUserSchema.safeParse(user);
 
+
+export const register = async (req: Request, res: Response) => {
+  const {type}:{type:string} =req.body;
+
+  if(type==='adopter'){
+      const {user}:{user:INewUser}=req.body
+      const findUser=await findUserByEmail(user.email) // verificar que no exite el email registrado en tabla user y en tabla shelter
+      const findEmailInShelterModal =await findShelterByEmailService(user.email)
+      if(findUser || findEmailInShelterModal){
+        res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
+      }else{
+   const userValidate=newUserSchema.safeParse(user)
+  
+
       if (userValidate.success === true) {
         const { email, firstname, lastname, phone, password } = userValidate.data;
+
 
 
   
@@ -44,14 +59,14 @@ export const register = async (req: Request, res: Response) => {
     const { shelter }: { shelter: NewShelter } = req.body;
 
     const findShelter = await findShelterByEmailService(shelter.email);
-    if (findShelter) {
+    const findEmailInUserModal = await findUserByEmail(shelter.email)
+    if (findShelter || findEmailInUserModal) {
       res.status(400).json({ ok: false, error: 'el usuario ya existe en la base de datos' });
     } else {
       const userValidate = newShelterSchema.safeParse(shelter);
 
       if (userValidate.success === true) {
         const { email, shelter_name, phone, password } = userValidate.data;
-
 
   const encryptedPassword = await passwordEncryptor(password);
 
@@ -74,10 +89,11 @@ export const login = async (req: Request<TEmailPassword>, res: Response) => {
 
   const user = await findUserByEmail(email);
 
+
   if (user) {
     const isMatchPassword = await bcryptjs.compare(password, user.password);
     if (isMatchPassword) {
-      const token = generateToken(user, '1h');
+      const token = generateToken(user, '3d');
 
       res.status(201).json({ ok: true, token });
     } else {
@@ -89,7 +105,7 @@ export const login = async (req: Request<TEmailPassword>, res: Response) => {
     if (shelter) {
       const isMatchPassword = await bcryptjs.compare(password, shelter.password);
       if (isMatchPassword) {
-        const token = generateToken(shelter, '1h');
+        const token = generateToken(shelter, '3d');
 
         res.status(201).json({ ok: true, token });
       } else {

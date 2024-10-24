@@ -1,3 +1,33 @@
+### si se regstra un shelter
+POST http://localhost:3001/register
+Content-Type: application/json
+
+{
+ "type":"shelter",
+ "shelter":{
+  "shelter_name": "BerlinHappy",
+   "email":"hector4@hector.com",
+   "phone":"123123123",
+   "password":"123123123"
+  }
+}
+
+### si se registra un adoptante
+POST http://localhost:3001/register
+Content-Type: application/json
+
+{
+ "type":"adopter",
+ "user":{
+   "firstname":"hector2",
+   "lastname":"hector2",
+   "email":"hector4@hector.com",
+   "phone":"123123123",
+   "password":"123123123"
+  }
+}
+
+### Para hacer loguearse
 POST  http://localhost:3001/login
 Content-Type: application/json
 
@@ -7,11 +37,6 @@ Content-Type: application/json
 }
 
 
-###
+### Prueba de token
 GET http://localhost:3001/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdGlhc0BtYXRpYXMuY29tIiwicm9sZUlkIjoyLCJpYXQiOjE3Mjg4Mzk3NDMsImV4cCI6MTcyODg0MzM0M30.o21lefk5j9tO2MNKJpWZF3QlU-ueq6tYXVclaBjA1Vw
-
-###
-
-GET http://localhost:3001/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzI5Njk3OTczLCJleHAiOjE3Mjk3MDE1NzN9.itYM7U6oHToLFdmgfFO63rF9oZXYuZLRTAWUvGZS8-w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k

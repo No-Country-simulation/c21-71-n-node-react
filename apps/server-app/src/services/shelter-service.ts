@@ -71,7 +71,6 @@ export const updateShelterByEmailService=async({userEmail,payload:{shelter_name,
     })
 }
 
-
 // Delete 
 export const deleteShelterByIdService=async (id:number)=>{
     return await prisma.shelter.delete({
