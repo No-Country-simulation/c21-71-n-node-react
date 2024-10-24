@@ -58,8 +58,6 @@ export const register = async (req: Request, res: Response) => {
 
   if(userValidate.success===true){
     const {email,shelter_name,phone,password}=userValidate.data
-  
-
 
   const encryptedPassword = await passwordEncryptor(password);
 
