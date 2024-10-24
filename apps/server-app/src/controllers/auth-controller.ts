@@ -13,19 +13,22 @@ if (!jwtSecret) {
 export const register = async (req: Request, res: Response) => {
   const { type }: { type: string } = req.body;
 
-  if (type === 'adopter') {
-    const { user }: { user: INewUser } = req.body;
-    const findUser = await findUserByEmail(user.email);
-    if (findUser) {
-      res.status(400).json({ ok: false, error: 'el usuario ya existe en la base de datos' });
-    } else {
-      const userValidate = newUserSchema.safeParse(user);
+  if(type==='adopter'){
+      const {user}:{user:INewUser}=req.body
+      const findShelter=await findShelterByEmailService(user.email)
+      const findUser=await findUserByEmail(user.email)
+      if(findUser || findShelter){
+        res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
+      }else{
+   const userValidate=newUserSchema.safeParse(user)
 
-      if (userValidate.success === true) {
-        const { email, firstname, lastname, phone, password } = userValidate.data;
+  if(userValidate.success===true){
+    const {email,firstname,lastname,phone,password,}=userValidate.data
+  
 
-        const salt = await bcryptjs.genSalt(10);
-        const encryptedPassword = await bcryptjs.hash(password, salt);
+
+  
+  const encryptedPassword = await passwordEncryptor(password);
 
         const newUser = await createUser({ email, firstname, lastname, phone, encryptedPassword });
 
@@ -45,7 +48,8 @@ export const register = async (req: Request, res: Response) => {
 
 
       const findShelter=await findShelterByEmailService(shelter.email)
-      if(findShelter){
+      const findUser = await findUserByEmail(shelter.email)
+      if(findShelter || findUser){
         res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
       }else{
    const userValidate=newShelterSchema.safeParse(shelter)
