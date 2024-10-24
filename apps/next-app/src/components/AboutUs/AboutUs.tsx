@@ -24,7 +24,7 @@ export default function AboutUs() {
                         width={0}
                         height={300}
                         sizes="100vw"
-                        style={{ width: '50%', height: 'auto', borderRadius: 60 }}
+                        style={{ width: '30%', height: 'auto', borderRadius: 60 }}
                     />
                 </Grid>
             </Grid>
