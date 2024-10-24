@@ -37,7 +37,8 @@ export interface InfoPet{
   name:string
   description:string
   type:string
-  imageUrl:string
+  imageUrl:string[]
+  age:string
 }
 
 export interface UpdateInfoPet{

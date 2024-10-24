@@ -19,12 +19,12 @@ export default function AboutUs() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Image
-                        src="/dog2.jpg"
+                        src="/dog2transp.png"
                         alt="our shelter"
                         width={0}
-                        height={300}
+                        height={400}
                         sizes="100vw"
-                        style={{ width: '50%', height: 'auto', borderRadius: 60 }}
+                        style={{ width: '60%', height: 'auto' }}
                     />
                 </Grid>
             </Grid>
