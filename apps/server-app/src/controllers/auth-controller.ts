@@ -15,9 +15,9 @@ export const register = async (req: Request, res: Response) => {
 
   if(type==='adopter'){
       const {user}:{user:INewUser}=req.body
-      const findShelter=await findShelterByEmailService(user.email)
-      const findUser=await findUserByEmail(user.email)
-      if(findUser || findShelter){
+      const findUser=await findUserByEmail(user.email) // verificar que no exite el email registrado en tabla user y en tabla shelter
+      const findEmailInShelterModal =await findShelterByEmailService(user.email)
+      if(findUser || findEmailInShelterModal){
         res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
       }else{
    const userValidate=newUserSchema.safeParse(user)
@@ -47,9 +47,9 @@ export const register = async (req: Request, res: Response) => {
       const {shelter}:{shelter:NewShelter}=req.body
 
 
-      const findShelter=await findShelterByEmailService(shelter.email)
-      const findUser = await findUserByEmail(shelter.email)
-      if(findShelter || findUser){
+      const findShelter=await findShelterByEmailService(shelter.email)// verificar que no exite el email registrado en tabla user y en tabla shelter
+      const findEmailInUserModal = await findUserByEmail(shelter.email)
+      if(findShelter || findEmailInUserModal){
         res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
       }else{
    const userValidate=newShelterSchema.safeParse(shelter)
