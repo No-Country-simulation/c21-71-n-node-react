@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { NewShelter } from '../../types';
+import { PrismaClient } from "@prisma/client";
+import { NewShelter, UpdateShelter } from "../../types";
 
 const prisma = new PrismaClient();
 

@@ -19,6 +19,17 @@ export const newShelterSchema = z.object({
 
 export type NewShelter = z.infer<typeof newShelterSchema>
 
+export const updateShelterSchema = z.object({
+  id:z.number(),
+  payload:z.object({
+    
+  shelter_name:z.string().min(5,{message: 'El Nombre debe tener al menos 5 caracteres'}).optional(),
+  email:z.string().email({message:"debe ser un email valido"}).optional(),
+  phone:z.string().min(8,).optional(),
+  password:z.string().min(8,).optional(),
+  })
+})
+export type UpdateShelter=z.infer< typeof updateShelterSchema>
 
 /* export interface INewUser {
   email: string;
