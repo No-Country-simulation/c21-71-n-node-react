@@ -2,7 +2,7 @@ import express,{Request,Response} from 'express';
 import cors from 'cors';
 import  router  from './routes/user-route';
 
-
+const PORT=process.env.PORT || 3000
 
 
 const app = express();
@@ -22,8 +22,8 @@ app.use(router)
 app.use((_req:Request, res:Response) => {
   res.status(404).json({ok:false,error:'404 Not Found'});
 });
-app.listen(3001, () => {
-  console.log('http://localhost:3001');
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
 });
 
 
