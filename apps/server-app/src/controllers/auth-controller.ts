@@ -63,7 +63,7 @@ export const register = async (req: Request, res: Response) => {
 
         const newShelter = await createShelterService({ email, shelter_name, phone, password: encryptedPassword });
 
-        const token = generateToken(newShelter, '1h');
+  const token = generateToken(newShelter,'3d')
 
         res.status(201).json({ ok: true, token });
       } else {

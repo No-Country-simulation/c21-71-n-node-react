@@ -4,16 +4,14 @@ import { InfoPet, UpdateInfoPet } from "../../types";
 import { MyRequest } from "../../types-back";
 import { findShelterByEmailService } from "../services/shelter-service";
 
-export const getPets = async (req: MyRequest, res: Response) => {
+export const getPets = async (_req: MyRequest, res: Response) => {
     try {
-        const roleId=req.roleId
-        if(roleId===1){
+        
+        
             const petsList = await getAllPetService()
         res.status(200).json({ ok: true, petsList })
         
-        }else{
-            throw new Error('unauthorized')
-        }
+        
         
     } catch (error) {
         res.status(400).json({ ok: false, error })
