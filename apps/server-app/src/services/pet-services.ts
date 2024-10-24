@@ -7,6 +7,12 @@ export const getAllPetService = async () => {
   return await prisma.pet.findMany();
 };
 
+export const getPetsByShelterService=async(shelter_id:number)=>{
+  return await prisma.pet.findMany({
+    where:{shelterId:shelter_id}
+  })
+}
+
 export const createPetService = async ({
   name,
   description,
