@@ -42,11 +42,12 @@ export interface InfoPet{
 }
 
 export interface UpdateInfoPet{
-  id:number
   infoPet:{
+    id:number
     name?:string
-  description?:string
-  type?:string
-  imageUrl?:string
+    description?:string
+    type?:string
+    imageUrl?:string[]
+    age?:string
   }
 }

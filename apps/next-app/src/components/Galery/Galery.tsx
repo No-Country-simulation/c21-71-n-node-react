@@ -193,31 +193,23 @@ const Galery: React.FC = () => {
               }}
             >
               <div className="slider-container">
-              <Slider {...settings}>
-                {Array.isArray(pet.imageUrl) ? (
+                <Slider {...settings}>
+                  {pet.imageUrl && pet.imageUrl.length > 0 ? (
                     pet.imageUrl.map((image, idx) => (
-                    <div key={idx}>
+                      <div key={idx}>
                         <CardMedia
-                        component="img"
-                        height="200"
-                        image={image}
-                        alt={`${pet.name || "Mascota"} - ${idx + 1}`}
-                        onClick={() => handleOpen(pet)}
+                          component="img"
+                          height="200"
+                          image={image}
+                          alt={`${pet.name || "Mascota"} - ${idx + 1}`}
+                          onClick={() => handleOpen(pet)}
                         />
-                    </div>
+                      </div>
                     ))
-                ) : (
-                    <div>
-                    <CardMedia
-                        component="img"
-                        height="200"
-                        image={pet.imageUrl} // Si es un string, lo mostramos directamente
-                        alt={pet.name || "Mascota"}
-                        onClick={() => handleOpen(pet)}
-                    />
-                    </div>
-                )}
-            </Slider>
+                  ) : (
+                    <Typography variant="body2">No hay imágenes disponibles</Typography>
+                  )}
+                </Slider>
               </div>
               <CardContent>
                 <Typography variant="h5">
