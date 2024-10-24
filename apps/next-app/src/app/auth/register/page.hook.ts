@@ -84,7 +84,7 @@ export function usePage() {
               lastname: formData.lastname,
             }
           : {
-              sheltername: formData.sheltername,
+              shelter_name: formData.sheltername,
             }),
         email: formData.email,
         phone: formData.phone,
@@ -103,8 +103,8 @@ export function usePage() {
         router.push("/auth/login");
       })
       .catch(function (error) {
+        setRequestState("error");
         if (error.response) return alert("Datos invalidos!");
-
         alert("Opps! Ocurrio un error.");
       });
   };

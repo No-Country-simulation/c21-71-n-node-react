@@ -24,7 +24,11 @@ interface CustomTextFieldProps {
   };
 }
 
-export type CustomSubmitButtonStateT = "initial" | "loading" | "success";
+export type CustomSubmitButtonStateT =
+  | "initial"
+  | "loading"
+  | "success"
+  | "error";
 
 interface CustomSubmitButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
