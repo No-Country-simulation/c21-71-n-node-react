@@ -31,26 +31,31 @@ export const register = async (req: Request, res: Response) => {
 
         const token = generateToken(newUser, '1h');
 
-        res.status(201).json({ ok: true, token });
-      } else {
-        const dataError = userValidate.error.issues[0];
-        res.status(400).json({ msg: dataError.code, field: dataError.path, description: dataError.message });
+  res.status(201).json({ ok: true, token });
+  }else{
+    const dataError=userValidate.error.issues[0]
+    res.status(400).json({msg:dataError.code,field:dataError.path,description:dataError.message})
+  }       
       }
-    }
-  } else if (type === 'shelter') {
-    const { shelter }: { shelter: NewShelter } = req.body;
+    
+  }else if(type==='shelter'){
+       
 
-    const findShelter = await findShelterByEmailService(shelter.email);
-    if (findShelter) {
-      res.status(400).json({ ok: false, error: 'el usuario ya existe en la base de datos' });
-    } else {
-      const userValidate = newShelterSchema.safeParse(shelter);
+      const {shelter}:{shelter:NewShelter}=req.body
 
-      if (userValidate.success === true) {
-        const { email, shelter_name, phone, password } = userValidate.data;
 
-        const salt = await bcryptjs.genSalt(10);
-        const encryptedPassword = await bcryptjs.hash(password, salt);
+      const findShelter=await findShelterByEmailService(shelter.email)
+      if(findShelter){
+        res.status(400).json({ok:false,error:'el usuario ya existe en la base de datos'})
+      }else{
+   const userValidate=newShelterSchema.safeParse(shelter)
+
+  if(userValidate.success===true){
+    const {email,shelter_name,phone,password}=userValidate.data
+  
+
+
+  const encryptedPassword = await passwordEncryptor(password);
 
         const newShelter = await createShelterService({ email, shelter_name, phone, password: encryptedPassword });
 
