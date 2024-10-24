@@ -1,12 +1,17 @@
 import { Request, Response } from 'express';
-import { deleteUserByIdService, findUserById, getAllUsersService, updateUserByEmailService, updateUserByIdService } from '../services/user-sevice';
+import { deleteUserByIdService, findUserByEmail, findUserById, getAllUsersService, updateUserByEmailService, updateUserByIdService } from '../services/user-sevice';
 import { UpdateUser } from '@adopcion/types';
 import { MyRequest } from '../../types-back';
 
-export const getAllUsers = async (_req: Request, res: Response) => {
+export const getAllUsers = async (req: MyRequest, res: Response) => {
   try {
-    const users = await getAllUsersService();
+    if(req.roleId!==1){
+      res.status(401).json({ok:false,error:'unauthorized'})
+    }else{
+      const users = await getAllUsersService();
     res.status(200).json({ ok: true, users });
+    }
+    
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -33,13 +38,16 @@ export const updateUser=async(req:MyRequest,res:Response)=>{
     res.status(200).json({ok:true,user})
     }else if(roleId===2){
       const userEmail=req.email!
-      const {payload}:UpdateUser= req.body
-
-      
-      
-    const user=await updateUserByEmailService({userEmail,payload})
+      const findUser=await findUserByEmail(userEmail)
+      if(findUser?.email==userEmail){
+        const {payload}:UpdateUser= req.body
+        const user=await updateUserByEmailService({userEmail,payload})
     
-    res.status(200).json({ok:true,user})
+       res.status(200).json({ok:true,user})
+      }else{
+        throw new Error('unauthorized')
+      }
+      
     }
 
     
