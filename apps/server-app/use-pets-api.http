@@ -1,0 +1,45 @@
+### Obtiene todas las mascotas
+GET http://localhost:3001/pets
+
+### Obtiene una mascota específica
+GET http://localhost:3001/pet/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
+
+
+### Crea una mastcota -- token solo con role de shelter o admin -- como valida el req.email? se queda pegado haciendo la validacion de la variable
+POST http://localhost:3001/pet
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+
+{
+    "name": "Don vinagre", 
+    "description":"Es un gato muy juguetón, tiene 4 meses de edad", 
+    "type":"cat",
+    "imageUrl": [
+        "https://png.pngtree.com/png-vector/20240205/ourmid/pngtree-cute-little-yellow-cat-png-image_11543557.png",
+        "https://st4.depositphotos.com/10614052/40209/i/450/depositphotos_402095220-stock-photo-cute-funny-kitten-color-background.jpg",
+        "https://img.freepik.com/fotos-premium/gato-amarillo-pecho-blanco-nariz-rosa_1302549-3268.jpg"
+        ]
+}
+
+### Edita una mascota --  token solo con role de shelter o admin
+PUT http://localhost:3001/pet
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+
+{
+    "id": 1,
+    "infoPet": {
+        "type": "cat",
+        "name": "vigotes",
+        "description": "Es un gao muy lindo",
+        "imageUrl": [
+            "https://www.elespectador.com/resizer/KC2rYnJ7xwQ5srRjOCnOHJVE4rw=/arc-anglerfish-arc2-prod-elespectador/public/KHYLDDXDT5BCLBABKRR6LXRLQU.jpg",
+            "https://cdn.canal26.com/media/image/2024/07/16/613116.jpg?s=1&a=383004"
+            ]
+    }
+}
+
+### Elimina una Mascota --  token solo con role de shelter o admin
+DELETE http://localhost:3001/pet/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
