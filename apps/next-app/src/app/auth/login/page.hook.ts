@@ -6,6 +6,7 @@ import { SelectChangeEvent } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomSubmitButtonStateT } from "@/components/Form/Form";
+import { jwtDecode } from "jwt-decode";
 
 type FormData = {
   email: string;
@@ -49,6 +50,11 @@ export function usePage() {
         setRequestState("success");
         setFormData(initialFormState);
         alert("Inicio de sesión exitoso");
+        const data = jwtDecode<{ email: string; roleId: number }>(token);
+        if (data.roleId === 2) {
+          router.push("/adoption");
+          return;
+        }
         router.push("/dashboard");
       })
       .catch(function (error) {

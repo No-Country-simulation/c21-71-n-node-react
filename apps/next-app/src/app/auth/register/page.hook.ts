@@ -77,7 +77,7 @@ export function usePage() {
 
     const data = {
       type: formData.role.toLowerCase(),
-      [formData.role.toLowerCase() === "adopter" ? "adopter" : "shelter"]: {
+      [formData.role.toLowerCase() === "adopter" ? "user" : "shelter"]: {
         ...(formData.role === "ADOPTER"
           ? {
               firstname: formData.name,
