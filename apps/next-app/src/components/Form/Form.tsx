@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import {
+  Box,
   Button,
   Container,
   SelectChangeEvent,
@@ -24,7 +27,11 @@ interface CustomTextFieldProps {
   };
 }
 
-export type CustomSubmitButtonStateT = "initial" | "loading" | "success";
+export type CustomSubmitButtonStateT =
+  | "initial"
+  | "loading"
+  | "success"
+  | "error";
 
 interface CustomSubmitButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -36,6 +43,10 @@ interface CustomCallActionProps {
   question: string;
   link: string;
   callToAction: string;
+}
+
+interface ImageUploadProps {
+  onChange: (files: File[]) => void;
 }
 
 export function CustomForm(props: CustomFormProps) {
@@ -105,5 +116,73 @@ export function CustomCallAction(props: CustomCallActionProps) {
         </Button>
       </Link>
     </Typography>
+  );
+}
+
+export function ImageUpload({ onChange }: ImageUploadProps) {
+  const [files, setFiles] = useState<File[]>([]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = event.target.files;
+    if (selectedFiles) {
+      const newFiles = Array.from(selectedFiles).filter((file) =>
+        file.type.startsWith("image/")
+      );
+      setFiles(newFiles);
+      onChange(newFiles);
+    }
+  };
+
+  const handleRemoveFile = (index: number) => {
+    const newFiles = files.filter((_, i) => i !== index);
+    setFiles(newFiles);
+    onChange(newFiles);
+  };
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+      <input
+        accept="image/*"
+        id="image-upload"
+        type="file"
+        multiple
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
+      <label htmlFor="image-upload">
+        <Button variant="contained" component="span">
+          Subir Imágenes
+        </Button>
+      </label>
+      <Box display="flex" flexDirection="column" width="100%" sx={{ gap: 1 }}>
+        {files.length > 0 && (
+          <Typography variant="body2" sx={{ color: "black" }}>
+            Imágenes seleccionadas:
+          </Typography>
+        )}
+        {files.map((file, index) => (
+          <Box
+            key={index}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 2,
+            }}
+          >
+            <Typography variant="body2" sx={{ color: "black" }}>
+              {file.name}
+            </Typography>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => handleRemoveFile(index)}
+            >
+              Eliminar
+            </Button>
+          </Box>
+        ))}
+      </Box>
+    </Box>
   );
 }

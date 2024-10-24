@@ -52,8 +52,8 @@ export function usePage() {
         router.push("/dashboard");
       })
       .catch(function (error) {
+        setRequestState("error");
         if (error.response) return alert("Datos invalidos!");
-
         alert("Opps! Ocurrio un error.");
       });
   };
