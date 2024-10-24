@@ -1,4 +1,3 @@
-
 import { Request, Response } from 'express';
 import bcryptjs from 'bcryptjs';
 import { INewUser, NewShelter, newShelterSchema, newUserSchema, TEmailPassword } from '../../types';
@@ -80,58 +79,35 @@ export const register = async (req: Request, res: Response) => {
 };
 
 
-
 export const login = async (req: Request<TEmailPassword>, res: Response) => {
   const { email, password } = req.body;
-  
-  
 
-  const user = await findUserByEmail(email)
+  const user = await findUserByEmail(email);
 
-  if(user){
-    
-      const isMatchPassword= await bcryptjs.compare(password,user.password)
-      if(isMatchPassword){
-        const token =  generateToken(user,'1h')
-      
+
+  if (user) {
+    const isMatchPassword = await bcryptjs.compare(password, user.password);
+    if (isMatchPassword) {
+      const token = generateToken(user, '3d');
+
+      res.status(201).json({ ok: true, token });
+    } else {
+      res.status(401).json({ error: 'invalid credentials' });
+    }
+  } else {
+    const shelter = await findShelterByEmailService(email);
+
+    if (shelter) {
+      const isMatchPassword = await bcryptjs.compare(password, shelter.password);
+      if (isMatchPassword) {
+        const token = generateToken(shelter, '3d');
+
         res.status(201).json({ ok: true, token });
-      }else{
-        res.status(401).json({error:'invalid credentials'})  
+      } else {
+        res.status(401).json({ error: 'invalid credentials' });
       }
-
-      
-  
-    
-  }else{
-    const shelter = await findShelterByEmailService(email)
-
-  if(shelter){
-    
-      const isMatchPassword= await bcryptjs.compare(password,shelter.password)
-      if(isMatchPassword){
-        const token =  generateToken(shelter,'1h')
-      
-        res.status(201).json({ ok: true, token });
-      }else{
-        res.status(401).json({error:'invalid credentials'})  
-      }
-
-      
-  
-    
-  }else{
-    res.status(404).json({error:'usuario no encontrado'})
+    } else {
+      res.status(404).json({ error: 'usuario no encontrado' });
+    }
   }
-
-
-
-
-
-    
-    
-  }
-
-  
-  
 };
-

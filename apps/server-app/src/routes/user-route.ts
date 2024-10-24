@@ -18,8 +18,10 @@ router.get('/me', verifyToken, async (_req: Request, res: Response) => {
 
 router.get('/users', verifyToken, verifyRoleAdmin, getAllUsers);
 router.get('/user/:id', verifyToken, verifyRoleAdmin, getUserById)
+
 router.put('/user', verifyToken, verifyRoleAdoptante, updateUser)
 router.delete('/user/:id',verifyToken,verifyRoleAdmin,deleteUserById)
+
 
 // pets
 

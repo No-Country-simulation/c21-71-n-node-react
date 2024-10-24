@@ -23,7 +23,6 @@ export const getShelter=async(req:Request,res:Response)=>{
 
 }
 
-
 export const updateShelter=async(req:MyRequest,res:Response)=>{
     try{
         const roleId=req.roleId
