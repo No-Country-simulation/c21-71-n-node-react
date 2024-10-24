@@ -1,8 +1,8 @@
-###
+### obtiene lista de todos los shelters
 GET http://localhost:3001/shelters
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
 
-###
+### obtiene shelter segun id
 GET http://localhost:3001/shelter/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
 
@@ -22,7 +22,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3Rvc
     }
 }
 
-###
+### elimina un shelter segun el id
 
 DELETE http://localhost:3001/shelter/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
