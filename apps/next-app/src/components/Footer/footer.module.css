@@ -1,0 +1,11 @@
+.footer {
+  display: flex;
+  padding: 20px;
+  color: #fff;
+  background-color: #178685;
+  font-family: '__geistSans_1e4310';
+}
+
+.content {
+  cursor: pointer;
+}
