@@ -11,16 +11,6 @@ if (!jwtSecret) {
   throw new Error('JWT_SECRET is not defined in environment variables');
 }
 
-export const register = async (req: Request, res: Response) => {
-  const { type }: { type: string } = req.body;
-
-  if (type === 'adopter') {
-    const { user }: { user: INewUser } = req.body;
-    const findUser = await findUserByEmail(user.email);
-    if (findUser) {
-      res.status(400).json({ ok: false, error: 'el usuario ya existe en la base de datos' });
-    } else {
-      const userValidate = newUserSchema.safeParse(user);
 
 
 export const register = async (req: Request, res: Response) => {

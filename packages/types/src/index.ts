@@ -15,11 +15,11 @@ export interface ICreateUser extends Omit<INewUser, 'password'> {
   encryptedPassword: string;
 }
 
-interface CustomRequest {
+/* interface CustomRequest {
   email?: string;
   roleId?: number;
 }
-
+ */
 export interface UpdateUser {
   id: number;
   payload: {

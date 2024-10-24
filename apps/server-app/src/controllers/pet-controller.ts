@@ -66,6 +66,8 @@ export const updatePet = async (req: MyRequest, res: Response) => {
             
         const changeInfoPet = await updatePetService({ id, infoPet: { name, description, type, imageUrl } })
         res.status(200).json({ ok: true, changeInfoPet })
+        }else{
+            res.status(401).json({ok:false,error:"unauthorized"})
         }
 
 
