@@ -10,10 +10,12 @@
     "build": "tsc",
     "dev": "ts-node-dev src/index.ts",
     "roles": "ts-node-dev src/utils/create-roles.ts",
+    "start": "node ./dist/src/index.js",
     "test": "ts-node-dev src/services/test-service.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@adopcion/types": "*",
+    "@prisma/client": "^5.21.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.21.1",

@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { ICreateUser, UpdateUser } from '../../types';
+import { passwordEncryptor } from './password-encryptor';
 
 const prisma = new PrismaClient();
 
@@ -43,7 +44,9 @@ export const findUserById = async (id: number) => {
 
 // Update user
 
-export const updateUserByIdService = async ({ id, payload: { email, firstname, lastname, phone, password, roleId } }: UpdateUser) => {
+export const updateUserByIdService = async ({ id, payload: { email, firstname, lastname, phone, password } }: UpdateUser) => {
+  let encryptedPassword=password? await passwordEncryptor(password): undefined
+
   return prisma.user.update({
     where: {
       id,
@@ -53,8 +56,26 @@ export const updateUserByIdService = async ({ id, payload: { email, firstname, l
       firstname,
       lastname,
       phone,
-      password,
-      roleId,
+      password:encryptedPassword,
+      
+    },
+  });
+};
+
+
+export const updateUserByEmailService = async ({ userEmail, payload: { email, firstname, lastname, phone, password,  } }:{ userEmail:string, payload: { email?:string, firstname?:string, lastname?:string, phone?:string, password?:string,  } }) => {
+  let encryptedPassword=password? await passwordEncryptor(password): undefined
+  return await prisma.user.update({
+    where: {
+      email:userEmail,
+    },
+    data: {
+      email,
+      firstname,
+      lastname,
+      phone,
+      password:encryptedPassword,
+      
     },
   });
 };

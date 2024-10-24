@@ -32,8 +32,8 @@ POST  http://localhost:3001/login
 Content-Type: application/json
 
 {
-  "email":"bh@hector.com",
-  "password":"123123123"
+  "email":"admin@admin.com",
+  "password":"mat123"
 }
 
 
