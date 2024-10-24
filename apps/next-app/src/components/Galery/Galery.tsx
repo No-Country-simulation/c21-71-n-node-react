@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -17,14 +17,8 @@ import Grid from "@mui/material/Grid2";
 import Slider from "react-slick";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-
-interface Pet {
-  name: string;
-  age: string;
-  description: string;
-  images: string[];
-  type: string;
-}
+import {Pets} from '@adopcion/types'
+import axios from "axios";
 
 interface DecodedToken {
   roleId: string;
@@ -32,61 +26,34 @@ interface DecodedToken {
   iat: number;
   email: string;
 }
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const pets: Pet[] = [
-  {
-    name: "Yummy",
-    age: "2 años",
-    description: "Soy Yummy, muy simpático y dulce. Estoy vacunado y castrado.",
-    images: ["/perro1.jfif", "/perro2.jfif", "/perro3.jfif"],
-    type: "dog",
-  },
-  {
-    name: "Mowgli",
-    age: "4 años",
-    description: "Soy Mowgli, muy tranquilo. Estoy vacunado y castrado.",
-    images: ["/perro2.jfif", "/perro3.jfif", "/perro1.jfif"],
-    type: "dog",
-  },
-  {
-    name: "Burako",
-    age: "1 año y 6 meses",
-    description:
-      "Soy Burako, un caballero elegante. Estoy vacunado y castrado.",
-    images: ["/perro3.jfif", "/perro2.jfif", "/perro1.jfif"],
-    type: "dog",
-  },
-  {
-    name: "Ummy",
-    age: "3 años",
-    description: "Soy Yummy, muy simpático y dulce. Estoy vacunado y castrado.",
-    images: ["/perro1.jfif", "/perro2.jfif", "/perro3.jfif"],
-    type: "dog",
-  },
-  {
-    name: "Li",
-    age: "4 años y 7 meses",
-    description: "Soy Li, muy tranquilo. Estoy vacunado y castrado.",
-    images: ["/perro2.jfif", "/perro3.jfif", "/perro1.jfif"],
-    type: "other",
-  },
-  {
-    name: "Kika",
-    age: "6 años y 6 meses",
-    description: "Soy Kika, muy simpática. Estoy vacunada y castrada.",
-    images: ["/perro3.jfif", "/perro2.jfif", "/perro1.jfif"],
-    type: "cat",
-  },
-];
+
+
+
+
+
 
 const Galery: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const [filter, setFilter] = useState<string>("all");
+  const [selectedPet, setSelectedPet] = useState<Pets | null>(null);
+  const [pets, setPets] = useState<Pets | null>(null);
 
   const router = useRouter();
 
-  const handleOpen = (pet: Pet) => {
+  const fetchData = async () => {
+    const response = await fetch(`${backendUrl}/api/data`);
+    const pets: Pets[] = await response.json()
+    setPets(pets)
+    console.log(pets);
+  };
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleOpen = (pet: Pets) => {
     setSelectedPet(pet);
     setOpen(true);
   };
@@ -109,7 +76,7 @@ const Galery: React.FC = () => {
   };
 
   const filteredPets =
-    filter === "all" ? pets : pets.filter((pet) => pet.type === filter);
+    filter === "all" ? pets : pets.filter((pet:Pets) => pet.type === filter);
 
   // Nueva función para verificar el token
   const isTokenValid = () => {
