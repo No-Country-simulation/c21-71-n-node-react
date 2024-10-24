@@ -4,20 +4,25 @@ import { INewUser, NewShelter, newShelterSchema, newUserSchema, TEmailPassword }
 import { createUser, findUserByEmail } from '../services/user-sevice';
 import { generateToken } from '../services/jwt-service';
 import { createShelterService, findShelterByEmailService } from '../services/shelter-service';
+import { passwordEncryptor } from '../services/password-encryptor';
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
   throw new Error('JWT_SECRET is not defined in environment variables');
 }
 
+
+
 export const register = async (req: Request, res: Response) => {
-  const { type }: { type: string } = req.body;
+  const {type}:{type:string} =req.body;
+
 
   if(type==='adopter'){
        
     const {user: user}:{user:INewUser}=req.body
 
     const userValidate=newUserSchema.safeParse(user)
+
 
   if(userValidate.success===true){
   
@@ -76,6 +81,8 @@ export const register = async (req: Request, res: Response) => {
     const dataError=userValidate.error.issues[0]
     res.status(400).json({msg:dataError.code,field:dataError.path,description:dataError.message})
   }       
+    }else{
+      res.status(400).json({ok:false,error:'the property “type” was not found : is required'})
     }
     
   }
@@ -89,29 +96,24 @@ export const login = async (req: Request<TEmailPassword>, res: Response) => {
 
   const user = await findUserByEmail(email);
 
-  if(user){
-    
-      const isMatchPassword= await bcryptjs.compare(password,user.password)
-      if(isMatchPassword){
-        const token =  generateToken(user,'3d')
-      
-        res.status(201).json({ ok: true, token });
-      }else{
-        res.status(401).json({error:'invalid credentials'})  
-      }
 
-      
-  
-    
-  }else{
-    const shelter = await findShelterByEmailService(email)
+  if (user) {
+    const isMatchPassword = await bcryptjs.compare(password, user.password);
+    if (isMatchPassword) {
+      const token = generateToken(user, '3d');
 
-  if(shelter){
-    
-      const isMatchPassword= await bcryptjs.compare(password,shelter.password)
-      if(isMatchPassword){
-        const token =  generateToken(shelter,'1h')
-      
+      res.status(201).json({ ok: true, token });
+    } else {
+      res.status(401).json({ error: 'invalid credentials' });
+    }
+  } else {
+    const shelter = await findShelterByEmailService(email);
+
+    if (shelter) {
+      const isMatchPassword = await bcryptjs.compare(password, shelter.password);
+      if (isMatchPassword) {
+        const token = generateToken(shelter, '3d');
+
         res.status(201).json({ ok: true, token });
       } else {
         res.status(401).json({ error: 'invalid credentials' });

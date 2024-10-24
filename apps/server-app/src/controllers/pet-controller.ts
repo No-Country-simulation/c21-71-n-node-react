@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPetService, deletePetService, findPetByIdService, getAllPetService, updatePetService } from "../services/pet-services";
+import { createPetService, deletePetService, findPetByIdService, getAllPetService, getPetsByShelterService, updatePetService } from "../services/pet-services";
 import { InfoPet, UpdateInfoPet } from "../../types";
 import { MyRequest } from "../../types-back";
 import { findShelterByEmailService } from "../services/shelter-service";
@@ -51,6 +51,30 @@ export const findPetById = async (req: Request, res: Response) => {
     }
 }
 
+export const getPetsByShelter=async(req:MyRequest,res:Response)=>{
+    const {email}=req
+
+    try{
+
+        
+            if(email){
+                const shelter=await findShelterByEmailService(email)
+                const pets=await getPetsByShelterService(shelter!.id)
+                res.status(200).json({ok:true,pets})
+            }else{
+                res.status(500).json({ok:false,error:'no se pudo encontrar el email'})
+            }
+        
+
+        
+    }catch(error){
+        res.status(500).json(error)
+    }
+
+}
+
+
+
 export const updatePet = async (req: MyRequest, res: Response) => {
     try {
         const {email,roleId}=req
@@ -64,6 +88,8 @@ export const updatePet = async (req: MyRequest, res: Response) => {
             
         const changeInfoPet = await updatePetService({ id, infoPet: { name, description, type, imageUrl } })
         res.status(200).json({ ok: true, changeInfoPet })
+        }else{
+            res.status(401).json({ok:false,error:"unauthorized"})
         }
 
 

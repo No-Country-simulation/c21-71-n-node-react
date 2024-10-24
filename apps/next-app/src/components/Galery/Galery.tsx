@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -17,8 +17,7 @@ import Grid from "@mui/material/Grid2";
 import Slider from "react-slick";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-import { InfoPet } from '@adopcion/types'
-import axios from "axios";
+import { InfoPet } from "@adopcion/types";
 
 interface DecodedToken {
   roleId: string;
@@ -27,33 +26,17 @@ interface DecodedToken {
   email: string;
 }
 
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+interface Props {
+  loading: boolean
+  pets: InfoPet[];
+}
 
-const Galery: React.FC = () => {
+const Galery = ({loading, pets}: Props) => {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<string>("all");
   const [selectedPet, setSelectedPet] = useState<InfoPet | null>(null);
-  const [pets, setPets] = useState<InfoPet[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(`${backendUrl}/pets`);
-      const pets: InfoPet[] = response.data.petsList;
-      setPets(pets);
-      setLoading(false);
-      console.log(pets);
-    } catch (error) {
-      console.error("Error fetching pets data:", error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const handleOpen = (pet: InfoPet) => {
     setSelectedPet(pet);
@@ -78,9 +61,10 @@ const Galery: React.FC = () => {
   };
 
   // Filtrado ajustado a la nueva estructura de los datos
-  const filteredPets = filter === "all" 
-    ? pets 
-    : pets.filter((pet: InfoPet) => pet.type === filter);
+  const filteredPets =
+    filter === "all"
+      ? pets
+      : pets.filter((pet: InfoPet) => pet.type.toLowerCase() === filter);
 
   const isTokenValid = () => {
     const token = localStorage.getItem("pr-ado--token");
@@ -110,7 +94,7 @@ const Galery: React.FC = () => {
   // Si estamos cargando, mostrar mensaje de carga
   if (loading) {
     return (
-      <Typography variant="h6" sx={{ textAlign: 'center', mt: 5 }}>
+      <Typography variant="h6" sx={{ textAlign: "center", mt: 5 }}>
         Cargando mascotas...
       </Typography>
     );
@@ -172,56 +156,62 @@ const Galery: React.FC = () => {
       </Box>
 
       <Grid container spacing={2} sx={{ width: "85vw" }}>
-        {filteredPets.map((pet, index) => (
-          console.log(pet), // Aquí estamos usando correctamente pet.imageUrl, pet.name, etc.
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
-            <Card
-              sx={{
-                backgroundColor: "#ECA26E",
-                borderRadius: 5,
-                cursor: "pointer",
-                transition: "transform 0.3s, box-shadow 0.3s",
-                "&:hover": {
-                  transform: "scale(1.05)",
-                  boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
-                },
-              }}
-              onClick={(e) => {
-                if (!(e.target as HTMLElement).closest(".slick-dots")) {
-                  handleOpen(pet);
-                }
-              }}
-            >
-              <div className="slider-container">
-                <Slider {...settings}>
-                  {pet.imageUrl && pet.imageUrl.length > 0 ? (
-                    pet.imageUrl.map((image, idx) => (
-                      <div key={idx}>
-                        <CardMedia
-                          component="img"
-                          height="200"
-                          image={image}
-                          alt={`${pet.name || "Mascota"} - ${idx + 1}`}
-                          onClick={() => handleOpen(pet)}
-                        />
-                      </div>
-                    ))
-                  ) : (
-                    <Typography variant="body2">No hay imágenes disponibles</Typography>
-                  )}
-                </Slider>
-              </div>
-              <CardContent>
-                <Typography variant="h5">
-                  {pet.name || "Nombre no disponible"}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {pet.age || "Edad no disponible"}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
+        {filteredPets.map(
+          (pet, index) => (
+            console.log(pet), // Aquí estamos usando correctamente pet.imageUrl, pet.name, etc.
+            (
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+                <Card
+                  sx={{
+                    backgroundColor: "#ECA26E",
+                    borderRadius: 5,
+                    cursor: "pointer",
+                    transition: "transform 0.3s, box-shadow 0.3s",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)",
+                    },
+                  }}
+                  onClick={(e) => {
+                    if (!(e.target as HTMLElement).closest(".slick-dots")) {
+                      handleOpen(pet);
+                    }
+                  }}
+                >
+                  <div className="slider-container">
+                    <Slider {...settings}>
+                      {pet.imageUrl && pet.imageUrl.length > 0 ? (
+                        pet.imageUrl.map((image, idx) => (
+                          <div key={idx}>
+                            <CardMedia
+                              component="img"
+                              height="200"
+                              image={image}
+                              alt={`${pet.name || "Mascota"} - ${idx + 1}`}
+                              onClick={() => handleOpen(pet)}
+                            />
+                          </div>
+                        ))
+                      ) : (
+                        <Typography variant="body2">
+                          No hay imágenes disponibles
+                        </Typography>
+                      )}
+                    </Slider>
+                  </div>
+                  <CardContent>
+                    <Typography variant="h5">
+                      {pet.name || "Nombre no disponible"}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {pet.age || "Edad no disponible"}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            )
+          )
+        )}
       </Grid>
 
       <Modal open={open} onClose={handleClose}>

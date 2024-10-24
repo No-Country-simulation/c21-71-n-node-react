@@ -5,6 +5,7 @@ import { SelectChangeEvent } from "@mui/material";
 import { RoleE, RoleT } from "@/types/roles";
 import { useRouter } from "next/navigation";
 import { CustomSubmitButtonStateT } from "@/components/Form/Form";
+import { jwtDecode } from "jwt-decode";
 
 type FormData = {
   role: RoleT;
@@ -77,7 +78,7 @@ export function usePage() {
 
     const data = {
       type: formData.role.toLowerCase(),
-      [formData.role.toLowerCase() === "adopter" ? "adopter" : "shelter"]: {
+      user: {
         ...(formData.role === "ADOPTER"
           ? {
               firstname: formData.name,
@@ -100,7 +101,12 @@ export function usePage() {
         setRequestState("success");
         setFormData(initialFormState);
         alert("Registro de usuario exitoso");
-        router.push("/auth/login");
+        const data = jwtDecode<{ email: string; roleId: number }>(token);
+        if (data.roleId === 2) {
+          router.push("/adoption");
+          return;
+        }
+        router.push("/dashboard");
       })
       .catch(function (error) {
         setRequestState("error");
