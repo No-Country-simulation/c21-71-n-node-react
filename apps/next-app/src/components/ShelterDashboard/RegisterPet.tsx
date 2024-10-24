@@ -27,9 +27,8 @@ export default function RegisterPet({ open, onClose }: Props) {
     type: "",
     imageUrl: [],
   });
-  const [images, setImages] = useState<File[]>([]);
-  const [submitState, setSubmitState] =
-    useState<CustomSubmitButtonStateT>("initial");
+  const [, setImages] = useState<File[]>([]);
+  const [submitState] = useState<CustomSubmitButtonStateT>("initial");
 
   function handleInputChange(
     e: SelectChangeEvent<string> | React.ChangeEvent<HTMLInputElement>
