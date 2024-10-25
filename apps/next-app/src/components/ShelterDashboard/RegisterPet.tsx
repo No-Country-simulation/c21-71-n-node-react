@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Container, Modal, SelectChangeEvent } from "@mui/material";
+import { Container, MenuItem, Modal, SelectChangeEvent } from "@mui/material";
 import {
   CustomForm,
+  CustomSelector,
   CustomSubmitButton,
   CustomSubmitButtonStateT,
   CustomTextField,
   ImageUpload,
 } from "../Form/Form";
+import { PetTypeE } from "@/types/pet";
 
 interface Props {
   open: boolean;
@@ -55,13 +57,19 @@ export default function RegisterPet({ open, onClose }: Props) {
             value={formData.name}
             onChange={handleInputChange}
           />
-          <CustomTextField
-            label="Tipo de mascota"
-            type="text"
+          <CustomSelector<string>
             name="type"
+            label="Tipo de mascota"
+            handleInputChange={handleInputChange}
             value={formData.type}
-            onChange={handleInputChange}
-          />
+          >
+            <MenuItem value="" disabled>
+              Selecciona el tipo de mascota
+            </MenuItem>
+            <MenuItem value={PetTypeE.DOG}>Perro</MenuItem>
+            <MenuItem value={PetTypeE.CAT}>Gato</MenuItem>
+            <MenuItem value={PetTypeE.OTHER}>Otro</MenuItem>
+          </CustomSelector>
           <CustomTextField
             label="Descripción"
             type="text"
