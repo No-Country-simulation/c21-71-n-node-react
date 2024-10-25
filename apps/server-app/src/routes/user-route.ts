@@ -35,6 +35,7 @@ router.delete('/pet/:id', verifyToken, verifyRoleRefugio, deletePet)
 
 router.get('/shelters',verifyToken,verifyRoleAdmin,getAllShelters)
 router.get('/pets-by-shelter',verifyToken,verifyRoleRefugio,getPetsByShelter)
+router.get('/pets-by-shelter/:id',verifyToken,verifyRoleRefugio,getPetsByShelter)
 router.get('/shelter/:id',verifyToken,verifyRoleRefugio,getShelter)
 router.put('/shelter',verifyToken,verifyRoleRefugio,updateShelter)
 router.delete('/shelter/:id',verifyToken,verifyRoleRefugio,deleteShelter)

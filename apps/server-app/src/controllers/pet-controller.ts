@@ -52,18 +52,26 @@ export const findPetById = async (req: Request, res: Response) => {
 }
 
 export const getPetsByShelter=async(req:MyRequest,res:Response)=>{
-    const {email}=req
+    const {email,roleId}=req
 
     try{
 
-        
-            if(email){
-                const shelter=await findShelterByEmailService(email)
-                const pets=await getPetsByShelterService(shelter!.id)
+            if(roleId===3){
+                if(email){
+                    const shelter=await findShelterByEmailService(email)
+                    const pets=await getPetsByShelterService(shelter!.id)
+                    res.status(200).json({ok:true,pets})
+                }else{
+                    res.status(500).json({ok:false,error:'no se pudo encontrar el email'})
+                }
+            }else if(roleId===1){
+                const shelterId=Number(req.params['id'])
+                
+                const pets=await getPetsByShelterService(shelterId)
                 res.status(200).json({ok:true,pets})
-            }else{
-                res.status(500).json({ok:false,error:'no se pudo encontrar el email'})
+
             }
+            
         
 
         
