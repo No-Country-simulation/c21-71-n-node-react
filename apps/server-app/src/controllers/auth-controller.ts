@@ -79,6 +79,8 @@ export const register = async (req: Request, res: Response) => {
     const dataError=userValidate.error.issues[0]
     res.status(400).json({msg:dataError.code,field:dataError.path,description:dataError.message})
   }       
+    }else{
+      res.status(400).json({ok:false,error:'the property “type” was not found : is required'})
     }
     
   }
