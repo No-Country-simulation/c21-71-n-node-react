@@ -70,7 +70,7 @@ export default function ShelterPage() {
         gap={10}
         marginBottom={4}
       >
-        <Galery loading={loading} pets={pets} />
+        <Galery loading={loading} pets={pets} modalActions={<></>} />
       </Box>
     </Container>
   );
