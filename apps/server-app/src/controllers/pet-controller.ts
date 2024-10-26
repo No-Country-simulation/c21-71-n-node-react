@@ -35,8 +35,8 @@ export const createPet = async (req: MyRequest, res: Response) => {
           const imgs = files.map((file) => file.path);
           
           const imageUrl=await uploadImgsToCloudinary(imgs)
-          const { name, description, type }: InfoPet = req.body;  
-          const newPet = await createPetService({ name, description, type, imageUrl, shelterId: shelter.id });
+          const { name,age, description, type }: InfoPet = req.body;  
+          const newPet = await createPetService({ name,age, description, type, imageUrl, shelterId: shelter.id });
 
           imgs.forEach(filePath => {
             fs.unlink(filePath, (err) => {
