@@ -137,6 +137,7 @@ export function ImageUpload({ onChange }: ImageUploadProps) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files;
+
     if (selectedFiles) {
       const newFiles = Array.from(selectedFiles).filter((file) =>
         file.type.startsWith("image/")

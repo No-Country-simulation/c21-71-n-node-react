@@ -13,7 +13,6 @@ export const usePage = () => {
       const pets: InfoPet[] = response.data.petsList;
       setPets(pets);
       setLoading(false);
-      console.log(pets);
     } catch (error) {
       console.error("Error fetching pets data:", error);
       setLoading(false);

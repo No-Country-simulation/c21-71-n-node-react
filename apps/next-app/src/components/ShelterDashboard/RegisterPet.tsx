@@ -29,7 +29,7 @@ export default function RegisterPet({ open, onClose }: Props) {
     type: "",
     imageUrl: [],
   });
-  const [, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState<File[]>([]);
   const [submitState] = useState<CustomSubmitButtonStateT>("initial");
 
   function handleInputChange(
@@ -40,10 +40,25 @@ export default function RegisterPet({ open, onClose }: Props) {
   }
 
   const handleSubmit = () => {
-    // Validar datos
+    if (
+      !formData.name.trim() ||
+      !formData.description.trim() ||
+      !formData.type.trim() ||
+      images.length === 0
+    ) {
+      alert("Todos los campos son obligatorios.");
+      return;
+    }
+
     // Subir imagenes
     // Enviar datos al servidor
-    // Limpiar formulario
+
+    setFormData({
+      name: "",
+      description: "",
+      type: "",
+      imageUrl: [],
+    });
   };
 
   return (
@@ -77,11 +92,7 @@ export default function RegisterPet({ open, onClose }: Props) {
             value={formData.description}
             onChange={handleInputChange}
           />
-          <ImageUpload
-            onChange={(newFiles) =>
-              setImages((prev) => ({ ...prev, imageUrl: newFiles }))
-            }
-          />
+          <ImageUpload onChange={(newFiles) => setImages(newFiles)} />
           <CustomSubmitButton
             text="Registrar Mascota"
             state={submitState}

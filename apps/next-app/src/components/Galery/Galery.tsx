@@ -158,7 +158,6 @@ const Galery = ({loading, pets}: Props) => {
       <Grid container spacing={2} sx={{ width: "85vw" }}>
         {filteredPets.map(
           (pet, index) => (
-            console.log(pet), // Aquí estamos usando correctamente pet.imageUrl, pet.name, etc.
             (
               <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
                 <Card
