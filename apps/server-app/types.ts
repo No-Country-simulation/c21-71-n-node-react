@@ -107,6 +107,7 @@ export type UpdateUser=z.infer<typeof updateUserSchema>
  */
 export const infoPetSchema=z.object({
   name:z.string(),
+  age:z.string(),
   description:z.string(),
   type:z.string(),
   imageUrl:z.string().array(),
