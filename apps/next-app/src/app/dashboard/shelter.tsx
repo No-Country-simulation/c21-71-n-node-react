@@ -67,7 +67,7 @@ export default function ShelterPage() {
         alignItems="center"
         width="100%"
         flexDirection="column"
-        gap={10}
+        gap={4}
         marginBottom={4}
       >
         <Gallery loading={loading} pets={pets} modalActions={<></>} />

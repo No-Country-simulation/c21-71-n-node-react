@@ -1,7 +1,7 @@
 import { InfoPet } from "@adopcion/types";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import Slider from "react-slick";
+import { CustomSlider } from "./slider";
 
 interface Props {
   handleOpen: (pet: InfoPet) => void;
@@ -28,27 +28,7 @@ export function PetCard({ handleOpen, pet, settings }: Props) {
             handleOpen(pet);
         }}
       >
-        <div className="slider-container">
-          <Slider {...settings}>
-            {pet.imageUrl && pet.imageUrl.length > 0 ? (
-              pet.imageUrl.map((image, idx) => (
-                <div key={idx}>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={image}
-                    alt={`${pet.name || "Mascota"} - ${idx + 1}`}
-                    onClick={() => handleOpen(pet)}
-                  />
-                </div>
-              ))
-            ) : (
-              <Typography variant="body2">
-                No hay imágenes disponibles
-              </Typography>
-            )}
-          </Slider>
-        </div>
+        <CustomSlider settings={settings} pet={pet} handleOpen={handleOpen} />
         <CardContent>
           <Typography variant="h5">{pet.name}</Typography>
           {pet.age ? (

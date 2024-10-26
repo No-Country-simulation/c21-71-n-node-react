@@ -1,6 +1,6 @@
 import { InfoPet } from "@adopcion/types";
-import { Box, Button, CardMedia, Modal, Typography } from "@mui/material";
-import Slider from "react-slick";
+import { Box, Button, Modal, Typography } from "@mui/material";
+import { CustomSlider } from "./slider";
 
 interface Props {
   open: boolean;
@@ -34,19 +34,11 @@ export function ModalInfoPet({
       >
         {selectedPet && (
           <Box sx={{ alignContent: "center" }}>
-            <Slider {...settings}>
-              {selectedPet.imageUrl?.map((image, idx) => (
-                <div key={idx}>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={image}
-                    alt={`${selectedPet.name || "Mascota"} - ${idx + 1}`}
-                    sx={{ borderRadius: 10 }}
-                  />
-                </div>
-              ))}
-            </Slider>
+            <CustomSlider
+              settings={settings}
+              pet={selectedPet}
+              handleOpen={() => {}}
+            />
             <Typography variant="h4" sx={{ color: "#194143" }}>
               {selectedPet.name}
             </Typography>

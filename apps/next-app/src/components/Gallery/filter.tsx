@@ -16,7 +16,6 @@ export function FilterPets({ filter, handleFilterChange }: Props) {
   return (
     <Box
       sx={{
-        marginBottom: 10,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

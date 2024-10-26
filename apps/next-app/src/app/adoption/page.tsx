@@ -66,7 +66,6 @@ const Dashboard: React.FC = () => {
           alignItems: "center",
           justifyContent: "center",
           width: "100%",
-          marginTop: "5vh",
         }}
       >
         <Gallery
