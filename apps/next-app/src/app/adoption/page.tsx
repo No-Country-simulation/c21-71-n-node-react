@@ -1,13 +1,13 @@
 // app/dashboard/page.tsx
 "use client";
 import React, { useRef } from "react";
-import Galery from "@/components/Galery/Galery"; // Ajusta la ruta según dónde esté tu componente
 import styles from "@/app/page.module.css";
 import Hero from "@/components/Hero/Hero";
 import { usePage } from "./page.hooks";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
+import Gallery from "@/components/Gallery/Gallery";
 
 interface DecodedToken {
   roleId: string;
@@ -69,7 +69,7 @@ const Dashboard: React.FC = () => {
           marginTop: "5vh",
         }}
       >
-        <Galery
+        <Gallery
           loading={loading}
           pets={pets}
           modalActions={

@@ -6,7 +6,7 @@ import axios from "axios";
 import { backendURL } from "@/config";
 import { useRouter } from "next/navigation";
 import { InfoPet } from "@adopcion/types";
-import Galery from "@/components/Galery/Galery";
+import Gallery from "@/components/Gallery/Gallery";
 
 export default function ShelterPage() {
   const [registerPetOpen, setRegisterPetOpen] = useState(false);
@@ -70,7 +70,7 @@ export default function ShelterPage() {
         gap={10}
         marginBottom={4}
       >
-        <Galery loading={loading} pets={pets} modalActions={<></>} />
+        <Gallery loading={loading} pets={pets} modalActions={<></>} />
       </Box>
     </Container>
   );
