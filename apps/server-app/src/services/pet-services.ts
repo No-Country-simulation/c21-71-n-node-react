@@ -15,12 +15,14 @@ export const getPetsByShelterService=async(shelter_id:number)=>{
 
 export const createPetService = async ({
   name,
+  age,
   description,
   type,
   imageUrl,
   shelterId,
 }: {
   name: string;
+  age:string;
   description: string;
   type: string;
   imageUrl: string[];
@@ -29,6 +31,7 @@ export const createPetService = async ({
   return await prisma.pet.create({
     data: {
       name,
+      age,
       description,
       type,
       imageUrl,
