@@ -8,12 +8,12 @@ import {
 } from "../Form/Form";
 import { PetTypeE } from "@/types/pet";
 import { useRegisterPet } from "./registerPet.hook";
-import { InfoPet } from "@adopcion/types";
+import { InfoPetWithId } from "@adopcion/types";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  addPet: (pet: InfoPet) => void;
+  addPet: (pet: InfoPetWithId) => void;
 }
 
 export default function RegisterPet({ open, onClose, addPet }: Props) {

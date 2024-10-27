@@ -1,11 +1,11 @@
-import { InfoPet } from "@adopcion/types";
+import { InfoPetWithId } from "@adopcion/types";
 import { CardMedia, Typography } from "@mui/material";
 import Slider from "react-slick";
 
 interface Props {
   settings: object;
-  pet: InfoPet;
-  handleOpen: (pet: InfoPet) => void;
+  pet: InfoPetWithId;
+  handleOpen: (pet: InfoPetWithId) => void;
 }
 
 export function CustomSlider({ handleOpen, pet, settings }: Props) {

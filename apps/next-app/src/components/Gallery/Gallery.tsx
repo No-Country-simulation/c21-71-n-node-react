@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid2";
-import { InfoPet } from "@adopcion/types";
+import { InfoPetWithId } from "@adopcion/types";
 import { FilterPets } from "./filter";
 import { Loading } from "./loading";
 import { PetCard } from "./petCard";
@@ -9,11 +9,19 @@ import { useGallery } from "./gallery.hook";
 
 interface Props {
   loading: boolean;
-  pets: InfoPet[];
+  pets: InfoPetWithId[];
   modalActions: React.ReactNode;
+  selectedPet: InfoPetWithId | null;
+  setSelectedPet: React.Dispatch<React.SetStateAction<InfoPetWithId | null>>;
 }
 
-export default function Gallery({ modalActions, loading, pets }: Props) {
+export default function Gallery({
+  modalActions,
+  loading,
+  pets,
+  selectedPet,
+  setSelectedPet,
+}: Props) {
   const {
     filter,
     handleFilterChange,
@@ -21,9 +29,8 @@ export default function Gallery({ modalActions, loading, pets }: Props) {
     handleOpen,
     settings,
     open,
-    selectedPet,
     handleClose,
-  } = useGallery(pets);
+  } = useGallery(pets, selectedPet, setSelectedPet);
 
   if (loading) return <Loading />;
 

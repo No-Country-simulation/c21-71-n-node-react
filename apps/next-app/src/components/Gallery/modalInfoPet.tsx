@@ -1,11 +1,11 @@
-import { InfoPet } from "@adopcion/types";
+import { InfoPetWithId } from "@adopcion/types";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { CustomSlider } from "./slider";
 
 interface Props {
   open: boolean;
   handleClose: () => void;
-  selectedPet: InfoPet | null;
+  selectedPet: InfoPetWithId | null;
   settings: object;
   children: React.ReactNode;
 }

@@ -1,56 +1,22 @@
-// app/dashboard/page.tsx
 "use client";
-import React, { useRef } from "react";
+
+import React from "react";
 import styles from "@/app/page.module.css";
 import Hero from "@/components/Hero/Hero";
 import { usePage } from "./page.hooks";
 import { Button } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
 import Gallery from "@/components/Gallery/Gallery";
 
-interface DecodedToken {
-  roleId: string;
-  exp: number;
-  iat: number;
-  email: string;
-}
-
-const Dashboard: React.FC = () => {
-  const { loading, pets } = usePage();
-  const galleryRef = useRef<HTMLDivElement | null>(null);
-
-  const router = useRouter();
-
-  const isTokenValid = () => {
-    const token = localStorage.getItem("pr-ado--token");
-    if (!token) {
-      return false;
-    }
-
-    try {
-      const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
-      const currentTime = Math.floor(Date.now() / 1000);
-      return decoded.exp > currentTime;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-  };
-  const handleAdopt = () => {
-    if (isTokenValid()) {
-      alert("¡Gracias por adoptar!");
-    } else {
-      alert("Por favor, inicia sesión para adoptar.");
-      router.push("/auth/login");
-    }
-  };
-
-  const scrollToGallery = () => {
-    if (galleryRef.current) {
-      galleryRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+export default function Dashboard() {
+  const {
+    pets,
+    loading,
+    selectedPet,
+    galleryRef,
+    setSelectedPet,
+    handleAdopt,
+    scrollToGallery,
+  } = usePage();
 
   return (
     <div
@@ -71,6 +37,8 @@ const Dashboard: React.FC = () => {
         <Gallery
           loading={loading}
           pets={pets}
+          selectedPet={selectedPet}
+          setSelectedPet={setSelectedPet}
           modalActions={
             <>
               <Button
@@ -91,6 +59,4 @@ const Dashboard: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default Dashboard;
+}

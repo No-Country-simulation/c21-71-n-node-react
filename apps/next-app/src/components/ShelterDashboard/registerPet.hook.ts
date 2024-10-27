@@ -3,7 +3,8 @@ import { CustomSubmitButtonStateT } from "../Form/Form";
 import { SelectChangeEvent } from "@mui/material";
 import { backendURL } from "@/config";
 import axios from "axios";
-import { InfoPet } from "@adopcion/types";
+import { InfoPetWithId } from "@adopcion/types";
+import { getToken } from "@/utils/token";
 
 interface FormDataI {
   name: string;
@@ -15,7 +16,7 @@ interface FormDataI {
 
 export function useRegisterPet(
   onClose: () => void,
-  addPet: (pet: InfoPet) => void
+  addPet: (pet: InfoPetWithId) => void
 ) {
   const [formData, setFormData] = useState<FormDataI>({
     name: "",
@@ -63,7 +64,7 @@ export function useRegisterPet(
     });
 
     try {
-      const token = localStorage.getItem("pr-ado--token");
+      const token = getToken();
 
       const { data } = await axios.post(`${backendURL}/pet`, formDataToSend, {
         headers: {
