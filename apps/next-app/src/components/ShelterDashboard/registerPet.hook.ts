@@ -3,6 +3,7 @@ import { CustomSubmitButtonStateT } from "../Form/Form";
 import { SelectChangeEvent } from "@mui/material";
 import { backendURL } from "@/config";
 import axios from "axios";
+import { InfoPet } from "@adopcion/types";
 
 interface FormDataI {
   name: string;
@@ -12,7 +13,10 @@ interface FormDataI {
   images: File[];
 }
 
-export function useRegisterPet(onClose: () => void) {
+export function useRegisterPet(
+  onClose: () => void,
+  addPet: (pet: InfoPet) => void
+) {
   const [formData, setFormData] = useState<FormDataI>({
     name: "",
     description: "",
@@ -20,7 +24,8 @@ export function useRegisterPet(onClose: () => void) {
     age: "",
     images: [],
   });
-  const [submitState] = useState<CustomSubmitButtonStateT>("initial");
+  const [submitState, setSubmitState] =
+    useState<CustomSubmitButtonStateT>("initial");
 
   function handleInputChange(
     e: SelectChangeEvent<string> | React.ChangeEvent<HTMLInputElement>
@@ -45,6 +50,8 @@ export function useRegisterPet(onClose: () => void) {
       return;
     }
 
+    setSubmitState("loading");
+
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
@@ -58,13 +65,16 @@ export function useRegisterPet(onClose: () => void) {
     try {
       const token = localStorage.getItem("pr-ado--token");
 
-      await axios.post(`${backendURL}/pet`, formDataToSend, {
+      const { data } = await axios.post(`${backendURL}/pet`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
 
+      addPet(data.newPet);
+
+      setSubmitState("success");
       alert("Mascota registrada con éxito.");
       setFormData({
         name: "",
@@ -75,6 +85,7 @@ export function useRegisterPet(onClose: () => void) {
       });
       onClose();
     } catch (error) {
+      setSubmitState("error");
       console.error("Error al registrar mascota:", error);
 
       if (axios.isAxiosError(error)) {

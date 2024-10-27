@@ -8,20 +8,22 @@ import {
 } from "../Form/Form";
 import { PetTypeE } from "@/types/pet";
 import { useRegisterPet } from "./registerPet.hook";
+import { InfoPet } from "@adopcion/types";
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  addPet: (pet: InfoPet) => void;
 }
 
-export default function RegisterPet({ open, onClose }: Props) {
+export default function RegisterPet({ open, onClose, addPet }: Props) {
   const {
     formData,
     handleInputChange,
     setFormData,
     submitState,
     handleSubmit,
-  } = useRegisterPet(onClose);
+  } = useRegisterPet(onClose, addPet);
 
   return (
     <Modal open={open} onClose={onClose}>

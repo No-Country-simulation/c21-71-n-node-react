@@ -59,6 +59,7 @@ export default function ShelterPage() {
       <RegisterPet
         open={registerPetOpen}
         onClose={() => setRegisterPetOpen(false)}
+        addPet={(pet) => setPets((prev) => [...prev, pet])}
       />
 
       <Box
