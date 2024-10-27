@@ -10,6 +10,7 @@ export function useShelter() {
   const [pets, setPets] = useState<InfoPetWithId[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedPet, setSelectedPet] = useState<InfoPetWithId | null>(null);
+  const [openUpdateForm, setOpenUpdateForm] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -71,5 +72,8 @@ export function useShelter() {
     selectedPet,
     setSelectedPet,
     deletePet,
+    openUpdateForm,
+    setOpenUpdateForm,
+    getData,
   };
 }

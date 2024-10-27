@@ -4,6 +4,8 @@ import { Add } from "@mui/icons-material";
 import RegisterPet from "@/components/ShelterDashboard/RegisterPet";
 import Gallery from "@/components/Gallery/Gallery";
 import { useShelter } from "./shelter.hook";
+import { ActionButton } from "@/components/Gallery/ActionButton";
+import { UpdatePet } from "@/components/ShelterDashboard/UpdatePet";
 
 export default function ShelterPage() {
   const {
@@ -15,6 +17,9 @@ export default function ShelterPage() {
     selectedPet,
     setSelectedPet,
     deletePet,
+    openUpdateForm,
+    setOpenUpdateForm,
+    getData,
   } = useShelter();
 
   return (
@@ -59,22 +64,29 @@ export default function ShelterPage() {
           setSelectedPet={setSelectedPet}
           modalActions={
             <>
-              <Button
+              <ActionButton
+                onClick={() => setOpenUpdateForm(true)}
+                text="Actualizar"
+                bgColor="#e47116"
+                hoverBgColor="#c4530a"
+              />
+              <ActionButton
                 onClick={deletePet}
-                variant="contained"
-                color="primary"
-                sx={{
-                  m: 2,
-                  backgroundColor: "#E41616FF",
-                  "&:hover": { backgroundColor: "#E41616FF" },
-                }}
-              >
-                Eliminar
-              </Button>
+                text="Eliminar"
+                bgColor="#E41616FF"
+                hoverBgColor="#DF2F2FFF"
+              />
             </>
           }
         />
       </Box>
+
+      <UpdatePet
+        open={openUpdateForm}
+        getData={getData}
+        onClose={() => setOpenUpdateForm(false)}
+        initial={selectedPet}
+      />
     </Container>
   );
 }

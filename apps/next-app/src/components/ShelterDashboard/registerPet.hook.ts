@@ -40,6 +40,7 @@ export function useRegisterPet(
       !formData.name.trim() ||
       !formData.description.trim() ||
       !formData.type.trim() ||
+      !formData.age.trim() ||
       formData.images.length === 0
     ) {
       alert("Todos los campos son obligatorios.");

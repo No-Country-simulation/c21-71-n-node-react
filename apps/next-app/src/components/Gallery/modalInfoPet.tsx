@@ -1,6 +1,7 @@
 import { InfoPetWithId } from "@adopcion/types";
-import { Box, Button, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { CustomSlider } from "./slider";
+import { ActionButton } from "./ActionButton";
 
 interface Props {
   open: boolean;
@@ -52,19 +53,13 @@ export function ModalInfoPet({
             </Typography>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               {children}
-              <Button
+              <ActionButton
                 onClick={handleClose}
-                variant="contained"
-                color="secondary"
-                sx={{
-                  m: 2,
-                  backgroundColor: "#f0f0f0",
-                  color: "#333",
-                  "&:hover": { backgroundColor: "#e0e0e0" },
-                }}
-              >
-                Cerrar
-              </Button>
+                text="Cerrar"
+                bgColor="#f0f0f0"
+                color="#333"
+                hoverBgColor="#e0e0e0"
+              />
             </Box>
           </Box>
         )}

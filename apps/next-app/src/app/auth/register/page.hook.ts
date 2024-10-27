@@ -99,10 +99,9 @@ export function usePage() {
       .then(function (response) {
         const { token } = response.data;
         setToken(token);
-        setRequestState("success");
         setFormData(initialFormState);
-        alert("Registro de usuario exitoso");
         const data = jwtDecode<{ email: string; roleId: number }>(token);
+        setRequestState("success");
         if (data.roleId === 2) {
           router.push("/adoption");
           return;

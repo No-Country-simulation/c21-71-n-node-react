@@ -4,8 +4,8 @@ import React from "react";
 import styles from "@/app/page.module.css";
 import Hero from "@/components/Hero/Hero";
 import { usePage } from "./page.hooks";
-import { Button } from "@mui/material";
 import Gallery from "@/components/Gallery/Gallery";
+import { ActionButton } from "@/components/Gallery/ActionButton";
 
 export default function Dashboard() {
   const {
@@ -41,18 +41,12 @@ export default function Dashboard() {
           setSelectedPet={setSelectedPet}
           modalActions={
             <>
-              <Button
+              <ActionButton
                 onClick={handleAdopt}
-                variant="contained"
-                color="primary"
-                sx={{
-                  m: 2,
-                  backgroundColor: "#e47116",
-                  "&:hover": { backgroundColor: "#c4530a" },
-                }}
-              >
-                Adoptar!
-              </Button>
+                text="Adoptar!"
+                bgColor="#e47116"
+                hoverBgColor="#c4530a"
+              />
             </>
           }
         />

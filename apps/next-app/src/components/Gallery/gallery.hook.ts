@@ -1,6 +1,6 @@
 import { InfoPetWithId } from "@adopcion/types";
 import { SelectChangeEvent } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useGallery(
   pets: InfoPetWithId[],
@@ -15,10 +15,14 @@ export function useGallery(
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
     setSelectedPet(null);
-  };
+  }, [setSelectedPet]);
+
+  useEffect(() => {
+    handleClose();
+  }, [pets, handleClose]);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
     setFilter(event.target.value as string);

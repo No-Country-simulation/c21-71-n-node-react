@@ -1,14 +1,8 @@
-import { Container, MenuItem, Modal } from "@mui/material";
-import {
-  CustomForm,
-  CustomSelector,
-  CustomSubmitButton,
-  CustomTextField,
-  ImageUpload,
-} from "../Form/Form";
-import { PetTypeE } from "@/types/pet";
+import { Container, Modal } from "@mui/material";
+import { CustomForm, CustomSubmitButton, ImageUpload } from "../Form/Form";
 import { useRegisterPet } from "./registerPet.hook";
 import { InfoPetWithId } from "@adopcion/types";
+import { CommonFields } from "./commonFields";
 
 interface Props {
   open: boolean;
@@ -29,39 +23,9 @@ export default function RegisterPet({ open, onClose, addPet }: Props) {
     <Modal open={open} onClose={onClose}>
       <Container sx={{ maxHeight: "100vh", overflowY: "auto" }}>
         <CustomForm title="Registra tu mascota">
-          <CustomTextField
-            label="Nombre de la mascota"
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-          />
-          <CustomSelector<string>
-            name="type"
-            label="Tipo de mascota"
+          <CommonFields
             handleInputChange={handleInputChange}
-            value={formData.type}
-          >
-            <MenuItem value="" disabled>
-              Selecciona el tipo de mascota
-            </MenuItem>
-            <MenuItem value={PetTypeE.DOG}>Perro</MenuItem>
-            <MenuItem value={PetTypeE.CAT}>Gato</MenuItem>
-            <MenuItem value={PetTypeE.OTHER}>Otro</MenuItem>
-          </CustomSelector>
-          <CustomTextField
-            label="Edad de la mascota"
-            type="text"
-            name="age"
-            value={formData.age}
-            onChange={handleInputChange}
-          />
-          <CustomTextField
-            label="Descripción"
-            type="text"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
+            formData={formData}
           />
           <ImageUpload
             onChange={(newFiles) =>
