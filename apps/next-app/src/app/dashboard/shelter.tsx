@@ -1,40 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Button, Container } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import RegisterPet from "@/components/ShelterDashboard/RegisterPet";
-import axios from "axios";
-import { backendURL } from "@/config";
-import { useRouter } from "next/navigation";
-import { InfoPet } from "@adopcion/types";
-import Galery from "@/components/Galery/Galery";
+import Gallery from "@/components/Gallery/Gallery";
+import { useShelter } from "./shelter.hook";
+import { ActionButton } from "@/components/Gallery/ActionButton";
+import { UpdatePet } from "@/components/ShelterDashboard/UpdatePet";
 
 export default function ShelterPage() {
-  const [registerPetOpen, setRegisterPetOpen] = useState(false);
-  const [pets, setPets] = useState<InfoPet[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = localStorage.getItem("pr-ado--token");
-
-    if (!token) {
-      router.push("/auth/login");
-      return;
-    }
-
-    (async () => {
-      try {
-        const response = await axios.get(`${backendURL}/pets-by-shelter`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setPets(response.data.pets as InfoPet[]);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching pets data:", error);
-        setLoading(false);
-      }
-    })();
-  }, [router]);
+  const {
+    setRegisterPetOpen,
+    registerPetOpen,
+    setPets,
+    loading,
+    pets,
+    selectedPet,
+    setSelectedPet,
+    deletePet,
+    openUpdateForm,
+    setOpenUpdateForm,
+    getData,
+  } = useShelter();
 
   return (
     <Container
@@ -59,6 +45,7 @@ export default function ShelterPage() {
       <RegisterPet
         open={registerPetOpen}
         onClose={() => setRegisterPetOpen(false)}
+        addPet={(pet) => setPets((prev) => [...prev, pet])}
       />
 
       <Box
@@ -67,11 +54,39 @@ export default function ShelterPage() {
         alignItems="center"
         width="100%"
         flexDirection="column"
-        gap={10}
+        gap={4}
         marginBottom={4}
       >
-        <Galery loading={loading} pets={pets} />
+        <Gallery
+          loading={loading}
+          pets={pets}
+          selectedPet={selectedPet}
+          setSelectedPet={setSelectedPet}
+          modalActions={
+            <>
+              <ActionButton
+                onClick={() => setOpenUpdateForm(true)}
+                text="Actualizar"
+                bgColor="#e47116"
+                hoverBgColor="#c4530a"
+              />
+              <ActionButton
+                onClick={deletePet}
+                text="Eliminar"
+                bgColor="#E41616FF"
+                hoverBgColor="#DF2F2FFF"
+              />
+            </>
+          }
+        />
       </Box>
+
+      <UpdatePet
+        open={openUpdateForm}
+        getData={getData}
+        onClose={() => setOpenUpdateForm(false)}
+        initial={selectedPet}
+      />
     </Container>
   );
 }

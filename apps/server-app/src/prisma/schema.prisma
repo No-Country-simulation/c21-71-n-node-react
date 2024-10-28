@@ -39,9 +39,10 @@ model Shelter {
 model Pet {
   id          Int     @id @default(autoincrement())
   name        String?
+  age         String @default(value:"")
   description String
   type        String
   imageUrl    Json
-  shelter     Shelter @relation(fields: [shelterId], references: [id],onDelete: Cascade)
+  shelter     Shelter @relation(fields: [shelterId], references: [id], onDelete: Cascade)
   shelterId   Int
 }

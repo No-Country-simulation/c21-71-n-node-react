@@ -6,6 +6,7 @@ import { useEffect, useState, ComponentType } from "react";
 import { backendURL } from "@/config";
 import NotAuthenticated from "../NotAuthenticated/NotAuthenticated";
 import Loader from "../Loader/Loader";
+import { getToken } from "@/utils/token";
 
 export default function IsAuth(WrappedComponent: ComponentType): ComponentType {
   return function AuthenticatedComponent(props: object) {
@@ -15,7 +16,7 @@ export default function IsAuth(WrappedComponent: ComponentType): ComponentType {
 
     useEffect(() => {
       document.getElementsByTagName("body")[0].classList.add(styles.page);
-      const token = localStorage.getItem("pr-ado--token");
+      const token = getToken();
 
       if (!token) {
         setIsAuthenticated(false);

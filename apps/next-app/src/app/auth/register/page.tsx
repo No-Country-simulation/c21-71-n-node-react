@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import { RoleE } from "@/types/roles";
 import {
   CustomCallAction,
   CustomForm,
+  CustomSelector,
   CustomSubmitButton,
   CustomTextField,
 } from "@/components/Form/Form";
@@ -16,24 +17,18 @@ export default function AuthUserRegister() {
 
   return (
     <CustomForm title="Registro de Usuario">
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel id="role">
-          ¿Cuál es tu rol en el proceso de adopción?
-        </InputLabel>
-        <Select
-          name="role"
-          id="role"
-          value={formData.role}
-          onChange={handleInputChange}
-          label="¿Cuál es tu rol en el proceso de adopción?"
-        >
-          <MenuItem value="" disabled>
-            Selecciona tu rol
-          </MenuItem>
-          <MenuItem value={RoleE.ADOPTER}>Adoptante</MenuItem>
-          <MenuItem value={RoleE.SHELTER}>Refugio</MenuItem>
-        </Select>
-      </FormControl>
+      <CustomSelector<string>
+        name="role"
+        label="¿Cuál es tu rol en el proceso de adopción?"
+        handleInputChange={handleInputChange}
+        value={formData.role}
+      >
+        <MenuItem value="" disabled>
+          Selecciona tu rol
+        </MenuItem>
+        <MenuItem value={RoleE.ADOPTER}>Adoptante</MenuItem>
+        <MenuItem value={RoleE.SHELTER}>Refugio</MenuItem>
+      </CustomSelector>
 
       {formData.role === "ADOPTER" ? (
         <>

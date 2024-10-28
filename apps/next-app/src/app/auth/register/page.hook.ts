@@ -6,6 +6,7 @@ import { RoleE, RoleT } from "@/types/roles";
 import { useRouter } from "next/navigation";
 import { CustomSubmitButtonStateT } from "@/components/Form/Form";
 import { jwtDecode } from "jwt-decode";
+import { setToken } from "@/utils/token";
 
 type FormData = {
   role: RoleT;
@@ -97,11 +98,10 @@ export function usePage() {
       .post(`${backendURL}/register`, data)
       .then(function (response) {
         const { token } = response.data;
-        localStorage.setItem("pr-ado--token", token);
-        setRequestState("success");
+        setToken(token);
         setFormData(initialFormState);
-        alert("Registro de usuario exitoso");
         const data = jwtDecode<{ email: string; roleId: number }>(token);
+        setRequestState("success");
         if (data.roleId === 2) {
           router.push("/adoption");
           return;

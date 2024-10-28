@@ -7,15 +7,16 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import ShelterPage from "./shelter";
+import { getToken } from "@/utils/token";
 
 function DashboardPage() {
   const router = useRouter();
   const [role, setRole] = useState<RoleT | null>(null);
 
   useEffect(() => {
-    const token: string | null = localStorage.getItem("pr-ado--token");
+    const token = getToken();
 
-    if (token === null) {
+    if (!token) {
       router.push("/auth/login");
       return;
     }

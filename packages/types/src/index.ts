@@ -41,6 +41,10 @@ export interface InfoPet{
   age:string
 }
 
+export interface InfoPetWithId extends InfoPet{
+  id: number
+}
+
 export interface UpdateInfoPet{
   infoPet:{
     id:number

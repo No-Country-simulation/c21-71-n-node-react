@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomSubmitButtonStateT } from "@/components/Form/Form";
 import { jwtDecode } from "jwt-decode";
+import { setToken } from "@/utils/token";
 
 type FormData = {
   email: string;
@@ -46,11 +47,10 @@ export function usePage() {
       })
       .then(function (response) {
         const { token } = response.data;
-        localStorage.setItem("pr-ado--token", token);
-        setRequestState("success");
+        setToken(token);
         setFormData(initialFormState);
-        alert("Inicio de sesión exitoso");
         const data = jwtDecode<{ email: string; roleId: number }>(token);
+        setRequestState("success");
         if (data.roleId === 2) {
           router.push("/adoption");
           return;
