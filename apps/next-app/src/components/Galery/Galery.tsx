@@ -246,7 +246,7 @@ const Galery = ({loading, pets}: Props) => {
                   </div>
                 ))}
               </Slider>
-              <Typography variant="h4" sx={{ color: "#194143" }}>
+              <Typography variant="h4" sx={{ color: "#194143", mt:5 }}>
                 {selectedPet.name || "Nombre no disponible"}
               </Typography>
               <Typography variant="h6" sx={{ color: "#194143" }} mt={2}>

@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from 'next/navigation';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -25,6 +25,18 @@ export default function Navbar() {
     const router = useRouter();
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        // Comprueba si el token está presente en el localStorage
+        setIsLoggedIn(!!localStorage.getItem('pr-ado--token'));
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('pr-ado--token'); // Elimina el token
+        setIsLoggedIn(false); // Actualiza el estado de logueo
+        router.push('/'); // Redirige a la página principal u otra que prefieras
+    };
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -130,11 +142,18 @@ export default function Navbar() {
                                 key={page.name}
                                 onClick={()=>handleCloseNavMenu(page.path)}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
-                                role='link'
                             >
                                 {page.name}
                             </Button>
                         ))}
+                         {isLoggedIn && (
+                            <Button
+                                onClick={handleLogout}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Cerrar sesión
+                            </Button>
+                        )}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         <Menu
