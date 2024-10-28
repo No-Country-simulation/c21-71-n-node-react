@@ -1,5 +1,5 @@
 import { Container, Modal } from "@mui/material";
-import { CustomForm, CustomSubmitButton, ImageUpload } from "../Form/Form";
+import { CustomForm, CustomSubmitButton } from "../Form/Form";
 import { useRegisterPet } from "./registerPet.hook";
 import { InfoPetWithId } from "@adopcion/types";
 import { CommonFields } from "./commonFields";
@@ -25,14 +25,8 @@ export default function RegisterPet({ open, onClose, addPet }: Props) {
         <CustomForm title="Registra tu mascota">
           <CommonFields
             handleInputChange={handleInputChange}
+            setFormData={setFormData}
             formData={formData}
-          />
-          <ImageUpload
-            onChange={(newFiles) =>
-              setFormData((prev) => {
-                return { ...prev, images: newFiles };
-              })
-            }
           />
           <CustomSubmitButton
             text="Registrar Mascota"

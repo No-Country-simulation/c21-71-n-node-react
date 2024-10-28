@@ -12,8 +12,13 @@ interface Props {
 }
 
 export function UpdatePet({ initial, open, onClose, getData }: Props) {
-  const { formData, submitState, handleInputChange, handleSubmit } =
-    useUpdatePet(initial, getData, onClose);
+  const {
+    formData,
+    setFormData,
+    submitState,
+    handleInputChange,
+    handleSubmit,
+  } = useUpdatePet(initial, getData, onClose);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -21,6 +26,7 @@ export function UpdatePet({ initial, open, onClose, getData }: Props) {
         <CustomForm title="Actualiza tu mascota">
           <CommonFields
             handleInputChange={handleInputChange}
+            setFormData={setFormData}
             formData={formData}
           />
           <CustomSubmitButton

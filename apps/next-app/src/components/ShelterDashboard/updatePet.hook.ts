@@ -6,14 +6,14 @@ import { backendURL } from "@/config";
 import { getToken } from "@/utils/token";
 import { InfoPetWithId } from "@adopcion/types";
 import { useRouter } from "next/navigation";
+import { FormDataI } from "./registerPet.hook";
 
-const InitialFormData: InfoPetWithId = {
-  id: -1,
+const InitialFormData: FormDataI = {
   name: "",
   type: "",
   age: "",
   description: "",
-  imageUrl: [],
+  images: [],
 };
 
 export function useUpdatePet(
@@ -21,7 +21,7 @@ export function useUpdatePet(
   getData: () => Promise<void>,
   onClose: () => void
 ) {
-  const [formData, setFormData] = useState<InfoPetWithId>(InitialFormData);
+  const [formData, setFormData] = useState<FormDataI>(InitialFormData);
   const [submitState, setSubmitState] =
     useState<CustomSubmitButtonStateT>("initial");
 
@@ -29,7 +29,14 @@ export function useUpdatePet(
   const router = useRouter();
 
   useEffect(() => {
-    if (initial) setFormData(initial);
+    if (initial)
+      setFormData({
+        name: initial.name,
+        type: initial.type,
+        description: initial.description,
+        age: initial.age,
+        images: [],
+      });
   }, [initial]);
 
   function handleInputChange(
@@ -40,10 +47,7 @@ export function useUpdatePet(
   }
 
   const handleSubmit = async () => {
-    if (formData.id === -1) {
-      alert("Oops. Ocurrió un error.");
-      return;
-    }
+    if (!initial) return;
 
     if (
       !formData.name.trim() ||
@@ -55,6 +59,11 @@ export function useUpdatePet(
       return;
     }
 
+    if (formData.images.length > 3) {
+      alert("Debe haber como máximo 3 imagenes");
+      return;
+    }
+
     if (!token) {
       router.push("/auth/login");
       return;
@@ -62,19 +71,23 @@ export function useUpdatePet(
 
     setSubmitState("loading");
 
-    const data = {
-      id: formData.id,
-      infoPet: {
-        name: formData.name,
-        type: formData.type,
-        age: formData.age,
-        description: formData.description,
-      },
-    };
+    const formDataToSend = new FormData();
+    formDataToSend.append("id", initial.id.toString());
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("type", formData.type);
+    formDataToSend.append("age", formData.age);
+
+    formData.images.forEach((image) => {
+      formDataToSend.append("image", image);
+    });
 
     try {
-      await axios.put(`${backendURL}/pet`, data, {
-        headers: { Authorization: `Bearer ${token}` },
+      await axios.put(`${backendURL}/pet`, formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
       setSubmitState("success");
       await getData();
@@ -89,6 +102,7 @@ export function useUpdatePet(
 
   return {
     formData,
+    setFormData,
     submitState,
     handleInputChange,
     handleSubmit,

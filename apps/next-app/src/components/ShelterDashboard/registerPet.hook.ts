@@ -6,7 +6,7 @@ import axios from "axios";
 import { InfoPetWithId } from "@adopcion/types";
 import { getToken } from "@/utils/token";
 
-interface FormDataI {
+export interface FormDataI {
   name: string;
   description: string;
   type: string;
