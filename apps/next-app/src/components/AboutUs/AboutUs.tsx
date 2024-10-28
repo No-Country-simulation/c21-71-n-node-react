@@ -28,7 +28,7 @@ export default function AboutUs() {
                     />
                 </Grid>
             </Grid>
-            <Grid container spacing={2} size={{ xs: 12 }} sx={{ alignContent: "end", marginTop: "80px" }} className={styles.info_bubbles}>
+            <Grid container spacing={2} size={{ xs: 12 }} sx={{ alignContent: "end" }} className={styles.info_bubbles}>
                 <h2 className={styles.subtitle}>Nuestros Valores</h2>
                 <Grid size={{ xs: 12 }}>
                     <div className={styles.info}>
