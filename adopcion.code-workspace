@@ -12,5 +12,7 @@
             "name": "server-app",
             "path": "./apps/server-app"
         }
-    ]
+    ],
+    "settings": {
+    }
 }

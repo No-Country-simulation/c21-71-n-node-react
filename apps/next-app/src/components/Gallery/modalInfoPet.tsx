@@ -40,7 +40,7 @@ export function ModalInfoPet({
               pet={selectedPet}
               handleOpen={() => {}}
             />
-            <Typography variant="h4" sx={{ color: "#194143" }}>
+            <Typography variant="h4" sx={{ color: "#194143", mt:3 }}>
               {selectedPet.name}
             </Typography>
             {selectedPet.age ? (
