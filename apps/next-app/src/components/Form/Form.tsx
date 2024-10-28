@@ -4,6 +4,9 @@ import {
   Box,
   Button,
   Container,
+  FormControl,
+  InputLabel,
+  Select,
   SelectChangeEvent,
   TextField,
   Typography,
@@ -47,6 +50,16 @@ interface CustomCallActionProps {
 
 interface ImageUploadProps {
   onChange: (files: File[]) => void;
+}
+
+interface CustomSelectorProps<T> {
+  children: React.ReactNode;
+  label: string;
+  name: string;
+  handleInputChange: (
+    e: SelectChangeEvent<string> | React.ChangeEvent<HTMLInputElement>
+  ) => void;
+  value: T;
 }
 
 export function CustomForm(props: CustomFormProps) {
@@ -124,6 +137,7 @@ export function ImageUpload({ onChange }: ImageUploadProps) {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = event.target.files;
+
     if (selectedFiles) {
       const newFiles = Array.from(selectedFiles).filter((file) =>
         file.type.startsWith("image/")
@@ -184,5 +198,28 @@ export function ImageUpload({ onChange }: ImageUploadProps) {
         ))}
       </Box>
     </Box>
+  );
+}
+
+export function CustomSelector<T>({
+  children,
+  label,
+  name,
+  handleInputChange,
+  value,
+}: CustomSelectorProps<T>) {
+  return (
+    <FormControl fullWidth sx={{ mb: 2 }}>
+      <InputLabel id={name}>{label}</InputLabel>
+      <Select
+        name={name}
+        id={name}
+        value={value as string}
+        onChange={handleInputChange}
+        label={label}
+      >
+        {children}
+      </Select>
+    </FormControl>
   );
 }

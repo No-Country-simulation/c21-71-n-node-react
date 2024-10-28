@@ -132,6 +132,7 @@ export const updatePetSchema=z.object({
   id:z.number(),
   infoPet:z.object({
     name:z.string().optional(),
+  age:z.string().optional(),
   description:z.string().optional(),
   type:z.string().optional(),
   imageUrl:z.string().array().optional(),
