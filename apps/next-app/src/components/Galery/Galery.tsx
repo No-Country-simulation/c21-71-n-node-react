@@ -185,7 +185,7 @@ const Galery = ({loading, pets}: Props) => {
                           <div key={idx}>
                             <CardMedia
                               component="img"
-                              height="200"
+                              height="350"
                               image={image}
                               alt={`${pet.name || "Mascota"} - ${idx + 1}`}
                               onClick={() => handleOpen(pet)}
@@ -235,10 +235,13 @@ const Galery = ({loading, pets}: Props) => {
                   <div key={idx}>
                     <CardMedia
                       component="img"
-                      height="200"
+                      height="300"
                       image={image}
                       alt={`${selectedPet.name || "Mascota"} - ${idx + 1}`}
-                      sx={{ borderRadius: 10 }}
+                      sx={{
+                        borderRadius: 2,
+                        objectFit: "contain", 
+                      }}
                     />
                   </div>
                 ))}
