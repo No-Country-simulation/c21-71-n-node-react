@@ -123,6 +123,7 @@ export type InfoPet = z.infer<typeof infoPetSchema>;
 export const updatePetSchema = z.object({
   id: z.number(),
 
+
   name: z.string().optional(),
   age: z.string().optional(),
   description: z.string().optional(),
