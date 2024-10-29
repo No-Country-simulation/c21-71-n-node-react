@@ -25,7 +25,7 @@ export const createPetService = async ({
   age:string;
   description: string;
   type: string;
-  imageUrl: string[];
+  imageUrl: {}[];
   shelterId: number;
 }) => {
   return await prisma.pet.create({
@@ -48,13 +48,14 @@ export const findPetByIdService = async (id: number) => {
   });
 };
 
-export const updatePetService = async ({ id, infoPet: { name, description, type, imageUrl } }: UpdateInfoPet) => {
+export const updatePetService = async ({ id,  name,age, description, type, imageUrl  }: UpdateInfoPet) => {
   return await prisma.pet.update({
     where: {
       id,
     },
     data: {
       name,
+      age,
       description,
       type,
       imageUrl,
