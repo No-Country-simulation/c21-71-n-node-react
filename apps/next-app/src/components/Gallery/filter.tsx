@@ -6,6 +6,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import { useTheme } from "next-themes";
 
 interface Props {
   filter: string;
@@ -13,6 +14,10 @@ interface Props {
 }
 
 export function FilterPets({ filter, handleFilterChange }: Props) {
+  const {theme} = useTheme(); 
+
+  const color = theme === "dark" ? "#FFFFFF" : "#000000";
+
   return (
     <Box
       sx={{
@@ -21,7 +26,6 @@ export function FilterPets({ filter, handleFilterChange }: Props) {
         alignItems: "center",
         padding: "2vh",
         borderRadius: 8,
-        boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
         maxWidth: "40vw",
         margin: "0 auto",
       }}
@@ -29,15 +33,15 @@ export function FilterPets({ filter, handleFilterChange }: Props) {
       <FormControl
         variant="outlined"
         fullWidth
-        sx={{ minWidth: 220, borderRadius: 5, color: "white" }}
+        sx={{ minWidth: 220, borderRadius: 5, color: `${color}` }}
       >
         <InputLabel
           id="filter-label"
           sx={{
             borderRadius: 5,
-            borderColor: "white",
-            color: "white",
-            "&.Mui-focused": { color: "white" },
+            borderColor: `${color}`,
+            color: `${color}`,
+            "&.Mui-focused": { color: `${color}` },
           }}
         >
           Filtrar por Tipo
@@ -48,12 +52,12 @@ export function FilterPets({ filter, handleFilterChange }: Props) {
           onChange={handleFilterChange}
           label="Filtrar por Tipo"
           sx={{
-            color: "white",
+            color: `${color}`,
             borderRadius: 5,
             "&.MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "white" },
-              "&:hover fieldset": { borderColor: "white" },
-              "&.Mui-focused fieldset": { borderColor: "white" },
+              "& fieldset": { borderColor: `${color}` },
+              "&:hover fieldset": { borderColor: `${color}` },
+              "&.Mui-focused fieldset": { borderColor: `${color}` },
             },
           }}
           MenuProps={{ PaperProps: { sx: { borderRadius: 5 } } }}
