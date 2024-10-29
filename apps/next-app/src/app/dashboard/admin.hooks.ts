@@ -33,7 +33,7 @@ export function useAdmin() {
       ]);
 
       setUsers(userResponse.data.users as IUserResponse[]);
-      setAllPets(petsResponse.data.petslist as InfoPetWithId[]);
+      setAllPets(petsResponse.data.petsList as InfoPetWithId[]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching data:", error.response?.data || error.message);
@@ -74,7 +74,7 @@ export function useAdmin() {
     }
   };
 
-  const deletePet = async () => {
+  const deletePet = async (pet: InfoPetWithId) => {
     const token = getToken();
     if (!selectedPet) return;
 
@@ -85,7 +85,7 @@ export function useAdmin() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`${backendURL}/pet/${selectedPet.id}`, {
+      await axios.delete(`${backendURL}/pet/${pet.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       await getData();
@@ -110,6 +110,6 @@ export function useAdmin() {
     allPets,
     selectedPet,
     setSelectedPet,
-    deletePet, // Asegúrate de retornar deletePet aquí
+    deletePet, 
   };
 }
