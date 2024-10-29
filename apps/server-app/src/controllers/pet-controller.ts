@@ -10,8 +10,9 @@ import {
 import { InfoPet, UpdateInfoPet } from '../../types';
 import { MyRequest } from '../../types-back';
 import { findShelterByEmailService } from '../services/shelter-service';
-import { uploadImgsToCloudinary } from '../services/cloudinary-service';
+import { updateImgCloudinaryService, uploadImgsToCloudinary } from '../services/cloudinary-service';
 import fs from 'fs'
+
 
 
 export const getPets = async (_req: MyRequest, res: Response) => {
@@ -60,6 +61,7 @@ export const createPet = async (req: MyRequest, res: Response) => {
       res.status(400).json({ ok: false, error: 'email address not provided' });
     }
   } catch (error) {
+    // Todo revisar esto
     res.status(403).json({ ok: false, error });
   }
 };
@@ -78,6 +80,9 @@ export const findPetById = async (req: Request, res: Response) => {
     res.status(401).json({ ok: false, error });
   }
 };
+
+
+
 
 export const getPetsByShelter = async (req: MyRequest, res: Response) => {
   const { email, roleId } = req;
@@ -105,17 +110,44 @@ export const getPetsByShelter = async (req: MyRequest, res: Response) => {
 export const updatePet = async (req: MyRequest, res: Response) => {
   try {
     const { email, roleId } = req;
+    
     if (email) {
-      const {
-        id,
-        infoPet: { name, description, type, imageUrl },
-      }: UpdateInfoPet = req.body;
-      const findShelterIdPet = await findPetByIdService(id);
-      //findShelter?.shelterId
+      const {id,name,age, description, type }: UpdateInfoPet = req.body;
+      const tranformId=Number(id)
+
+      const findShelterIdPet = await findPetByIdService(tranformId);
+      
+
+      
       const findShelter = await findShelterByEmailService(email);
       if (findShelterIdPet?.shelterId === findShelter?.id || roleId === 1) {
-        const changeInfoPet = await updatePetService({ id, infoPet: { name, description, type, imageUrl } });
+        if (req.files){
+          
+          
+          
+        const data=findShelterIdPet?.imageUrl as {url:string,public_id:string}[]
+        const files=req.files as Express.Multer.File[]
+        const imgs = files.map((file) => file.path);
+        const imageUrl= await updateImgCloudinaryService(imgs,data)
+
+        imgs.forEach(filePath => {
+          fs.unlink(filePath, (err) => {
+            if (err) {
+              console.error(`Error deleting file ${filePath}:`, err);
+            }
+          });
+        });
+        const changeInfoPet = await updatePetService({ id:tranformId,   name,age, description, type, imageUrl  });
+
+
         res.status(200).json({ ok: true, changeInfoPet });
+        }else{
+          const changeInfoPet = await updatePetService({ id,  name,age, description, type   });
+        res.status(200).json({ ok: true, changeInfoPet });
+        }
+        
+        
+        
       } else {
         res.status(401).json({ ok: false, error: 'unauthorized' });
       }
