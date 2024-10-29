@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { Box, Container, Drawer, List, ListItem, ListItemText, Typography } from "@mui/material";
 import UsersTable from "@/components/AdminDashboard/UsersTable";
 import PetsTable from "@/components/AdminDashboard/PetsTable";
+import { useAdmin } from "./admin.hooks";
 
 export default function AdminPage() {
   const [selectedSection, setSelectedSection] = useState<"Usuarios" | "Mascotas">("Usuarios");
+
+  const { users, loading: loadingUsers, deleteUser, setSelectedUser, allPets, loading, deletePet, setSelectedPet } = useAdmin();
 
   const handleSectionClick = (section: "Usuarios" | "Mascotas") => {
     setSelectedSection(section);
@@ -16,32 +19,31 @@ export default function AdminPage() {
       <Drawer
         variant="permanent"
         sx={{
+          width: 200,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
             width: 200,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: 200,
-              boxSizing: "border-box",
-              backgroundColor: "#135b5e", // Color de fondo del Drawer
-              color: "white", // Color del texto
-              position: "fixed", // Fija el Drawer
-              top: 87, // Ajusta para no pisar el Navbar (ajusta este valor según la altura de tu Navbar)
-              height: "calc(100vh - 87px)", // Asegura que ocupe toda la altura restante
-            },
-          }}
+            boxSizing: "border-box",
+            backgroundColor: "#135b5e",
+            color: "white",
+            position: "fixed",
+            top: { xs: 67, md: 87 },
+            height: { xs: "calc(100vh - 128px)", md: "calc(100vh - 148px)" },
+          },
+        }}
       >
         <List>
-            {["Usuarios", "Mascotas"].map((section) => (
-                <ListItem 
-                key={section} 
-                onClick={() => handleSectionClick(section as "Usuarios" | "Mascotas")} 
-                component="button" // Indica que el ListItem actúa como un botón
-                sx={{ textAlign: "left" }} // Ajusta el texto si es necesario
-                >
-                <ListItemText primary={section} />
-                </ListItem>
-            ))}
+          {["Usuarios", "Mascotas"].map((section) => (
+            <ListItem
+              key={section}
+              onClick={() => handleSectionClick(section as "Usuarios" | "Mascotas")}
+              component="button"
+              sx={{ textAlign: "left" }}
+            >
+              <ListItemText primary={section} />
+            </ListItem>
+          ))}
         </List>
-
       </Drawer>
 
       {/* Contenido */}
@@ -49,7 +51,21 @@ export default function AdminPage() {
         <Typography variant="h4" gutterBottom>
           {selectedSection}
         </Typography>
-        {selectedSection === "Usuarios" ? <UsersTable /> : <PetsTable />}
+        {selectedSection === "Usuarios" ? (
+          <UsersTable
+            users={users}
+            loading={loadingUsers}
+            onDeleteUser={deleteUser}
+            onSelectUser={setSelectedUser}
+          />
+        ) : (
+          <PetsTable
+            pets={allPets}
+            loading={loading}
+            onDeletePet={deletePet}
+            onSelectPet={setSelectedPet}
+          />
+        )}
       </Box>
     </Container>
   );

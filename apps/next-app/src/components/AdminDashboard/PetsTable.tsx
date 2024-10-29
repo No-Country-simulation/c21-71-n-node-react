@@ -1,39 +1,60 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { InfoPetWithId } from "@adopcion/types";
+import { Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@mui/material";
 
-interface Pet {
-  id: number;
-  name: string;
-  age: string;
+interface PetsTableProps {
+  pets: InfoPetWithId[];
+  loading: boolean;
+  onDeletePet: (pet: InfoPetWithId) => void;
+  onSelectPet: (pet: InfoPetWithId) => void;
 }
 
-const pets: Pet[] = [
-  { id: 1, name: "Fido", age: "2 años" },
-  { id: 2, name: "Max", age: "3 años" },
-  // Más mascotas o datos de una API
-];
+const PetsTable: React.FC<PetsTableProps> = ({ pets, loading, onDeletePet, onSelectPet }) => {
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-export default function PetsTable() {
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Nombre</TableCell>
-            <TableCell>Edad</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {pets.map((pet) => (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Nombre</TableCell>
+          <TableCell>Descripción</TableCell>
+          <TableCell>Tipo</TableCell>
+          <TableCell>Edad</TableCell>
+          <TableCell>Acciones</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {pets && pets.length > 0 ? (
+          pets.map((pet) => (
             <TableRow key={pet.id}>
-              <TableCell>{pet.id}</TableCell>
               <TableCell>{pet.name}</TableCell>
+              <TableCell>{pet.description}</TableCell>
+              <TableCell>{pet.type}</TableCell>
               <TableCell>{pet.age}</TableCell>
+              <TableCell>
+                <Button onClick={() => onSelectPet(pet)}>Editar</Button>
+                <Button onClick={() => onDeletePet(pet)} color="error">
+                  Eliminar
+                </Button>
+              </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={5} align="center">
+              No hay mascotas disponibles.
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
-}
+};
+
+export default PetsTable;

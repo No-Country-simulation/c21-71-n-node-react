@@ -1,39 +1,50 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { IUserResponse } from "@adopcion/types";
+import { Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@mui/material";
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
+interface UsersTableProps {
+  users: IUserResponse[];
+  loading: boolean;
+  onDeleteUser: (user: IUserResponse) => void;
+  onSelectUser: (user: IUserResponse) => void;
 }
 
-const users: User[] = [
-  { id: 1, name: "Juan", email: "juan@example.com" },
-  { id: 2, name: "Maria", email: "maria@example.com" },
-  // Más usuarios o datos de una API
-];
+const UsersTable: React.FC<UsersTableProps> = ({ users, loading, onDeleteUser, onSelectUser }) => {
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-export default function UsersTable() {
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Nombre</TableCell>
-            <TableCell>Email</TableCell>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Email</TableCell>
+          <TableCell>Nombre</TableCell>
+          <TableCell>Rol</TableCell>
+          <TableCell>Acciones</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {users.map((user) => (
+          <TableRow key={user.id}>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{`${user.firstname} ${user.lastname}`}</TableCell>
+            <TableCell>{user.roleId}</TableCell>
+            <TableCell>
+              <Button onClick={() => onSelectUser(user)}>Editar</Button>
+              <Button onClick={() => onDeleteUser(user)} color="error">
+                Eliminar
+              </Button>
+            </TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        ))}
+      </TableBody>
+    </Table>
   );
-}
+};
+
+export default UsersTable;
