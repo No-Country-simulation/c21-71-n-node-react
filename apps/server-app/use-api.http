@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
  "type":"shelter",
- "shelter":{
+ "user":{
   "shelter_name": "BerlinHappy",
    "email":"hector4@hector.com",
    "phone":"123123123",
@@ -32,11 +32,11 @@ POST  http://localhost:3001/login
 Content-Type: application/json
 
 {
-  "email":"hector4@hector.com",
+  "email":"hector5@hector.com",
   "password":"123123123"
 }
 
 
 ### Prueba de token
 GET http://localhost:3001/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMTQ3NzQzLCJleHAiOjE3MzA0MDY5NDN9._6t5FFa6_3juLBSUbHlTv8l8YYj8gZikfX4eFqEWkzc
