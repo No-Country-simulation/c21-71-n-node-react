@@ -75,7 +75,11 @@ export const createPet = async (req: MyRequest, res: Response) => {
 export const findPetById = async (req: Request, res: Response) => {
   try {
     const findPet = await findPetByIdService(Number(req.params['id']));
-    res.status(200).json({ ok: true, findPet });
+    if (findPet) {
+      res.status(200).json({ ok: true, findPet });
+    } else {
+      res.status(404).json({ ok: false, message: "No se encontró el recurso" });
+    }
   } catch (error) {
     res.status(401).json({ ok: false, error });
   }
@@ -160,8 +164,13 @@ export const updatePet = async (req: MyRequest, res: Response) => {
 export const deletePet = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params['id']);
-    const dropPet = await deletePetService(id);
-    res.status(200).json({ ok: true, message: 'The mascot was deleted', dropPet });
+    const validId = await findPetByIdService(id)
+    if (validId) {
+      const dropPet = await deletePetService(id);
+      res.status(200).json({ ok: true, message: 'The pet was deleted', dropPet })
+    } else {
+      res.status(404).json({ok:false, message:"No se encontró el recurso"})
+    }
   } catch (error) {
     res.status(400).json({ ok: false, error });
   }

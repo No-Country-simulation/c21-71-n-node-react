@@ -42,5 +42,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3Rvc
 }
 
 ### Elimina una Mascota --  token solo con role de shelter o admin
-DELETE http://localhost:3001/pet/1
+DELETE http://localhost:3001/pet/7
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMTQ3NzQzLCJleHAiOjE3MzA0MDY5NDN9._6t5FFa6_3juLBSUbHlTv8l8YYj8gZikfX4eFqEWkzc
