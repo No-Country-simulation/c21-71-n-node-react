@@ -40,14 +40,22 @@ const storage = multer.diskStorage({
   },
 });
 
+const storageUpdate=multer.diskStorage({
+  destination:'./updateloads',
+  filename: (_req:Request, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname); // Nombre único para cada archivo
+  }
+})
 const upload=multer({storage})
+
+const updateLoads=multer({storage:storageUpdate})
 
 // pets
 
 router.get('/pets', getPets)
 router.get('/pet/:id', verifyToken, findPetById)
 router.post('/pet', verifyToken, verifyRoleRefugio,upload.array("image", 3), createPet)
-router.put('/pet', verifyToken, verifyRoleRefugio, updatePet)
+router.put('/pet', verifyToken, verifyRoleRefugio,updateLoads.array("image", 3), updatePet)
 router.delete('/pet/:id', verifyToken, verifyRoleRefugio, deletePet)
 
 // Shelters 
