@@ -4,10 +4,129 @@ info:
   description: >-
     Esta es la documentacion de la API ustilizada para nuestra pagina web de
     adopcion de mascotas
+    
+    ### 
+    Contactos:
+           Matias Benitez: soporte@example.com
+           Héctor García: garcia17h@gmail.com
   version: 1.0.0
 security:
   - BearerAuth: []
 paths:
+  /users:
+    get:  
+      tags:
+        - user
+      summary: Finds all Users       //        administrator token required
+      security:
+        - BearerAuth: []
+      description: Retorna todos los usuarios existentes en el registro
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+                  
+        '401':
+          description: Unauthorized, administrator role required
+        '500':
+          description: Internal Server Error
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Find user by ID       //        administrator token required
+      security:
+        - BearerAuth: []
+      description: Returns a single user
+      parameters:
+        - name: id
+          in: path
+          description: id of pet to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - user
+      summary: Delete a user by ID        //        administrator token required
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: id of user to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  user_deleted:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
+  /user:
+    put:
+      tags:
+        - user
+      summary: Update a user       //       user/administrator token required
+      security:
+        - BearerAuth: []
+      description: Update a user
+      requestBody:
+        description: payload to edit a user
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateUser'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
   /pets:
     get:
       tags:
@@ -87,7 +206,7 @@ paths:
         - BearerAuth: []
       description: Update a pet
       requestBody:
-        description: Update a pet
+        description: update a pet
         content:
           multipart/form-data:
             schema:
@@ -135,12 +254,13 @@ paths:
           description: No token provided. // Unauthorized, shelter id does not match pet creator.
         '403':
           description: Unauthorized, roleId of the token does not have authorization for this transaction.
-
   /pet/{id}:
     get:
       tags:
         - pet
       summary: Find pet by ID       //       token required
+      security:
+        - BearerAuth: []
       description: Returns a single pet
       parameters:
         - name: id
@@ -149,7 +269,6 @@ paths:
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -157,10 +276,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/findPet'
+        '404':
+          description: The resource was not found
+        '401':
+          description: Internal Server Error
     delete:
       tags:
         - pet
       summary: Delete a pet by ID       //       shelter token required
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
@@ -168,7 +293,6 @@ paths:
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -182,8 +306,77 @@ paths:
           description: Internal Server Error.
         '403':
           description: Unauthorized, roleId of the token does not have authorization for this transaction.
-
+  /register:
+    post:
+      tags:
+        - auth
+      summary: user register
+      description: register a new user, depending on whether it is a shelter or adopter
+      requestBody:
+        description: required body according to type of record
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: ["adopter", "shelter"]
+                  description: El tipo de registro ("adopter" o "shelter").
+                user:
+                  type: object
+                  description: Datos del usuario a registrar.
+                  discriminator:
+                    propertyName: type
+                    mapping:
+                      adopter: '#/components/schemas/NewAdopter'
+                      shelter: '#/components/schemas/NewShelter'
+                  oneOf:
+                    - $ref: '#/components/schemas/NewAdopter'
+                    - $ref: '#/components/schemas/NewShelter'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shelterRegisterOk'
+        '400':
+          description: 'Existing user in the database // The property “type” was not found : is required'
+  /login: 
+    post:
+      tags:
+        - auth
+      summary: user login
+      description: Ruta para el login de los usuarios registrados
+      requestBody:
+        description: envio de email y contraseña del usuario
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: adopter@example.com
+                password: 
+                  type: string
+                  example: password123
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shelterRegisterOk'
+        '401':
+          description: invalid credentials
+        '404':
+          description: user not found
 tags:
+  - name: auth
+    description: Register and login operations
   - name: pet
     description: Everything about your Pets
   - name: user
@@ -197,6 +390,55 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    shelterRegisterOk:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        token:
+          type: string
+          description: jwt delivered
+          example: eyJhbGciOiJIUzI1NiIsInR5c...
+    
+    NewAdopter:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "adopter@example.com"
+        firstname:
+          type: string
+          example: "Juan"
+        lastname:
+          type: string
+          example: "Perez"
+        phone:
+          type: string
+          example: "+580123456789"
+        password:
+          type: string
+          format: password
+          example: "password123"
+
+    NewShelter:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "shelter@example.com"
+        shelter_name:
+          type: string
+          example: "Refugio Felino"
+        phone:
+          type: string
+          example: "+580123456789"
+        password:
+          type: string
+          format: password
+          example: "password123"
+      
     imageUrl:
       type: object
       properties:
@@ -252,6 +494,56 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Pet'
+    updateUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 16
+        payload:
+          type: object
+          properties:
+            email:
+              type: string
+              example: api@example.com
+            firstname:
+              type: string
+              example: Juan
+            lastname:
+              type: string
+              example: Perez
+            phone:
+              type: string
+              example: "123123123"
+            password:
+              type: string
+              example: example123
+              
+      
+    user: 
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: api@example.com
+        firstname:
+          type: string
+          example: Juan
+        lastname:
+          type: string
+          example: Perez
+        phone:
+          type: string
+          example: "123123123"
+        password:
+          type: string
+          example: $2a$10$kQWQzIY/hTeSaruF0HK7uuyFapSyx82ucuVDMe8CjywgrszBPffy2
+        roleId:
+          type: integer
+          example: 2
     Pet:
       type: object
       properties:

@@ -31,7 +31,7 @@ const options = {
             ],
             servers: [
                 {
-                    url: 'https://c21-71-n-node-react-production.up.railway.app/',
+                    url: 'http://localhost:${process.env.PORT}',
                     description: 'server deployed'
                 }
             ]
