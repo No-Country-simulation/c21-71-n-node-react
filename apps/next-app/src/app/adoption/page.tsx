@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import styles from "@/app/page.module.css";
 import Hero from "@/components/Hero/Hero";
 import { usePage } from "./page.hooks";
@@ -16,7 +15,10 @@ export default function Dashboard() {
     setSelectedPet,
     handleAdopt,
     scrollToGallery,
+    shelterInfo,
+    setShelterInfo
   } = usePage();
+
 
   return (
     <div
@@ -39,6 +41,8 @@ export default function Dashboard() {
           pets={pets}
           selectedPet={selectedPet}
           setSelectedPet={setSelectedPet}
+          shelterInfo = {shelterInfo}
+          setShelterInfo={setShelterInfo}
           modalActions={
             <>
               <ActionButton
