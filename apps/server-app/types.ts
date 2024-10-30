@@ -101,10 +101,10 @@ export const infoPetDataSchema = z.object({
   type: z.string(),
   
 });
-/* 
- export const infoPetDataImagesSchema=z.array(z.instanceof(Express.Multer.File[])).min(3,'Minimo de 3 archivos').max(3,'Maximo de 3 archivos')
+
+// export const infoPetDataImagesSchema=z.instanceof(Express.Multer.File)
  
-export type infoPetDataImages=z.infer<typeof infoPetDataImagesSchema> */
+//export type infoPetDataImages=z.infer<typeof infoPetDataImagesSchema> 
 
 export type InfoPetData = z.infer<typeof infoPetDataSchema>;
 
