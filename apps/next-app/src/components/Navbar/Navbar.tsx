@@ -14,8 +14,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
+import { getToken } from '@/utils/token';
+import axios from 'axios';
+import { backendURL } from '@/config';
 
-const pages = [
+let pages = [
     { name: 'Mascotas', path: '/adoption' },
     { name: 'Contacto', path: '/contacto' },
     { name: 'Nosotros', path: '/aboutus' }
@@ -28,8 +31,16 @@ export default function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        // Comprueba si el token está presente en el localStorage
-        setIsLoggedIn(!!localStorage.getItem('pr-ado--token'));
+        const token = getToken()
+
+        axios.get(`${backendURL}/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+            })
+            .then(() => {
+                pages = [{ name: 'Dashboard', path: '/dashboard' }, ...pages]
+                setIsLoggedIn(true)
+            })
+            .catch(() => setIsLoggedIn(false));
     }, []);
 
     const handleLogout = () => {
