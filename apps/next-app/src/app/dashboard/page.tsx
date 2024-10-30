@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import ShelterPage from "./shelter";
 import { getToken } from "@/utils/token";
+import AdminPage from "./AdminPage";
 
 function DashboardPage() {
   const router = useRouter();
@@ -29,7 +30,7 @@ function DashboardPage() {
   }, [router]);
 
   if (role === null) return <Loader />;
-  if (role === "ADMIN") return <div>ADMIN</div>;
+  if (role === "ADMIN") return <div><AdminPage /></div>;
   if (role === "SHELTER") return <ShelterPage />;
   return <div>ADOPTER</div>;
 }
