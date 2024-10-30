@@ -37,15 +37,21 @@ export interface InfoPet{
   name:string
   description:string
   type:string
-  imageUrl:string
+  imageUrl:string[]
+  age:string
+}
+
+export interface InfoPetWithId extends InfoPet{
+  id: number
 }
 
 export interface UpdateInfoPet{
-  id:number
   infoPet:{
+    id:number
     name?:string
-  description?:string
-  type?:string
-  imageUrl?:string
+    description?:string
+    type?:string
+    imageUrl?:string[]
+    age?:string
   }
 }

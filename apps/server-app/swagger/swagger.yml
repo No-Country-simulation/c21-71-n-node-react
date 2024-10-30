@@ -1,0 +1,290 @@
+openapi: 3.0.3
+info:
+  title: pet adoption
+  description: >-
+    Esta es la documentacion de la API ustilizada para nuestra pagina web de
+    adopcion de mascotas
+  version: 1.0.0
+security:
+  - BearerAuth: []
+paths:
+  /pets:
+    get:
+      tags:
+        - pet
+      summary: Finds all Pets
+      description: Retorna todas las mascotas existentes en el registro
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/petList'
+                  
+        '400':
+          description: Internal Server Error
+  /pet:
+    post:
+      tags:
+        - pet
+      summary: Add a new pet       //       shelter token required
+      security:
+        - BearerAuth: []
+      description: Add a new pet
+      requestBody:
+        description: Create a new pet
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: pet name
+                  example: Kira
+                description:
+                  type: string
+                  description: description of the pet
+                  example: Es una perrita muy juguetona
+                age:
+                  type: string
+                  description: pet age
+                  example: 4 años
+                type:
+                  type: string
+                  description: type of pet
+                  example: dog
+                image:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                    description: image file
+                  description: Array of 3 images
+                  minItems: 3
+                  maxItems: 3
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/newPetCreated'
+        '400':
+          description: Email address not provided / no se encontraron archivos
+        '401':
+          description: No token provided
+        '403':
+          description: Internal Server Error
+        '404':
+          description: Shelter not found
+    put:
+      tags:
+        - pet
+      summary: Update a pet       //       shelter token required
+      security:
+        - BearerAuth: []
+      description: Update a pet
+      requestBody:
+        description: Update a pet
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                  description: pet id
+                  example: 9
+                name:
+                  type: string
+                  description: pet name
+                  example: Kira
+                description:
+                  type: string
+                  description: description of the pet
+                  example: Es una perrita muy juguetona
+                age:
+                  type: string
+                  description: pet age
+                  example: 4 años
+                type:
+                  type: string
+                  description: type of pet
+                  example: dog
+                image:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                    description: image file
+                  description: Array of 3 images
+                  minItems: 3
+                  maxItems: 3
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/changeInfoPet'
+        '400':
+          description: Internal Server Error.
+        '401':
+          description: No token provided. // Unauthorized, shelter id does not match pet creator.
+        '403':
+          description: Unauthorized, roleId of the token does not have authorization for this transaction.
+
+  /pet/{id}:
+    get:
+      tags:
+        - pet
+      summary: Find pet by ID       //       token required
+      description: Returns a single pet
+      parameters:
+        - name: id
+          in: path
+          description: id of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findPet'
+    delete:
+      tags:
+        - pet
+      summary: Delete a pet by ID       //       shelter token required
+      parameters:
+        - name: id
+          in: path
+          description: id of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dropPet'
+        '404':
+          description: Pet id does not exist.
+        '400':
+          description: Internal Server Error.
+        '403':
+          description: Unauthorized, roleId of the token does not have authorization for this transaction.
+
+tags:
+  - name: pet
+    description: Everything about your Pets
+  - name: user
+    description: Operations about user
+  - name: shelter
+    description: Operations about shelters
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    imageUrl:
+      type: object
+      properties:
+        url:
+          type: string
+          format: url
+          description: url de la imagen
+        public_id:
+          type: string
+          description: id público de la imagen en el servicio de almacenamiento
+    newPetCreated:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        newPet:
+          $ref: '#/components/schemas/Pet'
+    changeInfoPet:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        changeInfoPet:
+          $ref: '#/components/schemas/Pet'
+    findPet:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        findPet:
+          $ref: '#/components/schemas/Pet'
+    dropPet:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: The pet was deleted
+        dropPet:
+          $ref: '#/components/schemas/Pet'
+    petList:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        petList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pet'
+    Pet:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        name:
+          type: string
+          example: Don Vinagre
+        age:
+          type: string
+          example: 3 años
+        description:
+          type: string
+          example: Es un gato muy juguetón
+        type:
+          type: string
+          enum:
+            - CAT
+            - DOG
+            - OTHER
+        imageUrl:
+          type: array
+          items:
+            $ref: '#/components/schemas/imageUrl'
+          description: Array de URLs de imágenes de la mascota
+          minItems: 3
+          maxItems: 3
+        shelterId:
+          type: number
+          example: 1
+servers:
+  - url: http://localhost:3001
+    variables: {}
+  - url: https://c21-71-n-node-react-production.up.railway.app/
+    variables: {}

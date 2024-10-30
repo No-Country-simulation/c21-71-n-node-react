@@ -122,6 +122,7 @@ export type InfoPetData = z.infer<typeof infoPetDataSchema>;
 export const updatePetSchema = z.object({
   id: z.number(),
 
+
   name: z.string().optional(),
   age: z.string().optional(),
   description: z.string().optional(),

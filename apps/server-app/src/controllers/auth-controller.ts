@@ -16,11 +16,13 @@ if (!jwtSecret) {
 export const register = async (req: Request, res: Response) => {
   const {type}:{type:string} =req.body;
 
+
   if(type==='adopter'){
        
     const {user: user}:{user:INewUser}=req.body
 
     const userValidate=newUserSchema.safeParse(user)
+
 
   if(userValidate.success===true){
   

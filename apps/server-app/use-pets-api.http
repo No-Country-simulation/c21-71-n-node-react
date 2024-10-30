@@ -2,17 +2,17 @@
 GET http://localhost:3001/pets
 
 ### Obtiene una mascota específica
-GET http://localhost:3001/pet/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
+GET http://localhost:3001/pet/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMTQ3NzQzLCJleHAiOjE3MzA0MDY5NDN9._6t5FFa6_3juLBSUbHlTv8l8YYj8gZikfX4eFqEWkzc
 
-
-### Crea una mastcota -- token solo con role de shelter o admin -- como valida el req.email? se queda pegado haciendo la validacion de la variable
+### Crea una mastcota -- token solo con role de shelter o admin
 POST http://localhost:3001/pet
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0cmluZ0BzdHJpbmcuY29tIiwicm9sZUlkIjozLCJpYXQiOjE3MzAxNDgwNDcsImV4cCI6MTczMDQwNzI0N30.5c8Pn_B-SDi-ymtjlRftX4RiBCc66OUksidP_GxQXhQ
 
 {
-    "name": "Don vinagre", 
+    "name": "Don vinagre",
+    "age" : "3 años",
     "description":"Es un gato muy juguetón, tiene 4 meses de edad", 
     "type":"cat",
     "imageUrl": [
@@ -25,13 +25,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY
 ### Edita una mascota --  token solo con role de shelter o admin
 PUT http://localhost:3001/pet
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMTQ3NzQzLCJleHAiOjE3MzA0MDY5NDN9._6t5FFa6_3juLBSUbHlTv8l8YYj8gZikfX4eFqEWkzc
 
 {
-    "id": 1,
+    "id": 2,
     "infoPet": {
         "type": "cat",
         "name": "vigotes",
+        "age": "3 años",
         "description": "Es un gao muy lindo",
         "imageUrl": [
             "https://www.elespectador.com/resizer/KC2rYnJ7xwQ5srRjOCnOHJVE4rw=/arc-anglerfish-arc2-prod-elespectador/public/KHYLDDXDT5BCLBABKRR6LXRLQU.jpg",
@@ -41,5 +42,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY
 }
 
 ### Elimina una Mascota --  token solo con role de shelter o admin
-DELETE http://localhost:3001/pet/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoQGhlY3Rvci5jb20iLCJyb2xlSWQiOjMsImlhdCI6MTcyOTYzNDYyOSwiZXhwIjoxNzI5ODkzODI5fQ.4xgS-y943iPZnOlRshjQJ8HV_lUOrsgswsPqmi6vE6c
+DELETE http://localhost:3001/pet/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMTQ3NzQzLCJleHAiOjE3MzA0MDY5NDN9._6t5FFa6_3juLBSUbHlTv8l8YYj8gZikfX4eFqEWkzc
