@@ -3,7 +3,7 @@ import { CustomSubmitButtonStateT } from "../Form/Form";
 import { SelectChangeEvent } from "@mui/material";
 import { backendURL } from "@/config";
 import axios from "axios";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { getToken } from "@/utils/token";
 
 export interface FormDataI {
@@ -16,7 +16,7 @@ export interface FormDataI {
 
 export function useRegisterPet(
   onClose: () => void,
-  addPet: (pet: InfoPetWithId) => void
+  addPet: (pet: InfoPetResponse) => void
 ) {
   const [formData, setFormData] = useState<FormDataI>({
     name: "",

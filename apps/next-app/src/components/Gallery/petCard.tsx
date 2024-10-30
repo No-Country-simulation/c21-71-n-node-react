@@ -1,11 +1,11 @@
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { Card, CardContent, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { CustomSlider } from "./slider";
 
 interface Props {
-  handleOpen: (pet: InfoPetWithId) => void;
-  pet: InfoPetWithId;
+  handleOpen: (pet: InfoPetResponse) => void;
+  pet: InfoPetResponse;
   settings: object;
 }
 

@@ -1,13 +1,13 @@
 import { Container, Modal } from "@mui/material";
 import { CustomForm, CustomSubmitButton } from "../Form/Form";
 import { useRegisterPet } from "./registerPet.hook";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { CommonFields } from "./commonFields";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  addPet: (pet: InfoPetWithId) => void;
+  addPet: (pet: InfoPetResponse) => void;
 }
 
 export default function RegisterPet({ open, onClose, addPet }: Props) {

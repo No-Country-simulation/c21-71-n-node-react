@@ -1,16 +1,16 @@
 import { backendURL } from "@/config";
 import { DecodedToken } from "@/types/api";
 import { getToken } from "@/utils/token";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export const usePage = () => {
-  const [pets, setPets] = useState<InfoPetWithId[]>([]);
+  const [pets, setPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedPet, setSelectedPet] = useState<InfoPetWithId | null>(null);
+  const [selectedPet, setSelectedPet] = useState<InfoPetResponse | null>(null);
 
   const galleryRef = useRef<HTMLDivElement | null>(null);
 
@@ -19,7 +19,7 @@ export const usePage = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`${backendURL}/pets`);
-      const pets: InfoPetWithId[] = response.data.petsList;
+      const pets: InfoPetResponse[] = response.data.petsList;
       setPets(pets);
       setLoading(false);
     } catch (error) {

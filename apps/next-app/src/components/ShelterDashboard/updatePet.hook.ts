@@ -4,7 +4,7 @@ import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { backendURL } from "@/config";
 import { getToken } from "@/utils/token";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { useRouter } from "next/navigation";
 import { FormDataI } from "./registerPet.hook";
 
@@ -17,7 +17,7 @@ const InitialFormData: FormDataI = {
 };
 
 export function useUpdatePet(
-  initial: InfoPetWithId | null,
+  initial: InfoPetResponse | null,
   getData: () => Promise<void>,
   onClose: () => void
 ) {

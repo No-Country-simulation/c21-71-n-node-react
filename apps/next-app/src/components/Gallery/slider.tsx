@@ -1,25 +1,25 @@
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { CardMedia, Typography } from "@mui/material";
 import Slider from "react-slick";
 
 interface Props {
   settings: object;
-  pet: InfoPetWithId;
-  handleOpen: (pet: InfoPetWithId) => void;
+  pet: InfoPetResponse;
+  handleOpen: (pet: InfoPetResponse) => void;
 }
 
 export function CustomSlider({ handleOpen, pet, settings }: Props) {
-  const CustomCardMedia = ({ image }: { image: string }) => {
+  const CustomCardMedia = ({ image }: { image: { url: string } }) => {
     return (
       <CardMedia
         component="img"
         height="300"
-        image={image}
+        image={image.url}
         alt={`${pet.name || "Mascota"}`}
         onClick={() => handleOpen(pet)}
         sx={{
           borderRadius: 2,
-          objectFit: "contain", 
+          objectFit: "contain",
         }}
       />
     );
@@ -40,7 +40,7 @@ export function CustomSlider({ handleOpen, pet, settings }: Props) {
           )}
         </Slider>
       ) : (
-        <CustomCardMedia image={pet.imageUrl[0]}  />
+        <CustomCardMedia image={pet.imageUrl[0]} />
       )}
     </div>
   );

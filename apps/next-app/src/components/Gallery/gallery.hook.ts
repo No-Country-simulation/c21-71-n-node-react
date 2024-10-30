@@ -1,16 +1,16 @@
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { SelectChangeEvent } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 
 export function useGallery(
-  pets: InfoPetWithId[],
-  selectedPet: InfoPetWithId | null,
-  setSelectedPet: React.Dispatch<React.SetStateAction<InfoPetWithId | null>>
+  pets: InfoPetResponse[],
+  selectedPet: InfoPetResponse | null,
+  setSelectedPet: React.Dispatch<React.SetStateAction<InfoPetResponse | null>>
 ) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<string>("all");
 
-  const handleOpen = (pet: InfoPetWithId) => {
+  const handleOpen = (pet: InfoPetResponse) => {
     setSelectedPet(pet);
     setOpen(true);
   };
@@ -39,7 +39,9 @@ export function useGallery(
   const filteredPets =
     filter === "all"
       ? pets
-      : pets.filter((pet: InfoPetWithId) => pet.type.toLowerCase() === filter);
+      : pets.filter(
+          (pet: InfoPetResponse) => pet.type.toLowerCase() === filter
+        );
 
   return {
     filter,

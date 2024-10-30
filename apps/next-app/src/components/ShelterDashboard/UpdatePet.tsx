@@ -2,12 +2,12 @@ import { Container, Modal } from "@mui/material";
 import { CustomForm, CustomSubmitButton } from "../Form/Form";
 import { CommonFields } from "./commonFields";
 import { useUpdatePet } from "./updatePet.hook";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  initial: InfoPetWithId | null;
+  initial: InfoPetResponse | null;
   getData: () => Promise<void>;
 }
 

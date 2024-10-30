@@ -1,16 +1,16 @@
 import { backendURL } from "@/config";
 import { getToken } from "@/utils/token";
-import { InfoPetWithId, IUserResponse } from "@adopcion/types";
+import { InfoPetResponse, IUserResponse } from "@adopcion/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export function useAdmin() {
   const [users, setUsers] = useState<IUserResponse[]>([]);
-  const [allPets, setAllPets] = useState<InfoPetWithId[]>([]);
+  const [allPets, setAllPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedUser, setSelectedUser] = useState<IUserResponse | null>(null);
-  const [selectedPet, setSelectedPet] = useState<InfoPetWithId | null>(null);
+  const [selectedPet, setSelectedPet] = useState<InfoPetResponse | null>(null);
 
   const router = useRouter();
 
@@ -33,7 +33,7 @@ export function useAdmin() {
       ]);
 
       setUsers(userResponse.data.users as IUserResponse[]);
-      setAllPets(petsResponse.data.petsList as InfoPetWithId[]);
+      setAllPets(petsResponse.data.petsList as InfoPetResponse[]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching data:", error.response?.data || error.message);
@@ -74,7 +74,7 @@ export function useAdmin() {
     }
   };
 
-  const deletePet = async (pet: InfoPetWithId) => {
+  const deletePet = async (pet: InfoPetResponse) => {
     const token = getToken();
     if (!selectedPet) return;
 

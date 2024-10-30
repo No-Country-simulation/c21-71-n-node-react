@@ -1,13 +1,13 @@
 import React from "react";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { Box, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@mui/material";
 import { useTheme } from "next-themes";
 
 interface PetsTableProps {
-  pets: InfoPetWithId[];
+  pets: InfoPetResponse[];
   loading: boolean;
-  onDeletePet: (pet: InfoPetWithId) => void;
-  onSelectPet: (pet: InfoPetWithId) => void;
+  onDeletePet: (pet: InfoPetResponse) => void;
+  onSelectPet: (pet: InfoPetResponse) => void;
 }
 
 const PetsTable: React.FC<PetsTableProps> = ({ pets, loading, onDeletePet, onSelectPet }) => {
