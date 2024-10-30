@@ -7,7 +7,7 @@ import {
   getPetsByShelterService,
   updatePetService,
 } from '../services/pet-services';
-import { InfoPet, UpdateInfoPet } from '../../types';
+import { InfoPetData, UpdateInfoPet } from '../../types';
 import { MyRequest } from '../../types-back';
 import { findShelterByEmailService } from '../services/shelter-service';
 import { updateImgCloudinaryService, uploadImgsToCloudinary } from '../services/cloudinary-service';
@@ -32,11 +32,11 @@ export const createPet = async (req: MyRequest, res: Response) => {
       const shelter = await findShelterByEmailService(email);
       if (shelter) {
         if (req.files) {
-          const files = req.files as Express.Multer.File[];
+          const files = req.files as Express.Multer.File[] ;
           const imgs = files.map((file) => file.path);
           
           const imageUrl=await uploadImgsToCloudinary(imgs)
-          const { name,age, description, type }: InfoPet = req.body;  
+          const { name,age, description, type }: InfoPetData = req.body;  
           const newPet = await createPetService({ name,age, description, type, imageUrl, shelterId: shelter.id });
 
           imgs.forEach(filePath => {
@@ -161,16 +161,37 @@ export const updatePet = async (req: MyRequest, res: Response) => {
   }
 };
 
-export const deletePet = async (req: Request, res: Response) => {
+export const deletePet = async (req: MyRequest, res: Response) => {
   try {
     const id = Number(req.params['id']);
-    const validId = await findPetByIdService(id)
-    if (validId) {
-      const dropPet = await deletePetService(id);
-      res.status(200).json({ ok: true, message: 'The pet was deleted', dropPet })
+    const email=req.email!
+    const roleId=req.roleId
+
+    if (roleId===3){
+      const shelter=await findShelterByEmailService(email)
+    const pet= await findPetByIdService(id)
+    
+    
+    if (pet) {
+      if(pet?.shelterId===shelter?.id){
+        const dropPet = await deletePetService(id);
+        res.status(200).json({ ok: true, message: 'The pet was deleted', dropPet })
+      }else{
+        res.status(401).json({ok:false,error:'Unauthorized'})
+      }  
     } else {
       res.status(404).json({ok:false, message:"No se encontró el recurso"})
     }
+    }else if(roleId===1){
+      const pet= await findPetByIdService(id)
+      if(pet){
+        const dropPet = await deletePetService(id);
+        res.status(200).json({ ok: true, message: 'The pet was deleted', dropPet })
+      }else {
+        res.status(404).json({ok:false, message:"No se encontró el recurso"})
+      }
+    }
+    
   } catch (error) {
     res.status(400).json({ ok: false, error });
   }
