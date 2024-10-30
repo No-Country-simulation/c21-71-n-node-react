@@ -13,10 +13,14 @@ export function CustomSlider({ handleOpen, pet, settings }: Props) {
     return (
       <CardMedia
         component="img"
-        height="200"
+        height="300"
         image={image}
         alt={`${pet.name || "Mascota"}`}
         onClick={() => handleOpen(pet)}
+        sx={{
+          borderRadius: 2,
+          objectFit: "contain", 
+        }}
       />
     );
   };
@@ -36,7 +40,7 @@ export function CustomSlider({ handleOpen, pet, settings }: Props) {
           )}
         </Slider>
       ) : (
-        <CustomCardMedia image={pet.imageUrl[0]} />
+        <CustomCardMedia image={pet.imageUrl[0]}  />
       )}
     </div>
   );

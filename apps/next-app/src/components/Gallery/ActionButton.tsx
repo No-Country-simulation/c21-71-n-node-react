@@ -20,7 +20,7 @@ export function ActionButton({
       onClick={onClick}
       variant="contained"
       sx={{
-        m: 2,
+        m: {xs:1, md:2},
         backgroundColor: bgColor,
         color: color,
         "&:hover": { backgroundColor: hoverBgColor },

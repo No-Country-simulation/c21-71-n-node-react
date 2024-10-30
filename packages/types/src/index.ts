@@ -9,6 +9,11 @@ export interface INewUser {
   roleId: 2|3;
 }
 
+export interface IUserResponse extends Omit<INewUser, 'password' | 'roleId'> {
+  id: number;
+  encryptedPassword: string;
+  roleId: number; // Aquí redefinimos roleId para aceptar cualquier número
+}
 export type TEmailPassword = Pick<INewUser, 'email' | 'password'>;
 
 export interface ICreateUser extends Omit<INewUser, 'password'> {
