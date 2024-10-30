@@ -7,7 +7,7 @@ import {
   getPetsByShelterService,
   updatePetService,
 } from '../services/pet-services';
-import { InfoPet, UpdateInfoPet } from '../../types';
+import { InfoPetData, UpdateInfoPet } from '../../types';
 import { MyRequest } from '../../types-back';
 import { findShelterByEmailService } from '../services/shelter-service';
 import { updateImgCloudinaryService, uploadImgsToCloudinary } from '../services/cloudinary-service';
@@ -36,7 +36,7 @@ export const createPet = async (req: MyRequest, res: Response) => {
           const imgs = files.map((file) => file.path);
           
           const imageUrl=await uploadImgsToCloudinary(imgs)
-          const { name,age, description, type }: InfoPet = req.body;  
+          const { name,age, description, type }: InfoPetData = req.body;  
           const newPet = await createPetService({ name,age, description, type, imageUrl, shelterId: shelter.id });
 
           imgs.forEach(filePath => {
