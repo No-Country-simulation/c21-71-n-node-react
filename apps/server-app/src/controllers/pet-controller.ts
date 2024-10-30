@@ -164,8 +164,8 @@ export const updatePet = async (req: MyRequest, res: Response) => {
 export const deletePet = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params['id']);
-    const validId = await findPetByIdService(id)
-    if (validId) {
+    const findPet = await findPetByIdService(id)
+    if (findPet) {
       const dropPet = await deletePetService(id);
       res.status(200).json({ ok: true, message: 'The pet was deleted', dropPet })
     } else {

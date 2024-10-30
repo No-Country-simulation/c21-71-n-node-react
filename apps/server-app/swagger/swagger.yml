@@ -4,6 +4,11 @@ info:
   description: >-
     Esta es la documentacion de la API ustilizada para nuestra pagina web de
     adopcion de mascotas
+    
+    ### 
+    Contactos:
+           Matias Benitez: soporte@example.com
+           Héctor García: garcia17h@gmail.com
   version: 1.0.0
 security:
   - BearerAuth: []
@@ -135,7 +140,6 @@ paths:
           description: No token provided. // Unauthorized, shelter id does not match pet creator.
         '403':
           description: Unauthorized, roleId of the token does not have authorization for this transaction.
-
   /pet/{id}:
     get:
       tags:
@@ -182,8 +186,77 @@ paths:
           description: Internal Server Error.
         '403':
           description: Unauthorized, roleId of the token does not have authorization for this transaction.
-
+  /register:
+    post:
+      tags:
+        - auth
+      summary: user register
+      description: register a new user, depending on whether it is a shelter or adopter
+      requestBody:
+        description: required body according to type of record
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: ["adopter", "shelter"]
+                  description: El tipo de registro ("adopter" o "shelter").
+                user:
+                  type: object
+                  description: Datos del usuario a registrar.
+                  discriminator:
+                    propertyName: type
+                    mapping:
+                      adopter: '#/components/schemas/NewAdopter'
+                      shelter: '#/components/schemas/NewShelter'
+                  oneOf:
+                    - $ref: '#/components/schemas/NewAdopter'
+                    - $ref: '#/components/schemas/NewShelter'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shelterRegisterOk'
+        '400':
+          description: 'Existing user in the database // The property “type” was not found : is required'
+  /login: 
+    post:
+      tags:
+        - auth
+      summary: user login
+      description: Ruta para el login de los usuarios registrados
+      requestBody:
+        description: envio de email y contraseña del usuario
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: adopter@example.com
+                password: 
+                  type: string
+                  example: password123
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shelterRegisterOk'
+        '401':
+          description: invalid credentials
+        '404':
+          description: user not found
 tags:
+  - name: auth
+    description: Register and login operations
   - name: pet
     description: Everything about your Pets
   - name: user
@@ -197,6 +270,55 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    shelterRegisterOk:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        token:
+          type: string
+          description: jwt delivered
+          example: eyJhbGciOiJIUzI1NiIsInR5c...
+  
+    NewAdopter:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "adopter@example.com"
+        firstname:
+          type: string
+          example: "Juan"
+        lastname:
+          type: string
+          example: "Perez"
+        phone:
+          type: string
+          example: "+580123456789"
+        password:
+          type: string
+          format: password
+          example: "password123"
+
+    NewShelter:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "shelter@example.com"
+        shelter_name:
+          type: string
+          example: "Refugio Felino"
+        phone:
+          type: string
+          example: "+580123456789"
+        password:
+          type: string
+          format: password
+          example: "password123"
+      
     imageUrl:
       type: object
       properties:
