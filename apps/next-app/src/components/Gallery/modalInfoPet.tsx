@@ -26,7 +26,7 @@ export function ModalInfoPet({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: { xs: 250, md: 500 },
+          width: { xs: 290, md: 500 },
           bgcolor: "background.paper",
           borderRadius: 10,
           boxShadow: 24,
@@ -53,8 +53,9 @@ export function ModalInfoPet({
             </Typography>
             <Box
               sx={{
-                display: { xs: "block", md: "flex" },
+                display: "flex",
                 justifyContent: "center",
+                flexDirection: { xs: "column", md: "row" },
               }}
             >
               {children}

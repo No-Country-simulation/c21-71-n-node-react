@@ -6,20 +6,21 @@ interface Props {
   settings: object;
   pet: InfoPetResponse;
   handleOpen: (pet: InfoPetResponse) => void;
+  height?: { xs: number; md: number };
 }
 
-export function CustomSlider({ handleOpen, pet, settings }: Props) {
+export function CustomSlider({ height, handleOpen, pet, settings }: Props) {
   const CustomCardMedia = ({ image }: { image: { url: string } }) => {
     return (
       <CardMedia
         component="img"
-        height="300"
         image={image.url}
         alt={`${pet.name || "Mascota"}`}
         onClick={() => handleOpen(pet)}
         sx={{
           borderRadius: 2,
           objectFit: "contain",
+          height,
         }}
       />
     );
