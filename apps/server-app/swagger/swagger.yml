@@ -46,6 +46,8 @@ paths:
       tags:
         - user
       summary: Find user by ID       //        administrator token required
+      security:
+        - BearerAuth: []
       description: Returns a single user
       parameters:
         - name: id
@@ -73,6 +75,8 @@ paths:
       tags:
         - user
       summary: Delete a user by ID        //        administrator token required
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
@@ -255,6 +259,8 @@ paths:
       tags:
         - pet
       summary: Find pet by ID       //       token required
+      security:
+        - BearerAuth: []
       description: Returns a single pet
       parameters:
         - name: id
@@ -278,6 +284,8 @@ paths:
       tags:
         - pet
       summary: Delete a pet by ID       //       shelter token required
+      security:
+        - BearerAuth: []
       parameters:
         - name: id
           in: path
