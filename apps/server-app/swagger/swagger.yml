@@ -13,6 +13,116 @@ info:
 security:
   - BearerAuth: []
 paths:
+  /users:
+    get:  
+      tags:
+        - user
+      summary: Finds all Users       //        administrator token required
+      security:
+        - BearerAuth: []
+      description: Retorna todos los usuarios existentes en el registro
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+                  
+        '401':
+          description: Unauthorized, administrator role required
+        '500':
+          description: Internal Server Error
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Find user by ID       //        administrator token required
+      description: Returns a single user
+      parameters:
+        - name: id
+          in: path
+          description: id of pet to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - user
+      summary: Delete a user by ID        //        administrator token required
+      parameters:
+        - name: id
+          in: path
+          description: id of user to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  user_deleted:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
+  /user:
+    put:
+      tags:
+        - user
+      summary: Update a user       //       user/administrator token required
+      security:
+        - BearerAuth: []
+      description: Update a user
+      requestBody:
+        description: payload to edit a user
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateUser'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
   /pets:
     get:
       tags:
@@ -92,7 +202,7 @@ paths:
         - BearerAuth: []
       description: Update a pet
       requestBody:
-        description: Update a pet
+        description: update a pet
         content:
           multipart/form-data:
             schema:
@@ -153,7 +263,6 @@ paths:
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -161,6 +270,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/findPet'
+        '404':
+          description: The resource was not found
+        '401':
+          description: Internal Server Error
     delete:
       tags:
         - pet
@@ -172,7 +285,6 @@ paths:
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
           description: successful operation
@@ -279,7 +391,7 @@ components:
           type: string
           description: jwt delivered
           example: eyJhbGciOiJIUzI1NiIsInR5c...
-  
+    
     NewAdopter:
       type: object
       properties:
@@ -374,6 +486,56 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Pet'
+    updateUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 16
+        payload:
+          type: object
+          properties:
+            email:
+              type: string
+              example: api@example.com
+            firstname:
+              type: string
+              example: Juan
+            lastname:
+              type: string
+              example: Perez
+            phone:
+              type: string
+              example: "123123123"
+            password:
+              type: string
+              example: example123
+              
+      
+    user: 
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: api@example.com
+        firstname:
+          type: string
+          example: Juan
+        lastname:
+          type: string
+          example: Perez
+        phone:
+          type: string
+          example: "123123123"
+        password:
+          type: string
+          example: $2a$10$kQWQzIY/hTeSaruF0HK7uuyFapSyx82ucuVDMe8CjywgrszBPffy2
+        roleId:
+          type: integer
+          example: 2
     Pet:
       type: object
       properties:
