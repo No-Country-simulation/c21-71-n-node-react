@@ -32,7 +32,7 @@ export function CustomSlider({ handleOpen, pet, settings }: Props) {
           {pet.imageUrl && pet.imageUrl.length > 0 ? (
             pet.imageUrl.map((image, idx) => (
               <div key={idx}>
-                <CustomCardMedia image={image} />
+                <CustomCardMedia image={image.url} />
               </div>
             ))
           ) : (
@@ -40,7 +40,7 @@ export function CustomSlider({ handleOpen, pet, settings }: Props) {
           )}
         </Slider>
       ) : (
-        <CustomCardMedia image={pet.imageUrl[0]}  />
+        <CustomCardMedia image={pet.imageUrl[0].url}  />
       )}
     </div>
   );
