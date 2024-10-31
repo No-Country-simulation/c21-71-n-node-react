@@ -1,34 +1,33 @@
 // Trae todos los usuarios
 GET http://localhost:3001/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMzI1MjkxLCJleHAiOjE3MzA1ODQ0OTF9.7-SMr1U8cAQDVmkLZygO_odaohjWzX7qBWepbZ0o-zA
 
 
 ###
 // Trae un Usuario específico
-GET http://localhost:3001/user/10
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
+GET http://localhost:3001/user/16
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMzI1MjkxLCJleHAiOjE3MzA1ODQ0OTF9.7-SMr1U8cAQDVmkLZygO_odaohjWzX7qBWepbZ0o-zA
 
 
 ###
 // Edita un usuario específico -- Hay que arreglar que se encripte la ueva contraseña, ya que luego cuando se intenta hacer login, responde credencial invalida
 PUT http://localhost:3001/user
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvcjNAaGVjdG9yLmNvbSIsInJvbGVJZCI6MSwiaWF0IjoxNzMwMzI1MjkxLCJleHAiOjE3MzA1ODQ0OTF9.7-SMr1U8cAQDVmkLZygO_odaohjWzX7qBWepbZ0o-zA
 
 {
-    "id": 14,
+    "id": 17,
     "payload": {
-        "email": "bh@hector.com",
+        "email": "bhuuuhuhuhiiuhh@hector.com",
         "firstname": "BerlinHappy",
         "lastname": "PetShop",
         "phone": "987987987",
-        "password": "123123123", // por ahora si se cambia la contraseña, luego no puede iniciar sesion
-        "roleId": 1 // el roleId no deberia poderse cambiar ¿?
+        "password": "123123123"
     }
 }
 
 ###
 // elimina un usuario específico
-DELETE http://localhost:3001/user/13
+DELETE http://localhost:3001/user/15
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlY3RvckBoZWN0b3IuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Mjk2MzMzMzgsImV4cCI6MTcyOTg5MjUzOH0.sqAmvej8s5EkBDRd5QIKQ898GbKKR1u3KXF8OCZ9d_k
 

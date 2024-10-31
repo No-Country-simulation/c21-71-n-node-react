@@ -94,20 +94,19 @@ export type UpdateUser = z.infer<typeof updateUserSchema>;
   imageUrl:string
 }
  */
-export const infoPetSchema = z.object({
+export const infoPetDataSchema = z.object({
   name: z.string(),
   age: z.string(),
   description: z.string(),
   type: z.string(),
-  imageUrl: z.array(
-    z.object({
-      url: z.string(),
-      public_id: z.string(),
-    })
-  ),
+  
 });
 
-export type InfoPet = z.infer<typeof infoPetSchema>;
+// export const infoPetDataImagesSchema=z.instanceof(Express.Multer.File)
+ 
+//export type infoPetDataImages=z.infer<typeof infoPetDataImagesSchema> 
+
+export type InfoPetData = z.infer<typeof infoPetDataSchema>;
 
 /*  export interface UpdateInfoPet{
   id:number

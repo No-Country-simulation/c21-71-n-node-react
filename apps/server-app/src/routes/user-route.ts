@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request } from 'express';
 import { register, login } from '../controllers/auth-controller';
 import { verifyRoleAdmin, verifyToken, verifyRoleRefugio, verifyRoleAdoptante } from '../middlewares/verify-token-berer';
 import { getAllUsers, getUserById, deleteUserById, updateUser } from '../controllers/user-controller';
@@ -6,13 +6,18 @@ import { createPet, deletePet, findPetById, getPets, getPetsByShelter, updatePet
 import { deleteShelter, getAllShelters, getShelter, updateShelter } from '../controllers/shelter-controller';
 import multer from 'multer';
 
+import swaggerUI from 'swagger-ui-express';
+import specs from '../../swagger/swagger';
+
+
+
 const router = Router();
+// para documentacion de swagger
+router.use('/api-docs', swaggerUI.serve)
+router.get('/api-docs', swaggerUI.setup(specs));
 
 router.post('/register', register);
 router.post('/login', login);
-router.get('/me', verifyToken, async (_req: Request, res: Response) => {
-  res.json({ mensaje: 'Hola mundo' });
-});
 
 // User
 
