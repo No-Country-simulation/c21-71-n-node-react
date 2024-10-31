@@ -44,14 +44,14 @@ export default function Dashboard() {
           shelterInfo = {shelterInfo}
           setShelterInfo={setShelterInfo}
           modalActions={
-            <>
+            
               <ActionButton
                 onClick={handleAdopt}
                 text="Adoptar!"
                 bgColor="#e47116"
                 hoverBgColor="#c4530a"
               />
-            </>
+            
           }
         />
       </div>

@@ -43,7 +43,7 @@ export interface InfoPet{
   description:string
   type:string
   imageUrl:{url:string, public_id:string}[]
-  shelterId:number
+  shelterId:number | null
   age:string
 }
 

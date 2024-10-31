@@ -35,7 +35,7 @@ export function usePage() {
   }
 
   const handleSubmit = () => {
-    if (!Boolean(formData.email && formData.password))
+    if (!Boolean(formData.email && formData.password))  
       return alert("Datos incompletos");
 
     setRequestState("loading");

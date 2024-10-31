@@ -14,6 +14,7 @@ const InitialFormData: InfoPetWithId = {
   age: "",
   description: "",
   imageUrl: [],
+  shelterId: null
 };
 
 export function useUpdatePet(

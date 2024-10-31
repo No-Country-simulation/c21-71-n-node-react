@@ -12,6 +12,7 @@ export const usePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedPet, setSelectedPet] = useState<InfoPetWithId | null>(null);
   const [shelterInfo, setShelterInfo] = useState<ShelterInfo | null>(null)
+  const [tokenState, setTokenState] = useState<string | null>(null);
 
   const galleryRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,19 +29,20 @@ export const usePage = () => {
       setLoading(false);
     }
   };
-  const token = getToken();
+ 
 
   useEffect(() => {
+    setTokenState(getToken());
     fetchData();
   }, []);
 
   const isTokenValid = () => {
-    if (!token) {
+    if (!tokenState) {
       return false;
     }
 
     try {
-      const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
+      const decoded: DecodedToken = jwtDecode<DecodedToken>(tokenState);
       const currentTime = Math.floor(Date.now() / 1000);
       return decoded.exp > currentTime;
     } catch (e) {
@@ -58,7 +60,7 @@ export const usePage = () => {
   
         // Realiza la solicitud al backend
         const response = await axios.get(`${backendURL}/shelter/${shelterId}`,{
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${tokenState}` },
         });
         const shelterData = response.data.shelter;
   

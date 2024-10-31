@@ -1,4 +1,4 @@
-import { Router, Request } from 'express';
+import { Router, Request, Response } from 'express';
 import { register, login } from '../controllers/auth-controller';
 import { verifyRoleAdmin, verifyToken, verifyRoleRefugio, verifyRoleAdoptante } from '../middlewares/verify-token-berer';
 import { getAllUsers, getUserById, deleteUserById, updateUser } from '../controllers/user-controller';
@@ -18,6 +18,9 @@ router.get('/api-docs', swaggerUI.setup(specs));
 
 router.post('/register', register);
 router.post('/login', login);
+router.get('/me', verifyToken, async (_req: Request, res: Response) => {
+  res.json({ mensaje: 'Hola mundo' });
+});
 
 // User
 
