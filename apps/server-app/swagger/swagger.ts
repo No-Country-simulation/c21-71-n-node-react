@@ -10,7 +10,7 @@ const options = {
             API para mantenimiento de pagina web de adopcion de animales
             
             Contactos
-                - Matias Benitez: soporte@example.com
+                - Matias Benitez: https://github.com/novamatt
                 - Hector Garcia: garcia17h@gmail.com
             `
             
@@ -19,19 +19,9 @@ const options = {
                 name: 'Developers',
                 url: 'https://discord.com/channels/1290434311845318779/1290434312604221475'
             },
-            'x-contacts': [
-                {
-                    name: 'Matias Benitez',
-                    email: 'soporte@example.com',
-                },
-                {
-                    name: 'Hector Garcia',
-                    email: 'rp@example.com',
-                }
-            ],
             servers: [
                 {
-                    url: 'http://localhost:${process.env.PORT}',
+                    url: `http://localhost:${process.env.PORT}`,
                     description: 'server deployed'
                 }
             ]

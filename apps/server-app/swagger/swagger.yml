@@ -575,8 +575,3 @@ components:
         shelterId:
           type: number
           example: 1
-servers:
-  - url: http://localhost:3001
-    variables: {}
-  - url: https://c21-71-n-node-react-production.up.railway.app/
-    variables: {}
