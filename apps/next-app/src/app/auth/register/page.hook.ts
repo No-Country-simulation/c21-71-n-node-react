@@ -6,7 +6,7 @@ import { RoleE, RoleT } from "@/types/roles";
 import { useRouter } from "next/navigation";
 import { CustomSubmitButtonStateT } from "@/components/Form/Form";
 import { jwtDecode } from "jwt-decode";
-import { setToken } from "@/utils/token";
+import { useGCToken } from "@/context/context";
 
 type FormData = {
   role: RoleT;
@@ -31,6 +31,7 @@ const initialFormState = {
 };
 
 export function usePage() {
+  const gcToken = useGCToken();
   const router = useRouter();
 
   const [formData, setFormData] = useState<FormData>(initialFormState);
@@ -98,7 +99,7 @@ export function usePage() {
       .post(`${backendURL}/register`, data)
       .then(function (response) {
         const { token } = response.data;
-        setToken(token);
+        gcToken.setItem(token);
         setFormData(initialFormState);
         const data = jwtDecode<{ email: string; roleId: number }>(token);
         setRequestState("success");

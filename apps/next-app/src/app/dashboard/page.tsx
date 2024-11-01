@@ -7,32 +7,35 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import ShelterPage from "./shelter";
-import { getToken } from "@/utils/token";
 import AdminPage from "./AdminPage";
+import { useGCToken } from "@/context/context";
 
 function DashboardPage() {
   const router = useRouter();
+  const gcToken = useGCToken();
   const [role, setRole] = useState<RoleT | null>(null);
 
   useEffect(() => {
-    const token = getToken();
-
-    if (!token) {
+    if (!gcToken.data) {
       router.push("/auth/login");
       return;
     }
 
-    const data = jwtDecode<{ email: string; roleId: number }>(token);
+    const data = jwtDecode<{ email: string; roleId: number }>(gcToken.data);
 
     setRole(
       data.roleId === 1 ? "ADMIN" : data.roleId === 2 ? "ADOPTER" : "SHELTER"
     );
-  }, [router]);
+  }, [gcToken, router]);
 
   if (role === null) return <Loader />;
-  if (role === "ADMIN") return <div><AdminPage /></div>;
-  if (role === "SHELTER") return <ShelterPage />;
-  return <div>ADOPTER</div>;
+  if (role === "ADMIN")
+    return (
+      <div>
+        <AdminPage />
+      </div>
+    );
+  return <ShelterPage />;
 }
 
 export default IsAuth(DashboardPage);

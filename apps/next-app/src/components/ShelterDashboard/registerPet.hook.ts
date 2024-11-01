@@ -4,7 +4,7 @@ import { SelectChangeEvent } from "@mui/material";
 import { backendURL } from "@/config";
 import axios from "axios";
 import { InfoPetResponse } from "@adopcion/types";
-import { getToken } from "@/utils/token";
+import { useGCToken } from "@/context/context";
 
 export interface FormDataI {
   name: string;
@@ -18,6 +18,7 @@ export function useRegisterPet(
   onClose: () => void,
   addPet: (pet: InfoPetResponse) => void
 ) {
+  const gcToken = useGCToken();
   const [formData, setFormData] = useState<FormDataI>({
     name: "",
     description: "",
@@ -65,12 +66,10 @@ export function useRegisterPet(
     });
 
     try {
-      const token = getToken();
-
       const { data } = await axios.post(`${backendURL}/pet`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${gcToken.data}`,
         },
       });
 

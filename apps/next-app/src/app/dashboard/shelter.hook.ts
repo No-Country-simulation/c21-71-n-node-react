@@ -1,11 +1,12 @@
 import { backendURL } from "@/config";
-import { getToken } from "@/utils/token";
+import { useGCToken } from "@/context/context";
 import { InfoPetResponse } from "@adopcion/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export function useShelter() {
+  const gcToken = useGCToken();
   const [registerPetOpen, setRegisterPetOpen] = useState(false);
   const [pets, setPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -15,16 +16,14 @@ export function useShelter() {
   const router = useRouter();
 
   const getData = useCallback(async () => {
-    const token = getToken();
-
-    if (!token) {
+    if (!gcToken.data) {
       router.push("/auth/login");
       return;
     }
 
     try {
       const response = await axios.get(`${backendURL}/pets-by-shelter`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${gcToken.data}` },
       });
       setPets(response.data.pets as InfoPetResponse[]);
     } catch (error) {
@@ -32,14 +31,13 @@ export function useShelter() {
     } finally {
       setLoading(false);
     }
-  }, [router]);
+  }, [gcToken, router]);
 
   useEffect(() => {
     getData();
   }, [getData]);
 
   const deletePet = async () => {
-    const token = getToken();
     if (!selectedPet) return;
 
     const confirmDelete = window.confirm(
@@ -50,7 +48,7 @@ export function useShelter() {
 
     try {
       await axios.delete(`${backendURL}/pet/${selectedPet.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${gcToken.data}` },
       });
       await getData();
 

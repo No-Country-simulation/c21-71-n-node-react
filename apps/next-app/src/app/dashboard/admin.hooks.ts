@@ -1,11 +1,12 @@
 import { backendURL } from "@/config";
-import { getToken } from "@/utils/token";
+import { useGCToken } from "@/context/context";
 import { InfoPetResponse, IUserResponse } from "@adopcion/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export function useAdmin() {
+  const gcToken = useGCToken();
   const [users, setUsers] = useState<IUserResponse[]>([]);
   const [allPets, setAllPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -15,9 +16,7 @@ export function useAdmin() {
   const router = useRouter();
 
   const getData = useCallback(async () => {
-    const token = getToken();
-
-    if (!token) {
+    if (!gcToken.data) {
       router.push("/auth/login");
       return;
     }
@@ -25,10 +24,10 @@ export function useAdmin() {
     try {
       const [userResponse, petsResponse] = await Promise.all([
         axios.get(`${backendURL}/users`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${gcToken.data}` },
         }),
         axios.get(`${backendURL}/pets`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${gcToken.data}` },
         }),
       ]);
 
@@ -36,21 +35,23 @@ export function useAdmin() {
       setAllPets(petsResponse.data.petsList as InfoPetResponse[]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Error fetching data:", error.response?.data || error.message);
+        console.error(
+          "Error fetching data:",
+          error.response?.data || error.message
+        );
       } else {
         console.error("Unexpected error:", error);
       }
     } finally {
       setLoading(false);
     }
-  }, [router]);
+  }, [gcToken, router]);
 
   useEffect(() => {
     getData();
   }, [getData]);
 
   const deleteUser = async () => {
-    const token = getToken();
     if (!selectedUser) return;
 
     const confirmDelete = window.confirm(
@@ -61,7 +62,7 @@ export function useAdmin() {
 
     try {
       await axios.delete(`${backendURL}/user/${selectedUser.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${gcToken.data}` },
       });
       await getData();
 
@@ -75,7 +76,6 @@ export function useAdmin() {
   };
 
   const deletePet = async (pet: InfoPetResponse) => {
-    const token = getToken();
     if (!selectedPet) return;
 
     const confirmDelete = window.confirm(
@@ -86,7 +86,7 @@ export function useAdmin() {
 
     try {
       await axios.delete(`${backendURL}/pet/${pet.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${gcToken.data}` },
       });
       await getData();
 
@@ -110,6 +110,6 @@ export function useAdmin() {
     allPets,
     selectedPet,
     setSelectedPet,
-    deletePet, 
+    deletePet,
   };
 }
