@@ -1,7 +1,7 @@
 import { backendURL } from "@/config";
 import { DecodedToken } from "@/types/api";
 import { getToken } from "@/utils/token";
-import { InfoPetResponse } from "@adopcion/types";
+import { InfoPetResponse, ShelterInfo } from "@adopcion/types";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,8 @@ export const usePage = () => {
   const [pets, setPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedPet, setSelectedPet] = useState<InfoPetResponse | null>(null);
+  const [shelterInfo, setShelterInfo] = useState<ShelterInfo | null>(null);
+  const [tokenState, setTokenState] = useState<string | null>(null);
 
   const galleryRef = useRef<HTMLDivElement | null>(null);
 
@@ -29,17 +31,17 @@ export const usePage = () => {
   };
 
   useEffect(() => {
+    setTokenState(getToken());
     fetchData();
   }, []);
 
   const isTokenValid = () => {
-    const token = getToken();
-    if (!token) {
+    if (!tokenState) {
       return false;
     }
 
     try {
-      const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
+      const decoded: DecodedToken = jwtDecode<DecodedToken>(tokenState);
       const currentTime = Math.floor(Date.now() / 1000);
       return decoded.exp > currentTime;
     } catch (e) {
@@ -48,9 +50,24 @@ export const usePage = () => {
     }
   };
 
-  const handleAdopt = () => {
+  const handleAdopt = async () => {
     if (isTokenValid()) {
-      alert("¡Gracias por adoptar!");
+      try {
+        // Asegúrate de que `selectedPet` tenga el `shelterId` necesario.
+        const shelterId = selectedPet?.shelterId;
+        if (!shelterId) return;
+
+        // Realiza la solicitud al backend
+        const response = await axios.get(`${backendURL}/shelter/${shelterId}`, {
+          headers: { Authorization: `Bearer ${tokenState}` },
+        });
+        const shelterData = response.data.shelter;
+
+        // Guarda los datos del refugio en un estado
+        setShelterInfo(shelterData);
+      } catch (error) {
+        console.error("Error al obtener la información del refugio:", error);
+      }
     } else {
       alert("Por favor, inicia sesión para adoptar.");
       router.push("/auth/login");
@@ -71,5 +88,7 @@ export const usePage = () => {
     setSelectedPet,
     handleAdopt,
     scrollToGallery,
+    shelterInfo,
+    setShelterInfo,
   };
 };

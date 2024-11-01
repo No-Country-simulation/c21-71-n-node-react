@@ -42,7 +42,8 @@ export interface InfoPet{
   name:string
   description:string
   type:string
-  imageUrl:string[]
+  imageUrl:{url:string, public_id:string}[]
+  shelterId:number | null
   age:string
 }
 
@@ -64,4 +65,13 @@ export interface UpdateInfoPet{
     imageUrl?:string[]
     age?:string
   }
+}
+
+export interface ShelterInfo{
+  id: number
+  shelter_name: string
+  email: string
+  phone: string
+  password?: string
+  roleId?: number
 }

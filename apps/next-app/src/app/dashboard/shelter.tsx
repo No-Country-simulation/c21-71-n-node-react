@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Button, Container } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import RegisterPet from "@/components/ShelterDashboard/RegisterPet";
@@ -6,7 +5,7 @@ import Gallery from "@/components/Gallery/Gallery";
 import { useShelter } from "./shelter.hook";
 import { ActionButton } from "@/components/Gallery/ActionButton";
 import { UpdatePet } from "@/components/ShelterDashboard/UpdatePet";
-
+import { usePage } from "../adoption/page.hooks";
 export default function ShelterPage() {
   const {
     setRegisterPetOpen,
@@ -21,6 +20,9 @@ export default function ShelterPage() {
     setOpenUpdateForm,
     getData,
   } = useShelter();
+
+  const {shelterInfo, setShelterInfo} = usePage();
+
 
   return (
     <Container
@@ -62,6 +64,8 @@ export default function ShelterPage() {
           pets={pets}
           selectedPet={selectedPet}
           setSelectedPet={setSelectedPet}
+          shelterInfo={shelterInfo}
+          setShelterInfo={setShelterInfo}
           modalActions={
             <>
               <ActionButton

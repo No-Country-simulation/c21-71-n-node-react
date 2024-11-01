@@ -1,16 +1,18 @@
-import { InfoPetResponse } from "@adopcion/types";
+import { InfoPetResponse, ShelterInfo } from "@adopcion/types";
 import { SelectChangeEvent } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 
 export function useGallery(
   pets: InfoPetResponse[],
   selectedPet: InfoPetResponse | null,
-  setSelectedPet: React.Dispatch<React.SetStateAction<InfoPetResponse | null>>
+  setSelectedPet: React.Dispatch<React.SetStateAction<InfoPetResponse | null>>,
+  setShelterInfo: React.Dispatch<React.SetStateAction<ShelterInfo | null>>
 ) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<string>("all");
 
   const handleOpen = (pet: InfoPetResponse) => {
+    setShelterInfo(null);
     setSelectedPet(pet);
     setOpen(true);
   };
