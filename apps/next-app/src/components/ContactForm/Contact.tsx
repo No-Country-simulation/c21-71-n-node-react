@@ -56,7 +56,7 @@ const ContactForm: React.FC = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-evenly', p: 4 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'space-evenly', p: 4, flexGrow: 1 ,alignItems: 'center' }}>
       {/* Datos de contacto a la izquierda */}
       <Box
         sx={{
