@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,9 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
-import axios from "axios";
-import { backendURL } from "@/config";
-import { useGCToken } from "@/context/context";
+import { useGCAuth } from "@/context/context";
 
 const pages = [
   { name: "Mascotas", path: "/adoption" },
@@ -26,29 +24,12 @@ const pages = [
 
 export default function Navbar() {
   const router = useRouter();
-  const gcToken = useGCToken();
+  const gcAuth = useGCAuth();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const token = gcToken.getItem();
-
-  useEffect(() => {
-    axios
-      .get(`${backendURL}/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        setIsLoggedIn(true);
-      })
-      .catch(() => {
-        setIsLoggedIn(false);
-      });
-  }, [token]);
 
   const handleLogout = () => {
-    gcToken.removeItem();
-    setIsLoggedIn(false);
+    gcAuth.logOut();
     router.push("/");
   };
 
@@ -155,7 +136,7 @@ export default function Navbar() {
               justifyContent: "flex-end",
             }}
           >
-            {isLoggedIn && (
+            {gcAuth.isLoggedIn && gcAuth.role !== "ADOPTER" && (
               <Button
                 onClick={() => handleCloseNavMenu("/dashboard")}
                 sx={{ my: 2, color: "white", display: "block" }}
@@ -174,7 +155,7 @@ export default function Navbar() {
                 {page.name}
               </Button>
             ))}
-            {isLoggedIn && (
+            {gcAuth.isLoggedIn && (
               <Button
                 onClick={handleLogout}
                 sx={{ my: 2, color: "white", display: "block" }}
