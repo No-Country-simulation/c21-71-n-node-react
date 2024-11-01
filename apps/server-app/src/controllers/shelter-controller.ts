@@ -21,13 +21,15 @@ export const getAllShelters=async(req:MyRequest,res:Response)=>{
 
 export const getShelter=async(req:MyRequest,res:Response)=>{
     try{
-        const roleId=req.roleId
-        if(roleId===1){
-            const shelter = await findShelterByIdService(Number(req.params['id']))
-        res.status(200).json({ok:true,shelter})    
+        
+        const shelter = await findShelterByIdService(Number(req.params['id']))
+        if(shelter){
+            res.status(200).json({ok:true,shelter})    
+        
         }else{
-            res.status(401).json({ok:false,error:'Unauthorized'})
+            res.status(404).json({ok:false,error:'Not Found'})
         }
+        
 
     }catch(error){
         res.status(500).json({ok:false,error})
