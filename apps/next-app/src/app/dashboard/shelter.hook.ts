@@ -1,15 +1,15 @@
 import { backendURL } from "@/config";
 import { getToken } from "@/utils/token";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 export function useShelter() {
   const [registerPetOpen, setRegisterPetOpen] = useState(false);
-  const [pets, setPets] = useState<InfoPetWithId[]>([]);
+  const [pets, setPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedPet, setSelectedPet] = useState<InfoPetWithId | null>(null);
+  const [selectedPet, setSelectedPet] = useState<InfoPetResponse | null>(null);
   const [openUpdateForm, setOpenUpdateForm] = useState<boolean>(false);
 
   const router = useRouter();
@@ -26,7 +26,7 @@ export function useShelter() {
       const response = await axios.get(`${backendURL}/pets-by-shelter`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setPets(response.data.pets as InfoPetWithId[]);
+      setPets(response.data.pets as InfoPetResponse[]);
     } catch (error) {
       console.error("Error fetching pets data:", error);
     } finally {

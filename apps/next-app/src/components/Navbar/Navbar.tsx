@@ -1,187 +1,206 @@
 "use client";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
+import { getToken } from "@/utils/token";
+import axios from "axios";
+import { backendURL } from "@/config";
 
-const pages = [
-    { name: 'Mascotas', path: '/adoption' },
-    { name: 'Contacto', path: '/contacto' },
-    { name: 'Nosotros', path: '/aboutus' }
+let pages = [
+  { name: "Mascotas", path: "/adoption" },
+  { name: "Contacto", path: "/contacto" },
+  { name: "Nosotros", path: "/aboutus" },
 ];
 
 export default function Navbar() {
-    const router = useRouter();
-    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        // Comprueba si el token está presente en el localStorage
-        setIsLoggedIn(!!localStorage.getItem('pr-ado--token'));
-    }, []);
+  useEffect(() => {
+    const token = getToken();
 
-    const handleLogout = () => {
-        localStorage.removeItem('pr-ado--token'); // Elimina el token
-        setIsLoggedIn(false); // Actualiza el estado de logueo
-        router.push('/'); // Redirige a la página principal u otra que prefieras
-    };
+    axios
+      .get(`${backendURL}/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        const dashboard = { name: "Dashboard", path: "/dashboard" };
+        if (!pages.includes(dashboard)) pages = [dashboard, ...pages];
+        setIsLoggedIn(true);
+      })
+      .catch(() => setIsLoggedIn(false));
+  }, []);
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
+  const handleLogout = () => {
+    localStorage.removeItem("pr-ado--token"); // Elimina el token
+    setIsLoggedIn(false); // Actualiza el estado de logueo
+    router.push("/"); // Redirige a la página principal u otra que prefieras
+  };
 
-    const handleCloseNavMenu = (path?: string) => {
-        setAnchorElNav(null);
-        if (path) {
-            router.push(path); // Navegar a la ruta proporcionada
-        }
-    };
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+  const handleCloseNavMenu = (path?: string) => {
+    setAnchorElNav(null);
+    if (path) {
+      router.push(path); // Navegar a la ruta proporcionada
+    }
+  };
 
-    const handleMenuClose = () => {
-        setAnchorElNav(null);
-    };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
-    return (
-        <AppBar position="static" sx={{ backgroundColor: "#135b5e", width: "100vw" }} >
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <Typography
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        <Link href="/" title={"Home Page"}>
-                            <Image
-                                src="/logo.png"
-                                alt="logo"
-                                width={80}
-                                height={80}
-                            />
-                        </Link>
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleMenuClose}
-                            sx={{ display: { xs: 'block', md: 'none' } }}
-                        >
-                            {pages.map((page) => (
-                                <MenuItem key={page.name} onClick={()=>handleCloseNavMenu(page.path)}>
-                                    <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                    <Typography
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        <Link href="/" title={"Home Page"}>
-                            <Image
-                                src="/logo.png"
-                                alt="logo"
-                                width={60}
-                                height={60}
-                            />
-                        </Link>
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "flex-end" }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page.name}
-                                onClick={()=>handleCloseNavMenu(page.path)}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page.name}
-                            </Button>
-                        ))}
-                         {isLoggedIn && (
-                            <Button
-                                onClick={handleLogout}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                Cerrar sesión
-                            </Button>
-                        )}
-                    </Box>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {pages.map((page) => (
-                                <MenuItem key={page.name} onClick={()=>handleCloseUserMenu()}>
-                                    <Typography sx={{ textAlign: 'center' }}>{page.name}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                        <ThemeSwitcher />
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
-    );
+  const handleMenuClose = () => {
+    setAnchorElNav(null);
+  };
+
+  return (
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: "#135b5e", width: "100vw" }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Typography
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            <Link href="/" title={"Home Page"}>
+              <Image src="/logo.png" alt="logo" width={80} height={80} />
+            </Link>
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleMenuClose}
+              sx={{ display: { xs: "block", md: "none" } }}
+            >
+              {pages.map((page) => (
+                <MenuItem
+                  key={page.name}
+                  onClick={() => handleCloseNavMenu(page.path)}
+                >
+                  <Typography sx={{ textAlign: "center" }}>
+                    {page.name}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <Typography
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            <Link href="/" title={"Home Page"}>
+              <Image src="/logo.png" alt="logo" width={60} height={60} />
+            </Link>
+          </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+            }}
+          >
+            {pages.map((page) => (
+              <Button
+                key={page.name}
+                onClick={() => handleCloseNavMenu(page.path)}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {page.name}
+              </Button>
+            ))}
+            {isLoggedIn && (
+              <Button
+                onClick={handleLogout}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                Cerrar sesión
+              </Button>
+            )}
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page.name} onClick={() => handleCloseUserMenu()}>
+                  <Typography sx={{ textAlign: "center" }}>
+                    {page.name}
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+            <ThemeSwitcher />
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
 }

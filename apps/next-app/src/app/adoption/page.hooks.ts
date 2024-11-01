@@ -1,17 +1,17 @@
 import { backendURL } from "@/config";
 import { DecodedToken } from "@/types/api";
 import { getToken } from "@/utils/token";
-import { InfoPetWithId, ShelterInfo } from "@adopcion/types";
+import { InfoPetResponse, ShelterInfo } from "@adopcion/types";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export const usePage = () => {
-  const [pets, setPets] = useState<InfoPetWithId[]>([]);
+  const [pets, setPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedPet, setSelectedPet] = useState<InfoPetWithId | null>(null);
-  const [shelterInfo, setShelterInfo] = useState<ShelterInfo | null>(null)
+  const [selectedPet, setSelectedPet] = useState<InfoPetResponse | null>(null);
+  const [shelterInfo, setShelterInfo] = useState<ShelterInfo | null>(null);
   const [tokenState, setTokenState] = useState<string | null>(null);
 
   const galleryRef = useRef<HTMLDivElement | null>(null);
@@ -21,7 +21,7 @@ export const usePage = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(`${backendURL}/pets`);
-      const pets: InfoPetWithId[] = response.data.petsList;
+      const pets: InfoPetResponse[] = response.data.petsList;
       setPets(pets);
       setLoading(false);
     } catch (error) {
@@ -29,7 +29,6 @@ export const usePage = () => {
       setLoading(false);
     }
   };
- 
 
   useEffect(() => {
     setTokenState(getToken());
@@ -57,13 +56,13 @@ export const usePage = () => {
         // Asegúrate de que `selectedPet` tenga el `shelterId` necesario.
         const shelterId = selectedPet?.shelterId;
         if (!shelterId) return;
-  
+
         // Realiza la solicitud al backend
-        const response = await axios.get(`${backendURL}/shelter/${shelterId}`,{
+        const response = await axios.get(`${backendURL}/shelter/${shelterId}`, {
           headers: { Authorization: `Bearer ${tokenState}` },
         });
         const shelterData = response.data.shelter;
-  
+
         // Guarda los datos del refugio en un estado
         setShelterInfo(shelterData);
       } catch (error) {
@@ -90,6 +89,6 @@ export const usePage = () => {
     handleAdopt,
     scrollToGallery,
     shelterInfo,
-    setShelterInfo
+    setShelterInfo,
   };
 };

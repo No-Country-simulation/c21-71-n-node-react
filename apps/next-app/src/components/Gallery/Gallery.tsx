@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid2";
-import { InfoPetWithId, ShelterInfo } from "@adopcion/types";
+import { InfoPetResponse, ShelterInfo } from "@adopcion/types";
 import { FilterPets } from "./filter";
 import { Loading } from "./loading";
 import { PetCard } from "./petCard";
@@ -9,11 +9,11 @@ import { useGallery } from "./gallery.hook";
 
 interface Props {
   loading: boolean;
-  pets: InfoPetWithId[];
+  pets: InfoPetResponse[];
   modalActions: React.ReactNode;
-  selectedPet: InfoPetWithId | null;
-  setSelectedPet: React.Dispatch<React.SetStateAction<InfoPetWithId | null>>;
-  shelterInfo: ShelterInfo | null,
+  selectedPet: InfoPetResponse | null;
+  setSelectedPet: React.Dispatch<React.SetStateAction<InfoPetResponse | null>>;
+  shelterInfo: ShelterInfo | null;
   setShelterInfo: React.Dispatch<React.SetStateAction<ShelterInfo | null>>;
 }
 
@@ -24,7 +24,7 @@ export default function Gallery({
   selectedPet,
   setSelectedPet,
   shelterInfo,
-  setShelterInfo
+  setShelterInfo,
 }: Props) {
   const {
     filter,

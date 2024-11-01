@@ -2,18 +2,23 @@ import { Container, Modal } from "@mui/material";
 import { CustomForm, CustomSubmitButton } from "../Form/Form";
 import { CommonFields } from "./commonFields";
 import { useUpdatePet } from "./updatePet.hook";
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  initial: InfoPetWithId | null;
+  initial: InfoPetResponse | null;
   getData: () => Promise<void>;
 }
 
 export function UpdatePet({ initial, open, onClose, getData }: Props) {
-  const { formData, submitState, handleInputChange, handleSubmit } =
-    useUpdatePet(initial, getData, onClose);
+  const {
+    formData,
+    setFormData,
+    submitState,
+    handleInputChange,
+    handleSubmit,
+  } = useUpdatePet(initial, getData, onClose);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -21,6 +26,7 @@ export function UpdatePet({ initial, open, onClose, getData }: Props) {
         <CustomForm title="Actualiza tu mascota">
           <CommonFields
             handleInputChange={handleInputChange}
+            setFormData={setFormData}
             formData={formData}
           />
           <CustomSubmitButton

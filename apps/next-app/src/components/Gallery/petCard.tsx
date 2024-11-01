@@ -1,17 +1,17 @@
-import { InfoPetWithId } from "@adopcion/types";
+import { InfoPetResponse } from "@adopcion/types";
 import { Card, CardContent, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { CustomSlider } from "./slider";
 
 interface Props {
-  handleOpen: (pet: InfoPetWithId) => void;
-  pet: InfoPetWithId;
+  handleOpen: (pet: InfoPetResponse) => void;
+  pet: InfoPetResponse;
   settings: object;
 }
 
 export function PetCard({ handleOpen, pet, settings }: Props) {
   return (
-    <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+    <Grid size={{ xs: 12, sm: 6, md: 4 }}>
       <Card
         sx={{
           backgroundColor: "#ECA26E",
@@ -28,7 +28,12 @@ export function PetCard({ handleOpen, pet, settings }: Props) {
             handleOpen(pet);
         }}
       >
-        <CustomSlider settings={settings} pet={pet} handleOpen={handleOpen} />
+        <CustomSlider
+          settings={settings}
+          pet={pet}
+          handleOpen={handleOpen}
+          height={{ xs: 300, md: 300 }}
+        />
         <CardContent>
           <Typography variant="h5">{pet.name}</Typography>
           {pet.age ? (

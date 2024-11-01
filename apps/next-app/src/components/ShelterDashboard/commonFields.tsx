@@ -1,11 +1,14 @@
 import { MenuItem, SelectChangeEvent } from "@mui/material";
-import { CustomSelector, CustomTextField } from "../Form/Form";
+import { CustomSelector, CustomTextField, ImageUpload } from "../Form/Form";
 import { PetTypeE } from "@/types/pet";
+import { Dispatch, SetStateAction } from "react";
+import { FormDataI } from "./registerPet.hook";
 
 interface Props {
   handleInputChange: (
     e: SelectChangeEvent<string> | React.ChangeEvent<HTMLInputElement>
   ) => void;
+  setFormData: Dispatch<SetStateAction<FormDataI>>;
   formData: {
     name: string;
     type: string;
@@ -14,7 +17,11 @@ interface Props {
   };
 }
 
-export function CommonFields({ handleInputChange, formData }: Props) {
+export function CommonFields({
+  handleInputChange,
+  setFormData,
+  formData,
+}: Props) {
   return (
     <>
       <CustomTextField
@@ -50,6 +57,13 @@ export function CommonFields({ handleInputChange, formData }: Props) {
         name="description"
         value={formData.description}
         onChange={handleInputChange}
+      />
+      <ImageUpload
+        onChange={(newFiles) =>
+          setFormData((prev) => {
+            return { ...prev, images: newFiles };
+          })
+        }
       />
     </>
   );
