@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomSubmitButtonStateT } from "@/components/Form/Form";
 import { jwtDecode } from "jwt-decode";
-import { setToken } from "@/utils/token";
+import { useGCToken } from "@/context/context";
 
 type FormData = {
   email: string;
@@ -21,6 +21,7 @@ const initialFormState = {
 
 export function usePage() {
   const router = useRouter();
+  const gcToken = useGCToken();
 
   const [formData, setFormData] = useState<FormData>(initialFormState);
 
@@ -35,7 +36,7 @@ export function usePage() {
   }
 
   const handleSubmit = () => {
-    if (!Boolean(formData.email && formData.password))  
+    if (!Boolean(formData.email && formData.password))
       return alert("Datos incompletos");
 
     setRequestState("loading");
@@ -47,7 +48,7 @@ export function usePage() {
       })
       .then(function (response) {
         const { token } = response.data;
-        setToken(token);
+        gcToken.setItem(token);
         setFormData(initialFormState);
         const data = jwtDecode<{ email: string; roleId: number }>(token);
         setRequestState("success");

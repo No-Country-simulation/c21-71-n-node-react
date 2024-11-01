@@ -14,11 +14,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher";
-import { getToken } from "@/utils/token";
 import axios from "axios";
 import { backendURL } from "@/config";
+import { useGCToken } from "@/context/context";
 
-let pages = [
+const pages = [
   { name: "Mascotas", path: "/adoption" },
   { name: "Contacto", path: "/contacto" },
   { name: "Nosotros", path: "/aboutus" },
@@ -26,29 +26,30 @@ let pages = [
 
 export default function Navbar() {
   const router = useRouter();
+  const gcToken = useGCToken();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const token = getToken();
+  const token = gcToken.getItem();
 
+  useEffect(() => {
     axios
       .get(`${backendURL}/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        const dashboard = { name: "Dashboard", path: "/dashboard" };
-        if (!pages.includes(dashboard)) pages = [dashboard, ...pages];
         setIsLoggedIn(true);
       })
-      .catch(() => setIsLoggedIn(false));
-  }, []);
+      .catch(() => {
+        setIsLoggedIn(false);
+      });
+  }, [token]);
 
   const handleLogout = () => {
-    localStorage.removeItem("pr-ado--token"); // Elimina el token
-    setIsLoggedIn(false); // Actualiza el estado de logueo
-    router.push("/"); // Redirige a la página principal u otra que prefieras
+    gcToken.removeItem();
+    setIsLoggedIn(false);
+    router.push("/");
   };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -58,7 +59,7 @@ export default function Navbar() {
   const handleCloseNavMenu = (path?: string) => {
     setAnchorElNav(null);
     if (path) {
-      router.push(path); // Navegar a la ruta proporcionada
+      router.push(path);
     }
   };
 
@@ -154,11 +155,21 @@ export default function Navbar() {
               justifyContent: "flex-end",
             }}
           >
+            {isLoggedIn && (
+              <Button
+                onClick={() => handleCloseNavMenu("/dashboard")}
+                sx={{ my: 2, color: "white", display: "block" }}
+                role="link"
+              >
+                Dashboard
+              </Button>
+            )}
             {pages.map((page) => (
               <Button
                 key={page.name}
                 onClick={() => handleCloseNavMenu(page.path)}
                 sx={{ my: 2, color: "white", display: "block" }}
+                role="link"
               >
                 {page.name}
               </Button>
@@ -167,6 +178,7 @@ export default function Navbar() {
               <Button
                 onClick={handleLogout}
                 sx={{ my: 2, color: "white", display: "block" }}
+                role="link"
               >
                 Cerrar sesión
               </Button>
