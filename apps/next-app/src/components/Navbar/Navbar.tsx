@@ -20,7 +20,7 @@ import { useGCToken } from "@/context/context";
 
 const pages = [
   { name: "Mascotas", path: "/adoption" },
-  { name: "Contacto", path: "/contacto" },
+  { name: "Contacto", path: "/contactus" },
   { name: "Nosotros", path: "/aboutus" },
 ];
 
