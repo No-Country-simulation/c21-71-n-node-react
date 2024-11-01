@@ -10,19 +10,22 @@ interface PropsI {
 }
 
 export interface AuthEx {
-  isLoggedIn: boolean;
+  isLoggedIn: boolean | null;
   role: RoleT | null;
   logOut: () => void;
 }
 
 export function useAuth({ tokenStorage }: PropsI): AuthEx {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [role, setRole] = useState<RoleT | null>(null);
 
   useEffect(() => {
     const token = tokenStorage.getItem();
 
-    if (!token) return;
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
 
     const data = jwtDecode<{ email: string; roleId: number }>(token);
 
