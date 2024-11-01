@@ -1,6 +1,6 @@
 import { backendURL } from "@/config";
+import { useGCToken } from "@/context/context";
 import { DecodedToken } from "@/types/api";
-import { getToken } from "@/utils/token";
 import { InfoPetResponse, ShelterInfo } from "@adopcion/types";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -8,11 +8,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export const usePage = () => {
+  const gcToken = useGCToken();
   const [pets, setPets] = useState<InfoPetResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedPet, setSelectedPet] = useState<InfoPetResponse | null>(null);
   const [shelterInfo, setShelterInfo] = useState<ShelterInfo | null>(null);
-  const [tokenState, setTokenState] = useState<string | null>(null);
 
   const galleryRef = useRef<HTMLDivElement | null>(null);
 
@@ -31,17 +31,16 @@ export const usePage = () => {
   };
 
   useEffect(() => {
-    setTokenState(getToken());
     fetchData();
-  }, []);
+  }, [gcToken]);
 
   const isTokenValid = () => {
-    if (!tokenState) {
+    if (!gcToken.data) {
       return false;
     }
 
     try {
-      const decoded: DecodedToken = jwtDecode<DecodedToken>(tokenState);
+      const decoded: DecodedToken = jwtDecode<DecodedToken>(gcToken.data);
       const currentTime = Math.floor(Date.now() / 1000);
       return decoded.exp > currentTime;
     } catch (e) {
@@ -59,7 +58,7 @@ export const usePage = () => {
 
         // Realiza la solicitud al backend
         const response = await axios.get(`${backendURL}/shelter/${shelterId}`, {
-          headers: { Authorization: `Bearer ${tokenState}` },
+          headers: { Authorization: `Bearer ${gcToken.data}` },
         });
         const shelterData = response.data.shelter;
 

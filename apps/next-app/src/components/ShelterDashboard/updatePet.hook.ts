@@ -3,10 +3,10 @@ import { CustomSubmitButtonStateT } from "../Form/Form";
 import { SelectChangeEvent } from "@mui/material";
 import axios from "axios";
 import { backendURL } from "@/config";
-import { getToken } from "@/utils/token";
 import { InfoPetResponse } from "@adopcion/types";
 import { useRouter } from "next/navigation";
 import { FormDataI } from "./registerPet.hook";
+import { useGCToken } from "@/context/context";
 
 const InitialFormData: FormDataI = {
   name: "",
@@ -21,11 +21,11 @@ export function useUpdatePet(
   getData: () => Promise<void>,
   onClose: () => void
 ) {
+  const gcToken = useGCToken();
   const [formData, setFormData] = useState<FormDataI>(InitialFormData);
   const [submitState, setSubmitState] =
     useState<CustomSubmitButtonStateT>("initial");
 
-  const token = getToken();
   const router = useRouter();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export function useUpdatePet(
       return;
     }
 
-    if (!token) {
+    if (!gcToken.data) {
       router.push("/auth/login");
       return;
     }
@@ -86,7 +86,7 @@ export function useUpdatePet(
       await axios.put(`${backendURL}/pet`, formDataToSend, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${gcToken.data}`,
         },
       });
       setSubmitState("success");
