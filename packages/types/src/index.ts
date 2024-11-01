@@ -54,6 +54,7 @@ export interface InfoPetResponse{
   type:string
   imageUrl:{url: string}[]
   age:string
+  shelterId:number
 }
 
 export interface UpdateInfoPet{
