@@ -71,7 +71,7 @@ const ContactForm: React.FC = () => {
         <Typography variant="h6" sx={{ fontFamily: 'var(--font-geist-sans)', fontWeight: 'bold' }}>
           Contáctanos
         </Typography>
-        <Typography>Email: contacto@adopciones.com</Typography>
+        <Typography>Email: contacto@hogarparapeludos.com</Typography>
         <Typography>Teléfono: +54 9 11 1234 5678</Typography>
         <Box sx={{ mt: 2 }}>
           <Image src="/mapa.jpg" alt="Mapa" width={400} height={250} />
