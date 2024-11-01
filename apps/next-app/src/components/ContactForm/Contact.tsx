@@ -167,7 +167,7 @@ const ContactForm: React.FC = () => {
           rows={4}
           fullWidth
           sx={{
-            input: { color: theme === 'dark' ? '#fff' : '#000' },
+            '& textarea': { color: theme === 'dark' ? '#fff' : '#000' },
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
                 borderColor: theme === 'dark' ? '#fff' : '#000', // Bordes blancos en modo oscuro
