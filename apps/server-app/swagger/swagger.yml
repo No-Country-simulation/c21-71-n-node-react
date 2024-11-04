@@ -3,7 +3,11 @@ info:
   title: pet adoption
   description: >-
     Esta es la documentacion de la API ustilizada para nuestra pagina web de
-    adopcion de mascotas; 
+    adopcion de mascotas;
+    
+    Contactos
+                [Matias Benitez](https://github.com/novamatt)
+                [Hector Garcia](https://github.com/hector-garcia-27)
     
   version: 1.0.0
 security:
