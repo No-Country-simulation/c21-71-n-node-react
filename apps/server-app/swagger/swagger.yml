@@ -3,52 +3,103 @@ info:
   title: pet adoption
   description: >-
     Esta es la documentacion de la API ustilizada para nuestra pagina web de
-    adopcion de mascotas
+    adopcion de mascotas; 
     
-    ### 
-    Contactos:
-           Matias Benitez: soporte@example.com
-           Héctor García: garcia17h@gmail.com
   version: 1.0.0
 security:
   - BearerAuth: []
 paths:
-  /users:
-    get:  
+  /register:
+    post:
       tags:
-        - user
-      summary: Finds all Users       //        administrator token required
-      security:
-        - BearerAuth: []
-      description: Retorna todos los usuarios existentes en el registro
+        - auth
+      summary: user register
+      description: register a new user, depending on whether it is a shelter or adopter
+      requestBody:
+        description: The `requestBody` depends on the type of registration. If a Shelter is registered, the schema to be used is `NewShelter`, if an adopter is registered, the schema is `NewAdopter`
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: ["adopter", "shelter"]
+                  description: El tipo de registro ("adopter" o "shelter").
+                user:
+                  type: object
+                  description: Datos del usuario a registrar.
+                  discriminator:
+                    propertyName: type
+                    mapping:
+                      adopter: '#/components/schemas/NewAdopter'
+                      shelter: '#/components/schemas/NewShelter'
+                  oneOf:
+                    - $ref: '#/components/schemas/NewAdopter'
+                    - $ref: '#/components/schemas/NewShelter'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shelterRegisterOk'
+        '400':
+          description: 'Existing user in the database // The property “type” was not found : is required'
+  /login: 
+    post:
+      tags:
+        - auth
+      summary: user login
+      description: Login route for registered users
+      requestBody:
+        description: Sending the user's email and password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: adopter@example.com
+                password: 
+                  type: string
+                  example: password123
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shelterRegisterOk'
+        '401':
+          description: invalid credentials
+        '404':
+          description: user not found
+  /pets:
+    get:
+      tags:
+        - pet
+      summary: Finds all Pets
+      description: Returns all existing pets in the registry
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    example: true
-                  users:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/user'
-                  
-        '401':
-          description: Unauthorized, administrator role required
-        '500':
+                $ref: '#/components/schemas/petList'
+        '400':
           description: Internal Server Error
-  /user/{id}:
+  /pet/{id}:
     get:
       tags:
-        - user
-      summary: Find user by ID       //        administrator token required
+        - pet
+      summary: Find pet by ID       //       token required
       security:
         - BearerAuth: []
-      description: Returns a single user
+      description: Returns a single pet
       parameters:
         - name: id
           in: path
@@ -62,25 +113,73 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    example: true
-                  user:
-                    $ref: '#/components/schemas/user'
-        '500':
+                $ref: '#/components/schemas/findPet'
+        '404':
+          description: The resource was not found
+        '401':
           description: Internal Server Error
     delete:
       tags:
-        - user
-      summary: Delete a user by ID        //        administrator token required
+        - pet
+      summary: Delete a pet by ID       //       shelter/administrator token required
       security:
         - BearerAuth: []
       parameters:
         - name: id
           in: path
-          description: id of user to return
+          description: id of pet to return
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dropPet'
+        '404':
+          description: Pet id does not exist.
+        '400':
+          description: Internal Server Error.
+        '403':
+          description: Unauthorized, roleId of the token does not have authorization for this transaction.
+  /pets-by-shelter:
+    get:
+      tags:
+        - pet 
+      summary: pets posted by a shelter       //       shelter/administrator token required
+      security: 
+        - BearerAuth: []
+      description: get all the pets that a shelter has published
+      responses:
+        '200' :
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  pets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pet'
+        '500':
+          description: Inernal Server Error
+  /pets-by-shelter/{id}:
+    get:
+      tags: 
+        - pet
+      summary: pets posted by a shelter       //       shelter/administrator token required
+      security: 
+        - BearerAuth: []
+      description: get all the pets that a shelter has published
+      parameters:
+        - name: id
+          in: path
+          description: id of shelter to return
           required: true
           schema:
             type: integer
@@ -94,55 +193,12 @@ paths:
                 properties:
                   ok:
                     type: boolean
-                  user_deleted:
-                    $ref: '#/components/schemas/user'
+                  pets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pet'
         '500':
-          description: Internal Server Error
-  /user:
-    put:
-      tags:
-        - user
-      summary: Update a user       //       user/administrator token required
-      security:
-        - BearerAuth: []
-      description: Update a user
-      requestBody:
-        description: payload to edit a user
-        content: 
-          application/json:
-            schema:
-              $ref: '#/components/schemas/updateUser'
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    example: true
-                  user:
-                    $ref: '#/components/schemas/user'
-        '500':
-          description: Internal Server Error
-  /pets:
-    get:
-      tags:
-        - pet
-      summary: Finds all Pets
-      description: Retorna todas las mascotas existentes en el registro
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/petList'
-                  
-        '400':
-          description: Internal Server Error
+          description: Inernal Server Error
   /pet:
     post:
       tags:
@@ -152,7 +208,7 @@ paths:
         - BearerAuth: []
       description: Add a new pet
       requestBody:
-        description: Create a new pet
+        description: To create a new pet, it must be done through a form; `multipart/form-data`
         content:
           multipart/form-data:
             schema:
@@ -206,7 +262,7 @@ paths:
         - BearerAuth: []
       description: Update a pet
       requestBody:
-        description: update a pet
+        description: To edit a pet it must be done through a form; `multipart/form-data`
         content:
           multipart/form-data:
             schema:
@@ -254,18 +310,46 @@ paths:
           description: No token provided. // Unauthorized, shelter id does not match pet creator.
         '403':
           description: Unauthorized, roleId of the token does not have authorization for this transaction.
-  /pet/{id}:
-    get:
+  /users:
+    get:  
       tags:
-        - pet
-      summary: Find pet by ID       //       token required
+        - user
+      summary: Finds all Users       //        administrator token required
       security:
         - BearerAuth: []
-      description: Returns a single pet
+      description: Returns all existing users in the registry
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+                  
+        '401':
+          description: Unauthorized, administrator role required
+        '500':
+          description: Internal Server Error
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Find user by ID       //        administrator token required
+      security:
+        - BearerAuth: []
+      description: Returns a single user
       parameters:
         - name: id
           in: path
-          description: id of pet to return
+          description: id required in path
           required: true
           schema:
             type: integer
@@ -275,105 +359,195 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/findPet'
-        '404':
-          description: The resource was not found
-        '401':
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/user'
+        '500':
           description: Internal Server Error
     delete:
       tags:
-        - pet
-      summary: Delete a pet by ID       //       shelter token required
+        - user
+      summary: Delete a user by ID        //        administrator token required
       security:
         - BearerAuth: []
       parameters:
         - name: id
           in: path
-          description: id of pet to return
+          description: id required in path
           required: true
           schema:
             type: integer
       responses:
         '200':
           description: successful operation
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/dropPet'
-        '404':
-          description: Pet id does not exist.
-        '400':
-          description: Internal Server Error.
-        '403':
-          description: Unauthorized, roleId of the token does not have authorization for this transaction.
-  /register:
-    post:
-      tags:
-        - auth
-      summary: user register
-      description: register a new user, depending on whether it is a shelter or adopter
-      requestBody:
-        description: required body according to type of record
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum: ["adopter", "shelter"]
-                  description: El tipo de registro ("adopter" o "shelter").
-                user:
-                  type: object
-                  description: Datos del usuario a registrar.
-                  discriminator:
-                    propertyName: type
-                    mapping:
-                      adopter: '#/components/schemas/NewAdopter'
-                      shelter: '#/components/schemas/NewShelter'
-                  oneOf:
-                    - $ref: '#/components/schemas/NewAdopter'
-                    - $ref: '#/components/schemas/NewShelter'
-      responses:
-        '201':
-          description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/shelterRegisterOk'
-        '400':
-          description: 'Existing user in the database // The property “type” was not found : is required'
-  /login: 
-    post:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  user_deleted:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
+  /user:
+    put:
       tags:
-        - auth
-      summary: user login
-      description: Ruta para el login de los usuarios registrados
+        - user
+      summary: Update a user       //       user/administrator token required
+      security:
+        - BearerAuth: []
+      description: Update a user
       requestBody:
-        description: envio de email y contraseña del usuario
-        content:
+        description: 'The `requestBody` depends on the roleId of the token, if it is an administrator role, the scheme to be used is `updateUserWithAdminToken`, if the role is a user, the scheme to use is `updateUserWithUserToken`'
+        content: 
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                  example: adopter@example.com
-                password: 
-                  type: string
-                  example: password123
+              oneOf:
+                - $ref: '#/components/schemas/updateUserWithAdminToken'
+                - $ref: '#/components/schemas/updateUserWithUserToken'
       responses:
-        '201':
-          description: Successful operation
+        '200':
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/shelterRegisterOk'
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/user'
+        '500':
+          description: Internal Server Error
+  /shelters:
+    get:
+      tags:
+        - shelter
+      summary: Finds all shelters      //        administrator token required
+      security:
+        - BearerAuth: []
+      description: Returns all existing shelters in the registry
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  shelters:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shelter'
         '401':
-          description: invalid credentials
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  /shelter/{id}:
+    get:
+      tags: 
+        - shelter
+      summary: Find shelter by ID       //       token required
+      security: 
+        - BearerAuth: []
+      description: Returns a single shelter
+      parameters:
+        - name: id
+          in: path
+          description: id required in path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  shelter:
+                    $ref: '#/components/schemas/shelter'
         '404':
-          description: user not found
+          description: No Found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - shelter
+      summary:  Delete a pet by ID       //       shelter/administrator token required
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: id required in path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  shelterErased:
+                    $ref: '#/components/schemas/shelter'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Resource not found
+        '500':
+          description: Internal Server Error
+  /shelter:
+    put:
+      tags:
+        - shelter
+      summary: Update a shelter         //         shelter/administrator token required
+      security:
+        - BearerAuth: []
+      description: Update a Shelter
+      requestBody:
+        description: 'The `requestBody` scheme depends on the `roleId` in the token: if `roleId` is of type `administrator`, use `updateShelterWithAdministratorRoleId` otherwise use `NewShelter`'
+        content:
+          applicattion/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/NewShelter'
+                - $ref: '#/components/schemas/updateShelterWithAdministratorRoleId'
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  shelter:
+                    $ref: '#/components/schemas/shelter'
+        '500':
+          description: Internal Server Error
+      
 tags:
   - name: auth
     description: Register and login operations
@@ -390,6 +564,16 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    updateShelterWithAdministratorRoleId:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        payload:
+          $ref: '#/components/schemas/NewShelter'
+        
+        
     shelterRegisterOk:
       type: object
       properties:
@@ -399,7 +583,6 @@ components:
           type: string
           description: jwt delivered
           example: eyJhbGciOiJIUzI1NiIsInR5c...
-    
     NewAdopter:
       type: object
       properties:
@@ -420,7 +603,6 @@ components:
           type: string
           format: password
           example: "password123"
-
     NewShelter:
       type: object
       properties:
@@ -438,7 +620,6 @@ components:
           type: string
           format: password
           example: "password123"
-      
     imageUrl:
       type: object
       properties:
@@ -494,7 +675,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Pet'
-    updateUser:
+    updateUserWithUserToken:
+      type: object
+      properties:
+        payload:
+          type: object
+          properties:
+            email:
+              type: string
+              example: api@example.com
+            firstname:
+              type: string
+              example: Juan
+            lastname:
+              type: string
+              example: Perez
+            phone:
+              type: string
+              example: "123123123"
+            password:
+              type: string
+              example: example123
+    updateUserWithAdminToken:
       type: object
       properties:
         id:
@@ -518,8 +720,27 @@ components:
             password:
               type: string
               example: example123
-              
-      
+    shelter:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: api@example.com
+        shelter_name:
+          type: string
+          example: Juan
+        phone:
+          type: string
+          example: "123123123"
+        password:
+          type: string
+          example: $2a$10$kQWQzIY/hTeSaruF0HK7uuyFapSyx82ucuVDMe8CjywgrszBPffy2
+        roleId:
+          type: integer
+          example: 3
     user: 
       type: object
       properties:

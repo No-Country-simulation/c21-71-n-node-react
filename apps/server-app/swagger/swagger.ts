@@ -10,8 +10,8 @@ const options = {
             API para mantenimiento de pagina web de adopcion de animales
             
             Contactos
-                - Matias Benitez: https://github.com/novamatt
-                - Hector Garcia: garcia17h@gmail.com
+                [Matias Benitez](https://github.com/novamatt)
+                [Hector Garcia](https://github.com/hector-garcia-27)
             `
             
             ,
